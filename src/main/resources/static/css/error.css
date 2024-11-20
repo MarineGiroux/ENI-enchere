@@ -1,0 +1,10 @@
+@charset "UTF-8";
+.cards {
+   	display: flex;
+   	flex-direction: column;
+   	justify-content: space-around;
+   	background-color: #ff6a6a;
+   	border-radius: 3px;
+	margin: 5px;
+	list-style-type: none;
+}

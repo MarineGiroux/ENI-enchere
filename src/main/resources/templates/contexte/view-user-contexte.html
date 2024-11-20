@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.thymeleaf.org">
+<head>
+
+<title>Les objets sont nos amis</title>
+
+
+</head>
+<body>
+
+	<div th:insert="fragments/fragment-navbar"></div>
+	<main class="center-main">
+		<h1>utilisateur en session</h1>
+		<div th:text="${utilisateurSession}"></div>
+
+		<h1>utilisateur en request</h1>
+		<div th:text="${utilisateurRequest}"></div>
+
+	</main>
+
+
+
+	<div th:insert="fragments/fragment-piedpage :: frag-piedpage"></div>
+
+
+</body>
+</html>

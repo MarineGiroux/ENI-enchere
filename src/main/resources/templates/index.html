@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html html xmlns="http://www.thymeleaf.org" data-th-replace="~{fragments/layout :: layout-enchere(titrePage= ~{:: title},
+																							contenuPage= ~{:: .center-main},
+																							ressourcesSupp= ~{})}">
+
+<title>ENI Enchères</title>
+
+<body>
+
+	<main class="center-main">
+
+		<h3 class="title_list">Liste des Enchères</h3>
+
+		<br>
+
+		<h5>Filtre</h5>
+
+<div class="search-box">
+    <form action = "rechercher" >
+        <button class="btn-search"><i class="fas fa-search"></i>Recherche</button>
+        <input type="text" name = "nom" class="input-search" placeholder="Saisir votre recherche...">
+    </form>
+</div>
+
+		<br>
+
+		 <select id = "listeCat">
+			<option value = "0">Catégorie : </option>
+			<option data-th-each="categorie : ${listeCategorie}" th:value="${categorie.noCategorie}" th:text="${categorie.libelle}" ></option>
+		</select>
+
+
+
+		<div class = "info-article">
+			<tr class = "description-article" data-th-each="item : ${articleVendu}">
+				<img class = "image-article" data-th-src="@{/images/carton.jpg}">
+				<td class = "information" data-th-text="*{item.nomArticle}"></td>
+				<td class = "information">Prix :</td>
+				<td class = "information" data-th-text="*{item.miseAPrix}"></td>
+				<td class = "information">Date de fin :</td>
+				<td class = "information" data-th-text="*{item.dateFinEnchere}"></td>
+				<td class = "information">Vendeur :</td>
+				<td class = "information" data-th-text="*{item.vend.pseudo}"></td>
+				<td class="information"  th:if="${#authorization.expression('isAuthenticated()')}"><a class="nav-link" data-th-href="@{/vente/detail(id=${item.noArticle})}">Détail de la vente</a></td>
+		</div>
+
+	</main>
+
+
+
+</body>
+
+
+</html>
+
