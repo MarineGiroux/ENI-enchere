@@ -3,53 +3,54 @@
 																							contenuPage= ~{:: .center-main},
 																							ressourcesSupp= ~{})}">
 
-<title>ENI Enchères</title>
-
+<head>
+	<title>ENI Enchères</title>
+	<link rel="stylesheet" href="style.css">
+</head>
 <body>
+<main class="center-main">
+	<h3>Liste des Enchères</h3>
 
-	<main class="center-main">
+	<div>
+		<form action="rechercher">
+			<button>Recherche</button>
+			<input type="text" name="nom" placeholder="Saisir votre recherche...">
+		</form>
+	</div>
 
-		<h3 class="title_list">Liste des Enchères</h3>
+	<select id="listeCat">
+		<option value="0">Catégorie : </option>
+		<option data-th-each="categorie : ${listeCategorie}" th:value="${categorie.noCategorie}" th:text="${categorie.libelle}"></option>
+	</select>
 
-		<br>
+	<div class="article-list">
 
-		<h5>Filtre</h5>
+		<div class="article-card" data-th-each="item : ${articleVendu}">
+			<h4 data-th-text="*{item.nomArticle}">Nom de l'article</h4>
+			<div class="article-image">
+				<img data-th-src="@{/images/carton.jpg}" alt="Image de l'article">
+			</div>
 
-<div class="search-box">
-    <form action = "rechercher" >
-        <button class="btn-search"><i class="fas fa-search"></i>Recherche</button>
-        <input type="text" name = "nom" class="input-search" placeholder="Saisir votre recherche...">
-    </form>
-</div>
+			<div class="article-details">
+				<p class="article-details-h4" data-th-text="*{item.description}">Description</p>
+				<div class="article-card-detail">
+					<p><strong>Prix :</strong> <span data-th-text="*{item.miseAPrix}">0</span> €</p>
+					<p><strong>Date de fin :</strong> <span data-th-text="*{item.dateFinEnchere}">2024-01-01</span></p>
+					<p><strong>Vendeur :</strong> <span data-th-text="*{item.vend.pseudo}">Pseudo</span></p>
+				</div>
+			</div>
 
-		<br>
-
-		 <select id = "listeCat">
-			<option value = "0">Catégorie : </option>
-			<option data-th-each="categorie : ${listeCategorie}" th:value="${categorie.noCategorie}" th:text="${categorie.libelle}" ></option>
-		</select>
-
-
-
-		<div class = "info-article">
-			<tr class = "description-article" data-th-each="item : ${articleVendu}">
-				<img class = "image-article" data-th-src="@{/images/carton.jpg}">
-				<td class = "information" data-th-text="*{item.nomArticle}"></td>
-				<td class = "information">Prix :</td>
-				<td class = "information" data-th-text="*{item.miseAPrix}"></td>
-				<td class = "information">Date de fin :</td>
-				<td class = "information" data-th-text="*{item.dateFinEnchere}"></td>
-				<td class = "information">Vendeur :</td>
-				<td class = "information" data-th-text="*{item.vend.pseudo}"></td>
-				<td class="information"  th:if="${#authorization.expression('isAuthenticated()')}"><a class="nav-link" data-th-href="@{/vente/detail(id=${item.noArticle})}">Détail de la vente</a></td>
+			<!-- Bouton détail -->
+			<div class="article-actions">
+				<a class="details-btn" th:if="${#authorization.expression('isAuthenticated()')}"
+				   data-th-href="@{/vente/detail(id=${item.noArticle})}">
+					Détail de la vente
+				</a>
+			</div>
 		</div>
+	</div>
 
-	</main>
-
-
-
+</main>
 </body>
-
-
 </html>
 

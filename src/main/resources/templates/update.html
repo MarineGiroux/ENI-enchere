@@ -3,15 +3,6 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-		crossorigin="anonymous"></script>
-	<link
-		href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-		rel="stylesheet"
-		integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-		crossorigin="anonymous">
 	<link rel="stylesheet" data-th-href="@{/css/main.css}">
 	<link rel="stylesheet" data-th-href="@{/css/error.css}">
 	<title>ENI Enchères - Mise à jour profil</title>
@@ -19,86 +10,72 @@
 </head>
 <body>
 
-	<section class="vh-1000 gradient-custom">
+	<section>
 		<form th:action="@{/utilisateur/profil}" method="post" th:object="${utilisateur}">
 			<!-- <div th:object="${utilisateur}"> -->
-			<div class="container py-5 h-300">
-				<div class="row d-flex justify-content-center align-items-center h-100">
-					<div class="col-12 col-md-8 col-lg-6 col-xl-5" style="width: 100%;">
-						<div class="card bg-dark text-white" style="border-radius: 1rem; width: 100%;">
-							<div class="card-body p-5 text-center">
-								<div class="mb-md-5 mt-md-4 pb-5">
-									<div class="row mb-4">
-										<h2 class="fw-bold mb-2 text-uppercase">Mise à jour de votre profil</h2>
-										<div data-th-replace="~{fragments/fragment-errors :: frag-errors}"></div>
-										
+			<div>
 
-										<input type="hidden" data-th-field="*{noUtilisateur}" />
-										<div class="col-12 col-md-6" style="margin-bottom: 3%;">
-											<label class="form-label" for="typePseudoX">Pseudo</label>
-											<input type="text" id="typePseudoX" readonly="readonly" class="form-control form-control-lg" data-th-field="*{pseudo}" />
-										</div>
-
-										<div class="col-12 col-md-6" style="margin-bottom: 3%;">
-											<label class="form-label" for="typeFirstNameX">Nom</label>
-											<div data-th-replace="~{fragments/fragment-error :: frag-error('nom')}"></div>
-											<input type="text" id="typeFirstNameX" class="form-control form-control-lg" data-th-field="*{nom}" />
-										</div>
-
-										<div class="col-12 col-md-6" style="margin-bottom: 3%;">
-											<label class="form-label" for="typeNameX">Prénom</label>
-											<div data-th-replace="~{fragments/fragment-error :: frag-error('prenom')}"></div>
-											<input type="text" id="typeNameX" class="form-control form-control-lg" data-th-field="*{prenom}" />
-										</div>
-
-										<div class="col-12 col-md-6" style="margin-bottom: 3%;">
-											<label class="form-label" for="typeEmailX">Email</label>
-											<input type="text" id="typeEmailX" readonly="readonly" class="form-control form-control-lg" data-th-field="*{email}" />
-										</div>
-
-										<div class="col-12 col-md-6" style="margin-bottom: 3%;">
-											<label class="form-label" for="typePhoneX">Téléphone</label>
-											<input type="text" id="typePhoneX" class="form-control form-control-lg" data-th-field="*{telephone}" />
-										</div>
-
-										<div class="col-12 col-md-6" style="margin-bottom: 3%;">
-											<label class="form-label" for="typeStreetNumberX">Rue</label> <input type="text" id="typeStreetNumberX" class="form-control form-control-lg" data-th-field="*{rue}" />
-										</div>
-
-										<div class="col-12 col-md-6" style="margin-bottom: 3%;">
-											<label class="form-label" for="typePostalCodeX">Code Postal</label>
-											<input type="text" id="typePostalCodeX" class="form-control form-control-lg" data-th-field="*{codePostal}" />
-										</div>
-
-										<div class="col-12 col-md-6" style="margin-bottom: 3%;">
-											<label class="form-label" for="typeCityX">Ville</label>
-											<input type="text" id="typeCityX" class="form-control form-control-lg" data-th-field="*{ville}" />
-										</div>
-										
-										<div class="col-12 col-md-6" style="margin-bottom: 3%;">
-											<label class="form-label" for="typeCityX">Entrez votre mot de passe pour confirmer</label>
-											<div data-th-replace="~{fragments/fragment-error :: frag-error('prenom')}"></div>
-											<input type="password" class="form-control form-control-lg" data-th-field="*{motDePasse}" />
-										</div>
-									
-										<div class="row">
-											<div class="col-md-6 mb-0" style="padding-bottom: 1em; padding-left: 3em;">
-												<button class="btn btn-outline-light btn-lg px-5">Sauvegarder</button>
-											</div>
-											<div class="col-md-6 mb-0"style="padding-bottom: 1em; padding-left: 3em;">
-	                                        	<a class="btn btn-outline-light btn-lg px-5" data-th-href="@{/}">Annuler</a>
-	                                    	</div>
-										</div>
-										
+				<h2>Mise à jour de votre profil</h2>
+				<div data-th-replace="~{fragments/fragment-errors :: frag-errors}"></div>
 
 
-									</div>
-								</div>
-							</div>
-						</div>
+				<input type="hidden" data-th-field="*{noUtilisateur}" />
+				<div>
+					<label>Pseudo</label>
+					<input type="text" id="typePseudoX" readonly="readonly" data-th-field="*{pseudo}" />
+				</div>
+
+				<div >
+					<label >Nom</label>
+					<div data-th-replace="~{fragments/fragment-error :: frag-error('nom')}"></div>
+					<input type="text" id="typeFirstNameX" data-th-field="*{nom}" />
+				</div>
+
+				<div >
+					<label >Prénom</label>
+					<div data-th-replace="~{fragments/fragment-error :: frag-error('prenom')}"></div>
+					<input type="text" id="typeNameX"  data-th-field="*{prenom}" />
+				</div>
+
+				<div >
+					<label  for="typeEmailX">Email</label>
+					<input type="text" id="typeEmailX" readonly="readonly" data-th-field="*{email}" />
+				</div>
+
+				<div >
+					<label  for="typePhoneX">Téléphone</label>
+					<input type="text" id="typePhoneX"  data-th-field="*{telephone}" />
+				</div>
+
+				<div >
+					<label for="typeStreetNumberX">Rue</label> <input type="text" id="typeStreetNumberX" data-th-field="*{rue}" />
+				</div>
+
+				<div >
+					<label for="typePostalCodeX">Code Postal</label>
+					<input type="text" id="typePostalCodeX" data-th-field="*{codePostal}" />
+				</div>
+
+				<div >
+					<label for="typeCityX">Ville</label>
+					<input type="text" id="typeCityX" data-th-field="*{ville}" />
+				</div>
+
+				<div >
+					<label  for="typeCityX">Entrez votre mot de passe pour confirmer</label>
+					<div data-th-replace="~{fragments/fragment-error :: frag-error('prenom')}"></div>
+					<input type="password"  data-th-field="*{motDePasse}" />
+				</div>
+
+				<div >
+					<div >
+						<button >Sauvegarder</button>
+					</div>
+					<div >
+						<a  data-th-href="@{/}">Annuler</a>
 					</div>
 				</div>
-			</div>
+
 			</div>
 		</form>
 	</section>
