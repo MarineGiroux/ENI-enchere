@@ -3,8 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" data-th-href="@{/css/main.css}">
     <link rel="stylesheet" data-th-href="@{/css/error.css}">
     <title>ENI Enchères - Incription</title>
@@ -12,91 +10,85 @@
 </head>
 <body>
 
-    <section class="vh-1000 gradient-custom">    
+    <section>
     	<form th:action="@{/utilisateur/inscription}" method="post" th:object="${utilisateur}">
-	        <div class="container py-5 h-300">
-	            <div class="row d-flex justify-content-center align-items-center h-100">
-	                <div class="col-12 col-md-8 col-lg-6 col-xl-5" style="width: 100%;">
-	                    <div class="card bg-dark text-white" style="border-radius: 1rem; width: 100%;">
-	                        <div class="card-body p-5 text-center">
-	                            <div class="mb-md-5 mt-md-4 pb-5">
-	                                <div class="row mb-4">
-	                                    <h2 class="fw-bold mb-2 text-uppercase">Inscription</h2>
-	                                    <p class="text-white-50 mb-5">Veuillez entrer vos informations !</p>
+	        <div>
+
+	                                <div>
+	                                    <h2 >Inscription</h2>
+	                                    <p >Veuillez entrer vos informations !</p>
 	                                    <div data-th-replace="~{fragments/fragment-errors :: frag-errors}"></div>
 	
 	
-	                                <div class="col-12 col-md-6" style="margin-bottom: 3%;">
-	                                    <label class="form-label" for="pseudo">Pseudo</label>
+	                                <div>
+	                                    <label for="pseudo">Pseudo</label>
 	                                   	<div data-th-replace="~{fragments/fragment-error :: frag-error('pseudo')}"></div>
-	                                    <input type="text" class="form-control form-control-lg" data-th-field="*{pseudo}"/>
+	                                    <input type="text"data-th-field="*{pseudo}"/>
 	                                </div>
 	                                
-	                                <div class="col-12 col-md-6"style="margin-bottom: 3%;">
-	                                    <label class="form-label" for="nom">Nom</label>
+	                                <div>
+	                                    <label for="nom">Nom</label>
 	                                    <div data-th-replace="~{fragments/fragment-error :: frag-error('nom')}"></div>
-	                                    <input type="text" class="form-control form-control-lg" data-th-field="*{nom}"/>
+	                                    <input type="text" data-th-field="*{nom}"/>
 	                                </div>
 	                                
-	                                <div class="col-12 col-md-6"style="margin-bottom: 3%;">
-	                                    <label class="form-label" for="prenom">Prenom</label>
+	                                <div>
+	                                    <label  for="prenom">Prenom</label>
 	                                  	<div data-th-replace="~{fragments/fragment-error :: frag-error('prenom')}"></div>
-	                                 	<input type="text" class="form-control form-control-lg" data-th-field="*{prenom}"/>
+	                                 	<input type="text"  data-th-field="*{prenom}"/>
 	                                </div>
 	                                
-	                                <div class="col-12 col-md-6"style="margin-bottom: 3%;">
-	                                    <label class="form-label" for="email">Email</label>
+	                                <div >
+	                                    <label for="email">Email</label>
 	                                    <div data-th-replace="~{fragments/fragment-error :: frag-error('email')}"></div>
-	                                    <input type="text" class="form-control form-control-lg" data-th-field="*{email}"/>
+	                                    <input type="text"  data-th-field="*{email}"/>
 	                                </div>
 	                                
-	                                <div class="col-12 col-md-6"style="margin-bottom: 3%;">
-	                                    <label class="form-label" for="telephone">Téléphone</label>
-	                                    <input type="text" class="form-control form-control-lg" data-th-field="*{telephone}"/>
+	                                <div >
+	                                    <label  for="telephone">Téléphone</label>
+	                                    <input type="text"  data-th-field="*{telephone}"/>
 	                                </div>
 	                                
-	                                <div class="col-12 col-md-6"style="margin-bottom: 3%;">
-	                                    <label class="form-label" for="rue">Rue</label>
-	                                    <input type="text" class="form-control form-control-lg" data-th-field="*{rue}"/>
+	                                <div>
+	                                    <label  for="rue">Rue</label>
+	                                    <input type="text"  data-th-field="*{rue}"/>
 	                                </div>
 	                                
-	                                <div class="col-12 col-md-6"style="margin-bottom: 3%;">
-	                                    <label class="form-label" for="codePostal">Code Postal</label>
-	                                    <input type="text" class="form-control form-control-lg" data-th-field="*{codePostal}"/>
+	                                <div >
+	                                    <label for="codePostal">Code Postal</label>
+	                                    <input type="text"  data-th-field="*{codePostal}"/>
 	                                </div>
 	                                
-	                                <div class="col-12 col-md-6"style="margin-bottom: 3%;">
-	                                    <label class="form-label" for="ville">Ville</label>
-	                                    <input type="text" class="form-control form-control-lg" data-th-field="*{ville}"/>
+	                                <div >
+	                                    <label  for="ville">Ville</label>
+	                                    <input type="text"  data-th-field="*{ville}"/>
 	                                </div>
 	                                
-	                                <div class="col-12 col-md-6"style="margin-bottom: 3%;">
+	                                <div class="col-12 col-md-6">
 	                                    <label class="form-label" for="motDePasse">Mot de Passe</label>
 	                                  	<div data-th-replace="~{fragments/fragment-error :: frag-error('motDePasse')}"></div>
 	                                    <input type="password" class="form-control form-control-lg" data-th-field="*{motDePasse}"/>
 	                                </div>
 	                                
-	                                <div class="col-12 col-md-6"style="margin-bottom: 3%;">
-	                                    <label class="form-label" for="confirmMdP">Confirmation du mot de passe</label>
+	                                <div>
+	                                    <label for="confirmMdP">Confirmation du mot de passe</label>
 	                                  	<div data-th-replace="~{fragments/fragment-error :: frag-error('motDePasse')}"></div>
-	                                    <input type="password" id="confirmMdP" class="form-control form-control-lg" name="confirmMdP"/>
+	                                    <input type="password" id="confirmMdP"  name="confirmMdP"/>
 	                                </div>
 	                                
 	                                
 	
-	                                <div class="row">
-	                                    <div class="col-md-6 mb-0"style="padding-bottom: 1em; padding-left: 3em;">
-	                                        <button class="btn btn-outline-light btn-lg px-5" type="submit">Valider</button>
+	                                <div >
+	                                    <div >
+	                                        <button  type="submit">Valider</button>
 	                                    </div>
-	                                    <div class="col-md-6 mb-0"style="padding-bottom: 1em; padding-left: 3em;">
-	                                        <a class="btn btn-outline-light btn-lg px-5" data-th-href="@{/}">Annuler</a>
+	                                    <div >
+	                                        <a data-th-href="@{/}">Annuler</a>
 	                                    </div>
 	                                </div>
 	                            </div>
 	                        </div>
-	                    </div>
-	                </div>
-	            </div>
+
 	        </div>
         </form>
     </section>    
