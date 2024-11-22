@@ -5,80 +5,94 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" data-th-href="@{/css/main.css}">
 	<link rel="stylesheet" data-th-href="@{/css/error.css}">
-	<title>ENI Enchères - Mise à jour profil</title>
-	<link rel="icon" data-th-href="@{/images/logoEnchere.png}" />
+	<title>ENI Enchères - Mise à jour du profil</title>
+	<link rel="icon" data-th-href="@{/images/logoEnchere-1.png}" />
 </head>
 <body>
+<header xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-entete">
+	<nav>
+        <span>
+            <a href="/">
+                <img src="/images/LogoEnchere.png" alt="Logo">
+            </a>
+        </span>
+		<div>
+			<a href="/">ENI Enchères</a>
+		</div>
+		<div id="navbarTogglerDemo02">
+			<ul>
+				<li><a aria-current="page" data-th-href="@{/}">Accueil</a></li>
+				<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/vente}">Ventes</a></li>
+				<li th:if="${!#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/utilisateur/inscription}">Inscription</a></li>
+				<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/utilisateur/profil}">Profil</a></li>
+				<li th:if="${!#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/login}">Connexion</a></li>
+				<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/logout}">Déconnexion</a></li>
+			</ul>
+		</div>
+	</nav>
+</header>
 
-	<section>
-		<form th:action="@{/utilisateur/profil}" method="post" th:object="${utilisateur}">
-			<!-- <div th:object="${utilisateur}"> -->
-			<div>
+<main class="center-main">
 
-				<h2>Mise à jour de votre profil</h2>
-				<div data-th-replace="~{fragments/fragment-errors :: frag-errors}"></div>
+	<form th:action="@{/utilisateur/profil}" method="post" th:object="${utilisateur}">
+		<h3>Mise à jour : <span data-th-text="*{pseudo}">pseudo</span></h3>
+		<p style="margin : 0" >Modifiez vos informations personnelles.</p>
+		<div class="form-container">
+			<input type="hidden" data-th-field="*{noUtilisateur}" />
 
-
-				<input type="hidden" data-th-field="*{noUtilisateur}" />
-				<div>
-					<label>Pseudo</label>
-					<input type="text" id="typePseudoX" readonly="readonly" data-th-field="*{pseudo}" />
-				</div>
-
-				<div >
-					<label >Nom</label>
-					<div data-th-replace="~{fragments/fragment-error :: frag-error('nom')}"></div>
-					<input type="text" id="typeFirstNameX" data-th-field="*{nom}" />
-				</div>
-
-				<div >
-					<label >Prénom</label>
-					<div data-th-replace="~{fragments/fragment-error :: frag-error('prenom')}"></div>
-					<input type="text" id="typeNameX"  data-th-field="*{prenom}" />
-				</div>
-
-				<div >
-					<label  for="typeEmailX">Email</label>
-					<input type="text" id="typeEmailX" readonly="readonly" data-th-field="*{email}" />
-				</div>
-
-				<div >
-					<label  for="typePhoneX">Téléphone</label>
-					<input type="text" id="typePhoneX"  data-th-field="*{telephone}" />
-				</div>
-
-				<div >
-					<label for="typeStreetNumberX">Rue</label> <input type="text" id="typeStreetNumberX" data-th-field="*{rue}" />
-				</div>
-
-				<div >
-					<label for="typePostalCodeX">Code Postal</label>
-					<input type="text" id="typePostalCodeX" data-th-field="*{codePostal}" />
-				</div>
-
-				<div >
-					<label for="typeCityX">Ville</label>
-					<input type="text" id="typeCityX" data-th-field="*{ville}" />
-				</div>
-
-				<div >
-					<label  for="typeCityX">Entrez votre mot de passe pour confirmer</label>
-					<div data-th-replace="~{fragments/fragment-error :: frag-error('prenom')}"></div>
-					<input type="password"  data-th-field="*{motDePasse}" />
-				</div>
-
-				<div >
-					<div >
-						<button >Sauvegarder</button>
-					</div>
-					<div >
-						<a  data-th-href="@{/}">Annuler</a>
-					</div>
-				</div>
-
+			<div class="form-group">
+				<label for="nom">Nom</label>
+				<div data-th-replace="~{fragments/fragment-error :: frag-error('nom')}"></div>
+				<input type="text" id="nom" class="form-control" data-th-field="*{nom}" />
 			</div>
-		</form>
-	</section>
 
+			<div class="form-group">
+				<label for="prenom">Prénom</label>
+				<div data-th-replace="~{fragments/fragment-error :: frag-error('prenom')}"></div>
+				<input type="text" id="prenom" class="form-control" data-th-field="*{prenom}" />
+			</div>
+
+			<div class="form-group">
+				<label for="email">Email</label>
+				<input type="text" id="email" class="form-control" data-th-field="*{email}" />
+			</div>
+
+			<div class="form-group">
+				<label for="telephone">Téléphone</label>
+				<input type="text" id="telephone" class="form-control" data-th-field="*{telephone}" />
+			</div>
+
+			<div class="form-group">
+				<label for="rue">Rue</label>
+				<input type="text" id="rue" class="form-control" data-th-field="*{rue}" />
+			</div>
+
+			<div class="form-group">
+				<label for="codePostal">Code Postal</label>
+				<input type="text" id="codePostal" class="form-control" data-th-field="*{codePostal}" />
+			</div>
+
+			<div class="form-group">
+				<label for="ville">Ville</label>
+				<input type="text" id="ville" class="form-control" data-th-field="*{ville}" />
+			</div>
+
+			<div class="form-group">
+				<label for="motDePasse">Mot de passe (pour confirmer)</label>
+				<div data-th-replace="~{fragments/fragment-error :: frag-error('motDePasse')}"></div>
+				<input type="password" id="motDePasse" class="form-control" data-th-field="*{motDePasse}" />
+			</div>
+		</div>
+
+		<div class="form-actions">
+			<button type="submit" class="btn btn-primary">Sauvegarder</button>
+			<a data-th-href="@{/}" class="btn btn-secondary">Annuler</a>
+		</div>
+	</form>
+</main>
+
+<footer class="footer">
+	<p>© 2024 ENI Enchères. Tous droits réservés.</p>
+</footer>
 </body>
 </html>

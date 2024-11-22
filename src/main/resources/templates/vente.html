@@ -1,112 +1,109 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" data-th-href="@{/css/main.css}">
-    <link rel="stylesheet" data-th-href="@{/css/error.css}">
-    <title>ENI Enchère - Mise en vente</title>
-    <link rel="icon" data-th-href="@{/images/logoEnchere.png}" />
-
+	<link rel="stylesheet" data-th-href="@{/css/error.css}">
+	<title>ENI Enchères - Mise en Vente</title>
+	<link rel="icon" data-th-href="@{/images/logoEnchere-1.png}" />
 </head>
 <body>
+<header xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-entete">
+	<nav>
+        <span>
+            <a href="/">
+                <img src="/images/LogoEnchere.png" alt="Logo">
+            </a>
+        </span>
+		<div>
+			<a href="/">ENI Enchères</a>
+		</div>
+		<div id="navbarTogglerDemo02">
+			<ul>
+				<li><a aria-current="page" data-th-href="@{/}">Accueil</a></li>
+				<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/vente}">Ventes</a></li>
+				<li th:if="${!#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/utilisateur/inscription}">Inscription</a></li>
+				<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/utilisateur/profil}">Profil</a></li>
+				<li th:if="${!#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/login}">Connexion</a></li>
+				<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/logout}">Déconnexion</a></li>
+			</ul>
+		</div>
+	</nav>
+</header>
 
-    <section>
-    	<form th:action="@{/vente}" method="post" th:object="${articleVendu}">
-	        <div>
-
-				<h2>Nouvelle vente</h2>
-
-
-			<div>
+<main class="center-main">
+	<h3>Nouvelle Vente</h3>
+	<p>Veuillez remplir les informations nécessaires pour proposer un nouvel article en vente.</p>
+	<form th:action="@{/vente}" method="post" th:object="${articleVendu}">
+		<div class="form-container">
+			<div class="form-group">
 				<label for="article">Nom de l'article</label>
-
-				<input type="text" name="nomArticle" />
+				<input type="text" id="article" class="form-control" name="nomArticle" placeholder="Entrez le nom de l'article" />
 			</div>
 
-			<div>
+			<div class="form-group">
 				<label for="description">Description</label>
-
-				<input type="text" name="description" />
+				<input type="text" id="description" class="form-control" name="description" placeholder="Entrez une description" />
 			</div>
 
-			<div>
-			<label for="description">Catégorie</label>
-			<select id = "listeCat" name="categorieArticle.noCategorie">
-				<option value = "0">Votre choix : </option>
-				<option data-th-each="categorie : ${listeCategorie}" th:value="${categorie.noCategorie}" th:text="${categorie.libelle}"  ></option>
-			</select>
+			<div class="form-group">
+				<label for="categorie">Catégorie</label>
+				<select id="categorie" class="form-control" name="categorieArticle.noCategorie">
+					<option value="0">Sélectionnez une catégorie</option>
+					<option data-th-each="categorie : ${listeCategorie}" th:value="${categorie.noCategorie}" th:text="${categorie.libelle}"></option>
+				</select>
 			</div>
 
-			<div>
-				<label for="miseAPrix">Prix de vente de départ</label>
-
-				<input type="number" name="miseAPrix"/>
+			<div class="form-group">
+				<label for="miseAPrix">Prix de départ</label>
+				<input type="number" id="miseAPrix" class="form-control" name="miseAPrix" placeholder="Entrez le prix de départ" />
 			</div>
 
-			<div >
-				<label  for="dateDebut">Date de début </label>
-
-				<input type="date" name="dateDebutEnchere" />
-
+			<div class="form-group">
+				<label for="dateDebut">Date de début</label>
+				<input type="date" id="dateDebut" class="form-control" name="dateDebutEnchere" />
 			</div>
 
-			<div >
-				<label  for="dateFin">Date de fin</label>
-
-				<input type="date" name="dateFinEnchere"/>
+			<div class="form-group">
+				<label for="dateFin">Date de fin</label>
+				<input type="date" id="dateFin" class="form-control" name="dateFinEnchere" />
 			</div>
 
-			<div>
+		</div>
+			<h4>Lieu de retrait</h4>
+			<div class="form-container">
+			<div class="form-group">
+				<label for="rue">Rue</label>
+				<input type="text" id="rue" class="form-control" name="lieuRetrait.rue" placeholder="Entrez la rue" />
+			</div>
+
+			<div class="form-group">
+				<label for="codePostal">Code Postal</label>
+				<input type="text" id="codePostal" class="form-control" name="lieuRetrait.codePostal" placeholder="Entrez le code postal" />
+			</div>
+
+			<div class="form-group">
+				<label for="ville">Ville</label>
+				<input type="text" id="ville" class="form-control" name="lieuRetrait.ville" placeholder="Entrez la ville" />
+			</div>
+		</div>
+		<div class="form-container">
+			<div class="form-group">
 				<label for="image">Image</label>
-				<img data-th-src="@{/images/carton.jpg}">
-			</div>
-
-
-			<h2 >Lieu de retrait</h2>
-
-
-
-			<div >
-				<label  for="rue">Rue</label>
-				<input type="text" name="lieuRetrait.rue"/>
-			</div>
-
-			<div >
-				<label  for="codePostal">Code Postal</label>
-				<input type="number" name="lieuRetrait.codePostal"/>
-			</div>
-
-			<div >
-				<label  for="ville">Ville</label>
-				<input type="text" name="lieuRetrait.ville"/>
-			</div>
-
-
-
-			<div >
-				<div >
-					<button  type="submit">Valider</button>
-				</div>
-				<div >
-					<a  data-th-href="@{/}">Annuler</a>
-				</div>
+				<img src="/images/carton.jpg" alt="Prévisualisation de l'image" class="resized-image">
 			</div>
 		</div>
 
-        </form>
-    </section> 
-   <!--    
-<script>
-console.log("toto")
-	document.getElementById("listeCat").addEventListener("change", function(){
-		console.log("titi")
-	var value = document.getElementById("listeCat").value;
-	if (value != 0 ){
-		window.location.href="/categorie?id="+value;
-	}
-})
-</script>
--->   
+		<div class="form-actions">
+			<button type="submit" class="btn btn-primary">Valider</button>
+			<a data-th-href="@{/}" class="btn btn-secondary">Annuler</a>
+		</div>
+	</form>
+</main>
+
+<footer class="footer">
+	<p>© 2024 ENI Enchères. Tous droits réservés.</p>
+</footer>
 </body>
 </html>
