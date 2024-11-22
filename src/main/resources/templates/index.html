@@ -26,7 +26,13 @@
 	<div class="article-list">
 
 		<div class="article-card" data-th-each="item : ${articleVendu}">
+			<div class="rounded-likes">
+				<span data-th-text="*{item.miseAPrix}">0</span> €
+				<p>👌</p>
+			</div>
+
 			<h4 data-th-text="*{item.nomArticle}">Nom de l'article</h4>
+
 			<div class="article-image">
 				<img data-th-src="@{/images/carton.jpg}" alt="Image de l'article">
 			</div>
@@ -34,19 +40,20 @@
 			<div class="article-details">
 				<p class="article-details-h4" data-th-text="*{item.description}">Description</p>
 				<div class="article-card-detail">
-					<p><strong>Prix :</strong> <span data-th-text="*{item.miseAPrix}">0</span> €</p>
+					<p><strong>Catégorie :</strong> <span data-th-text="*{item.categorieArticle.libelle}">Catégorie</span></p>
 					<p><strong>Date de fin :</strong> <span data-th-text="*{item.dateFinEnchere}">2024-01-01</span></p>
 					<p><strong>Vendeur :</strong> <span data-th-text="*{item.vend.pseudo}">Pseudo</span></p>
 				</div>
 			</div>
 
-			<!-- Bouton détail -->
 			<div class="article-actions">
 				<a class="details-btn" th:if="${#authorization.expression('isAuthenticated()')}"
 				   data-th-href="@{/vente/detail(id=${item.noArticle})}">
 					Détail de la vente
 				</a>
 			</div>
+		</div>
+		</div>
 		</div>
 	</div>
 
