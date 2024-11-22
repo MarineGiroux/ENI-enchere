@@ -6,77 +6,78 @@
 	<link rel="stylesheet" data-th-href="@{/css/main.css}">
 	<link rel="stylesheet" data-th-href="@{/css/error.css}">
 	<title>ENI Enchères - Profil</title>
-	<link rel="icon" data-th-href="@{/images/logoEnchere.png}" />
+	<link rel="icon" data-th-href="@{/images/logoEnchere-1.png}" />
 </head>
 <body>
+<header xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-entete">
+	<nav>
+        <span>
+            <a href="/">
+                <img src="/images/LogoEnchere.png" alt="Logo">
+            </a>
+        </span>
+		<div>
+			<a href="/">ENI Enchères</a>
+		</div>
+		<div id="navbarTogglerDemo02">
+			<ul>
+				<li><a aria-current="page" data-th-href="@{/}">Accueil</a></li>
+				<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/vente}">Ventes</a></li>
+				<li th:if="${!#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/utilisateur/inscription}">Inscription</a></li>
+				<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/utilisateur/profil}">Profil</a></li>
+				<li th:if="${!#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/login}">Connexion</a></li>
+				<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/logout}">Déconnexion</a></li>
+			</ul>
+		</div>
+	</nav>
+</header>
 
-
+<main class="center-main">
 	<section>
 		<div th:object="${utilisateur}">
-			<div>
-			   <button type="button" aria-label="Close" onclick="window.location.href = '/';"></button>
 
-				<div >
-					<div >
-						<h2 >Votre profil</h2>
+			<h3>Profil de <span data-th-text="*{pseudo}"></span></h3>
 
-						<div style="margin-bottom: 3%;">
-							<label  for="typePseudoX">Pseudo</label>
-							<div data-th-replace="~{fragments/fragment-error :: frag-error('pseudo')}"></div>
-							<input readonly="readonly" type="text" id="typePseudoX" data-th-field="*{pseudo}" />
-						</div>
+			<div class="form-container">
 
-						<div >
-							<label for="typeFirstNameX">Nom</label>
-							<div data-th-replace="~{fragments/fragment-error :: frag-error('nom')}"></div>
-							<input readonly="readonly" type="text" id="typeFirstNameX" data-th-field="*{nom}" />
-						</div>
-
-						<div>
-							<label for="typeNameX">Prénom</label>
-							<div data-th-replace="~{fragments/fragment-error :: frag-error('prenom')}"></div>
-							<input readonly="readonly" type="text" id="typeNameX" data-th-field="*{prenom}" />
-						</div>
-
-						<div>
-							<label for="typeEmailX">Email</label>
-							<div data-th-replace="~{fragments/fragment-error :: frag-error('email')}"></div>
-							<input readonly="readonly" type="text" id="typeEmailX" data-th-field="*{email}" />
-						</div>
-
-						<div>
-							<label for="typePhoneX">Telephone</label>
-							<input readonly="readonly" type="text" id="typePhoneX" data-th-field="*{telephone}" />
-						</div>
-
-						<div style="margin-bottom: 3%;">
-							<label for="typeStreetNumberX">Rue</label> <input readonly="readonly" type="text" id="typeStreetNumberX" class="form-control form-control-lg" data-th-field="*{rue}" />
-						</div>
-
-						<div style="margin-bottom: 3%;">
-							<label for="typePostalCodeX">Code Postal</label>
-							<input readonly="readonly" type="text" id="typePostalCodeX" data-th-field="*{codePostal}" />
-						</div>
-
-						<div >
-							<label for="typeCityX">Ville</label>
-							<input readonly="readonly" type="text" id="typeCityX" data-th-field="*{ville}" />
-						</div>
-
-						<div >
-							<div style="padding-bottom: 1em; padding-left: 3em;">
-								<a  data-th-href="@{/utilisateur/update}">Mise à jour du profil</a>
-							</div>
-							<div >
-								<a  data-th-href="@{/utilisateur/delete}">Supprimer le profil</a>
-							</div>
-						</div>
-					</div>
+				<div class="form-group">
+					<h5>Pseudo : <span data-th-text="*{pseudo}"></span></h5>
 				</div>
+
+				<div class="form-group">
+					<h5>Nom : <span data-th-text="*{nom}"></span></h5>
+				</div>
+
+				<div class="form-group">
+					<h5>Prénom : <span data-th-text="*{prenom}"></span></h5>
+				</div>
+
+				<div class="form-group">
+					<h5>Email : <span data-th-text="*{email}"></span></h5>
+				</div>
+
+				<div class="form-group">
+					<h5>Telephone : <span data-th-text="*{telephone}"></span></h5>
+				</div>
+
+				<div class="form-group">
+					<h5>Adresse : <span data-th-text="*{rue}"></span>, <span data-th-text="*{codePostal}"></span> <span data-th-text="*{ville}"></span></h5>
+				</div>
+
 			</div>
-			</div>
+				<div class="form-actions">
+					<a data-th-href="@{/utilisateur/update}" class="btn btn-primary">Mise à jour du profil</a>
+					<a  data-th-href="@{/utilisateur/delete}" class="btn btn-alert" >Supprimer le profil</a>
+					<a data-th-href="@{/}" class="btn btn-secondary">Retour</a>
+				</div>
+
+
+
 		</div>
 	</section>
-
+</main>
+	<footer class="footer">
+		<p>© 2024 ENI Enchères. Tous droits réservés.</p>
+	</footer>
 </body>
 </html>

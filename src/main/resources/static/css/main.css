@@ -2,7 +2,7 @@ body {
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f9f9f9;
+    background-color: rgba(218, 217, 217, 0.59);
     color: #333;
     padding-top: 70px;
 }
@@ -25,6 +25,11 @@ body {
 
 .center-main h3 {
     font-size: 1.8em;
+}
+
+.center-main h4 {
+    color: #326135;
+    font-size: 1.3em;
 }
 
 .center-main p {
@@ -58,6 +63,12 @@ label {
     font-weight: bold;
     margin-bottom: 8px;
     color: #326135;
+}
+h5 {
+    font-weight: bold;
+    margin: 5px;
+    color: #326135;
+    font-size: 1.2em;
 }
 
 input.form-control, select {
@@ -109,6 +120,16 @@ input.form-control:focus, select:focus {
 
 .btn-secondary:hover {
     background-color: #bbb;
+}
+
+.btn-alert {
+    background-color: #a50000;
+    color: white;
+    border: none;
+}
+
+.btn-alert:hover {
+    background-color: #ff0000;
 }
 
 #listeCat {
@@ -430,4 +451,12 @@ div.rounded-likes {
 
 .logout-message {
     color: #5cb85c;
+}
+
+.resized-image {
+    width: 30%;
+    height: auto;
+    border: 1px solid #ddd;
+    margin: 10px auto;
+    display: block;
 }
