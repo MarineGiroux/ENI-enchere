@@ -11,10 +11,12 @@
 <main class="center-main">
 	<h3>Liste des Enchères</h3>
 
-	<div>
-		<form action="rechercher">
-			<button>Recherche</button>
-			<input type="text" name="nom" placeholder="Saisir votre recherche...">
+	<div class="search-container">
+		<form action="rechercher" class="search-form">
+			<div class="search-wrapper">
+				<input type="text" name="nom" class="form-control search-input" placeholder="Saisir votre recherche...">
+				<button class="btn btn-primary search-button">Recherche</button>
+			</div>
 		</form>
 	</div>
 

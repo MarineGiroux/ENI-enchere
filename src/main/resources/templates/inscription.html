@@ -1,97 +1,108 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" data-th-href="@{/css/main.css}">
-    <link rel="stylesheet" data-th-href="@{/css/error.css}">
-    <title>ENI Enchères - Incription</title>
-    <link rel="icon" data-th-href="@{/images/logoEnchere.png}" />
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" data-th-href="@{/css/main.css}">
+	<link rel="stylesheet" data-th-href="@{/css/error.css}">
+	<title>ENI Enchères - Inscription</title>
+	<link rel="icon" data-th-href="@{/images/logoEnchere-1.png}" />
 </head>
 <body>
+<header xmlns:th="http://www.thymeleaf.org"	data-th-fragment="frag-entete">
+	<nav>
+		<span>
+            <a href="/">
+                <img src="/images/LogoEnchere.png" alt="Logo">
+            </a>
+        </span>
+		<div>
+			<a href="/">ENI Enchères</a>
+		</div>
+		<div id="navbarTogglerDemo02">
+			<ul>
+				<li><a aria-current="page" data-th-href="@{/}">Accueil</a></li>
+				<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/vente}">Ventes</a></li>
+				<li th:if="${!#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/utilisateur/inscription}">Inscription</a></li>
+				<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/utilisateur/profil}">Profil</a></li>
+				<li th:if="${!#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/login}">Connexion</a></li>
+				<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/logout}">Déconnexion</a></li>
+			</ul>
+		</div>
+		</div>
+	</nav>
+</header>
 
-    <section>
-    	<form th:action="@{/utilisateur/inscription}" method="post" th:object="${utilisateur}">
-	        <div>
+<main class="center-main">
+	<h3>Inscription</h3>
+	<p>Veuillez entrer vos informations personnelles pour créer votre compte.</p>
+	<form th:action="@{/utilisateur/inscription}" method="post" th:object="${utilisateur}">
+		<div class="form-container">
+			<div class="form-group">
+				<label for="pseudo">Pseudo</label>
+				<div data-th-replace="~{fragments/fragment-error :: frag-error('pseudo')}"></div>
+				<input type="text" id="pseudo" class="form-control" data-th-field="*{pseudo}" placeholder="Entrez votre pseudo" />
+			</div>
 
-	                                <div>
-	                                    <h2 >Inscription</h2>
-	                                    <p >Veuillez entrer vos informations !</p>
-	                                    <div data-th-replace="~{fragments/fragment-errors :: frag-errors}"></div>
-	
-	
-	                                <div>
-	                                    <label for="pseudo">Pseudo</label>
-	                                   	<div data-th-replace="~{fragments/fragment-error :: frag-error('pseudo')}"></div>
-	                                    <input type="text"data-th-field="*{pseudo}"/>
-	                                </div>
-	                                
-	                                <div>
-	                                    <label for="nom">Nom</label>
-	                                    <div data-th-replace="~{fragments/fragment-error :: frag-error('nom')}"></div>
-	                                    <input type="text" data-th-field="*{nom}"/>
-	                                </div>
-	                                
-	                                <div>
-	                                    <label  for="prenom">Prenom</label>
-	                                  	<div data-th-replace="~{fragments/fragment-error :: frag-error('prenom')}"></div>
-	                                 	<input type="text"  data-th-field="*{prenom}"/>
-	                                </div>
-	                                
-	                                <div >
-	                                    <label for="email">Email</label>
-	                                    <div data-th-replace="~{fragments/fragment-error :: frag-error('email')}"></div>
-	                                    <input type="text"  data-th-field="*{email}"/>
-	                                </div>
-	                                
-	                                <div >
-	                                    <label  for="telephone">Téléphone</label>
-	                                    <input type="text"  data-th-field="*{telephone}"/>
-	                                </div>
-	                                
-	                                <div>
-	                                    <label  for="rue">Rue</label>
-	                                    <input type="text"  data-th-field="*{rue}"/>
-	                                </div>
-	                                
-	                                <div >
-	                                    <label for="codePostal">Code Postal</label>
-	                                    <input type="text"  data-th-field="*{codePostal}"/>
-	                                </div>
-	                                
-	                                <div >
-	                                    <label  for="ville">Ville</label>
-	                                    <input type="text"  data-th-field="*{ville}"/>
-	                                </div>
-	                                
-	                                <div class="col-12 col-md-6">
-	                                    <label class="form-label" for="motDePasse">Mot de Passe</label>
-	                                  	<div data-th-replace="~{fragments/fragment-error :: frag-error('motDePasse')}"></div>
-	                                    <input type="password" class="form-control form-control-lg" data-th-field="*{motDePasse}"/>
-	                                </div>
-	                                
-	                                <div>
-	                                    <label for="confirmMdP">Confirmation du mot de passe</label>
-	                                  	<div data-th-replace="~{fragments/fragment-error :: frag-error('motDePasse')}"></div>
-	                                    <input type="password" id="confirmMdP"  name="confirmMdP"/>
-	                                </div>
-	                                
-	                                
-	
-	                                <div >
-	                                    <div >
-	                                        <button  type="submit">Valider</button>
-	                                    </div>
-	                                    <div >
-	                                        <a data-th-href="@{/}">Annuler</a>
-	                                    </div>
-	                                </div>
-	                            </div>
-	                        </div>
+			<div class="form-group">
+				<label for="nom">Nom</label>
+				<div data-th-replace="~{fragments/fragment-error :: frag-error('nom')}"></div>
+				<input type="text" id="nom" class="form-control" data-th-field="*{nom}" placeholder="Entrez votre nom" />
+			</div>
 
-	        </div>
-        </form>
-    </section>    
+			<div class="form-group">
+				<label for="prenom">Prénom</label>
+				<div data-th-replace="~{fragments/fragment-error :: frag-error('prenom')}"></div>
+				<input type="text" id="prenom" class="form-control" data-th-field="*{prenom}" placeholder="Entrez votre prénom" />
+			</div>
 
+			<div class="form-group">
+				<label for="email">Email</label>
+				<div data-th-replace="~{fragments/fragment-error :: frag-error('email')}"></div>
+				<input type="email" id="email" class="form-control" data-th-field="*{email}" placeholder="Entrez votre email" />
+			</div>
+
+			<div class="form-group">
+				<label for="telephone">Téléphone</label>
+				<input type="tel" id="telephone" class="form-control" data-th-field="*{telephone}" placeholder="Entrez votre téléphone" />
+			</div>
+
+			<div class="form-group">
+				<label for="rue">Rue</label>
+				<input type="text" id="rue" class="form-control" data-th-field="*{rue}" placeholder="Entrez votre adresse" />
+			</div>
+
+			<div class="form-group">
+				<label for="codePostal">Code Postal</label>
+				<input type="text" id="codePostal" class="form-control" data-th-field="*{codePostal}" placeholder="Entrez votre code postal" />
+			</div>
+
+			<div class="form-group">
+				<label for="ville">Ville</label>
+				<input type="text" id="ville" class="form-control" data-th-field="*{ville}" placeholder="Entrez votre ville" />
+			</div>
+
+			<div class="form-group">
+				<label for="motDePasse">Mot de Passe</label>
+				<div data-th-replace="~{fragments/fragment-error :: frag-error('motDePasse')}"></div>
+				<input type="password" id="motDePasse" class="form-control" data-th-field="*{motDePasse}" placeholder="Entrez votre mot de passe" />
+			</div>
+
+			<div class="form-group">
+				<label for="confirmMdP">Confirmation du mot de passe</label>
+				<input type="password" id="confirmMdP" class="form-control" name="confirmMdP" placeholder="Confirmez votre mot de passe" />
+			</div>
+		</div>
+
+		<div class="form-actions">
+			<button type="submit" class="btn btn-primary">Valider</button>
+			<a data-th-href="@{/}" class="btn btn-secondary">Annuler</a>
+		</div>
+	</form>
+</main>
+
+<footer class="footer">
+	<p>© 2024 ENI Enchères. Tous droits réservés.</p>
+</footer>
 </body>
 </html>
