@@ -1,28 +1,26 @@
-/* Corps de la page */
 body {
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f9f9f9; /* Fond gris clair */
-    color: #333; /* Texte noir doux */
-    padding-top: 70px; /* Ajuster en fonction de la hauteur du header */
+    background-color: #f9f9f9;
+    color: #333;
+    padding-top: 70px;
 }
 
-/* Main container */
+
 .center-main {
     max-width: 100%;
     margin: 20px auto;
     padding: 20px;
-    background-color: white; /* Fond blanc */
-    border-radius: 8px; /* Coins arrondis */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Ombre légère */
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     margin-bottom: 70px;
 }
 
-/* Titres */
 .center-main h3 {
     font-size: 1.8em;
-    color: #326135; /* Vert comme dans la navbar */
+    color: #326135;
     text-align: center;
     margin-bottom: 20px;
 }
@@ -33,7 +31,6 @@ body {
     margin-bottom: 10px;
 }
 
-/* Formulaire de recherche */
 form {
     display: flex;
     justify-content: center;
@@ -71,7 +68,6 @@ form button:hover {
     background-color: #f0a10f;
 }
 
-/* Filtre des catégories */
 select#listeCat {
     display: block;
     margin: 20px auto;
@@ -83,7 +79,6 @@ select#listeCat {
     text-align: center;
 }
 
-/* Liste des articles */
 div[data-th-each="item"] {
     display: flex;
     align-items: center;
@@ -97,7 +92,6 @@ div[data-th-each="item"]:hover {
     background-color: #f9f9f9;
 }
 
-/* Image de l'article */
 div[data-th-each="item"] img {
     width: 100px;
     height: 100px;
@@ -106,7 +100,6 @@ div[data-th-each="item"] img {
     margin-right: 15px;
 }
 
-/* Détails des articles */
 div[data-th-each="item"] td {
     margin-right: 15px;
     font-size: 1em;
@@ -114,7 +107,7 @@ div[data-th-each="item"] td {
 }
 
 div[data-th-each="item"] a {
-    background-color: #f0a10f; /* Doré pour les liens "Détail de la vente" */
+    background-color: #f0a10f;
     color: white;
     padding: 5px 10px;
     text-decoration: none;
@@ -125,10 +118,9 @@ div[data-th-each="item"] a {
 }
 
 div[data-th-each="item"] a:hover {
-    background-color: #f0c40f; /* Plus foncé au survol */
+    background-color: #f0c40f;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
     .center-main {
         padding: 10px;
@@ -152,17 +144,15 @@ div[data-th-each="item"] a:hover {
     }
 }
 
-
-/* Général pour la navbar */
 header {
-    background-color: white; /* Fond blanc pour ressembler à l'image */
-    border-bottom: 2px solid #f0a10f; /* Ligne dorée en bas */
+    background-color: white;
+    border-bottom: 3px solid #f0a10f;
     padding: 10px 0;
-    position: fixed; /* Le header reste toujours en haut */
-    top: 0; /* Aligné en haut de l'écran */
-    width: 100%; /* Prend toute la largeur */
-    z-index: 1000; /* Priorité haute pour passer devant les autres éléments */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Ombre pour le header */
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
 }
 
 nav {
@@ -174,14 +164,12 @@ nav {
     padding: 0 20px;
 }
 
-/* Logo */
 nav span img {
-    height: 50px; /* Taille du logo */
+    height: 50px;
     width: auto;
     border-radius: 50%;
 }
 
-/* Titre principal */
 nav div a {
     font-size: 1.5em;
     font-weight: bold;
@@ -191,7 +179,6 @@ nav div a {
     margin-left: 10px;
 }
 
-/* Liens du menu */
 nav ul {
     list-style: none;
     display: flex;
@@ -201,12 +188,12 @@ nav ul {
 }
 
 nav ul li {
-    margin: 0 15px; /* Espacement entre les liens */
+    margin: 0 15px;
 }
 
 nav ul li a {
     text-decoration: none;
-    color: #326135; /* Texte vert comme sur votre image */
+    color: #326135;
     font-weight: bold;
     font-size: 1em;
     font-family: 'Arial', sans-serif;
@@ -214,10 +201,9 @@ nav ul li a {
 }
 
 nav ul li a:hover {
-    color: #f0a10f; /* Texte doré au survol */
+    color: #f0a10f;
 }
 
-/* Bouton "Toggle All Articles" - Style similaire */
 nav .toggle-button {
     background-color: #326135;
     color: white;
@@ -234,7 +220,6 @@ nav .toggle-button:hover {
     background-color: #326135;
 }
 
-/* Responsive (adapté pour mobile) */
 @media (max-width: 768px) {
     nav {
         flex-direction: column;
@@ -251,22 +236,22 @@ nav .toggle-button:hover {
 }
 
 
-/* Liste des articles */
 .article-list {
     display: flex;
-    flex-wrap: wrap; /* Flexbox pour disposer plusieurs articles */
+    flex-wrap: wrap;
     gap: 20px;
     margin-top: 20px;
     justify-content: center;
 }
 
-/* Carte individuelle */
 .article-card {
+    position: relative;
     display: flex;
     flex-direction: column;
     background-color: white;
-    width: 300px;
-    border: 1.5px solid #f0a10f;
+    width: 400px;
+    margin: 20px;
+    border: 2px solid #f0a10f;
     box-shadow: lightgray 4px 4px 20px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -278,20 +263,18 @@ nav .toggle-button:hover {
 }
 
 .article-card:hover {
-    transform: translateY(-5px); /* Légère levée au survol */
+    transform: translateY(-5px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Image de l'article */
 .article-image img {
     width: 100%;
     height: 200px;
-    object-fit: cover; /* Pour bien ajuster l'image */
+    object-fit: cover;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
 }
 
-/* Détails de l'article */
 .article-details {
     padding: 15px;
     font-size: 0.9em;
@@ -317,12 +300,10 @@ nav .toggle-button:hover {
     text-align: left;
 }
 
-/* Bouton Détail */
 .article-actions {
     margin: 15px;
     text-align: center;
 }
-
 
 .details-btn {
     display: inline-block;
@@ -340,21 +321,39 @@ nav .toggle-button:hover {
     background-color: #f0a10f;
 }
 
-/* Footer */
 .footer {
-    background-color: #333; /* Couleur de fond sombre */
-    color: #fff; /* Texte en blanc */
+    background-color: #333;
+    color: #fff;
     text-align: center;
     padding: 15px 0;
     font-size: 0.9em;
     bottom: 0;
     width: 100%;
-    position: fixed; /* Le footer reste toujours en bas */
-    z-index: 1000; /* Priorité haute pour passer devant les autres éléments */
-    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2); /* Ombre pour le footer */
+    position: fixed;
+    z-index: 1000;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .footer p {
     margin: 0;
     font-weight: 400;
 }
+
+div.rounded-likes {
+    position: absolute;
+    top: 10px;
+    right: -10px;
+    border-radius: 100%;
+    width: 60px;
+    height:60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid green;
+    background-color: white;
+    font-size: 14px;
+    color: green;
+    font-weight: bold;
+}
+
+
