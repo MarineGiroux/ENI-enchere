@@ -1,54 +1,61 @@
 package fr.eni.enchere.bo;
 
-public class Retrait {
+public class PickUp {
 	
-	private int noArticle;
-	private String rue;
-	private String codePostal;
-	private String ville;
-	
-	
-	public Retrait() {
-	}
+	private int idArticle;
+	private int idPickUp;
+	private String road;
+	private String zipPass;
+	private String city;
 	
 	
-	public Retrait(String rue, String codePostal, String ville) {
-		this.rue = rue;
-		this.codePostal = codePostal;
-		this.ville = ville;
+	public PickUp() {
 	}
 	
 	
-	public String getRue() {
-		return rue;
+	public PickUp(String road, String zipPass, String city) {
+		this.road = road;
+		this.zipPass = zipPass;
+		this.city = city;
 	}
-	public void setRue(String rue) {
-		this.rue = rue;
+	
+	
+	public String getRoad() {
+		return road;
 	}
-	public String getCodePostal() {
-		return codePostal;
+	public void setRoad(String road) {
+		this.road = road;
 	}
-	public void setCodePostal(String codePostal) {
-		this.codePostal = codePostal;
+	public String getZipPass() {
+		return zipPass;
 	}
-	public String getVille() {
-		return ville;
+	public void setZipPass(String zipPass) {
+		this.zipPass = zipPass;
 	}
-	public void setVille(String ville) {
-		this.ville = ville;
+	public String getCity() {
+		return city;
 	}
-	public int getNoArticle() {
-		return noArticle;
+	public void setCity(String city) {
+		this.city = city;
 	}
-	public void setNoArticle(int noArticle) {
-		this.noArticle = noArticle;
+	public int getIdArticle() {
+		return idArticle;
+	}
+	public void setIdArticle(int idArticle) {
+		this.idArticle = idArticle;
+	}
+	public int getIdPickUp() {
+		return idPickUp;
+	}
+	public void setIdPickUp(int idPickUp) {
+		this.idPickUp = idPickUp;
 	}
 
 
 	@Override
 	public String toString() {
-		return String.format("Retrait [noArticle=%s, rue=%s, codePostal=%s, ville=%s]", noArticle, rue, codePostal,
-				ville);
+		return String.format("PickUp [idArticle=%s, idPickUp=%s, road=%s, zipPass=%s, city=%s]", idArticle, idPickUp, road, zipPass,
+				city);
 	}
 
 

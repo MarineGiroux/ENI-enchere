@@ -28,7 +28,7 @@ import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/vente")
-public class ArticleVenduController {
+public class ItemSoldController {
 
 	@Autowired
 	private ItemSoldService itemSoldService;
@@ -42,8 +42,8 @@ public class ArticleVenduController {
 	private AuctionsService auctionsService;
 
 
-	public ArticleVenduController(ItemSoldService itemSoldService, UserService userService,
-								  CategoryService categoryService, PickUpService pickUpService, AuctionsService auctionsService) {
+	public ItemSoldController(ItemSoldService itemSoldService, UserService userService,
+							  CategoryService categoryService, PickUpService pickUpService, AuctionsService auctionsService) {
 		this.itemSoldService = itemSoldService;
 		this.userService = userService;
 		this.categoryService = categoryService;
@@ -52,81 +52,81 @@ public class ArticleVenduController {
 	}
 
 	@GetMapping
-	public String creerAticleVendu(Model model) {
+	public String createItemSold(Model model) {
 		System.out.println("début creer article");
-		List<Category> category = categoryService.FindAll();
-		model.addAttribute("listeCategorie", category);
+		List<Category> category = categoryService.findAll();
+		model.addAttribute("listCategory", category);
 		model.addAttribute("article", new ItemSold());
-		// model.addAttribute("utilisateur", new Utilisateur());
-		return "vente";
+		// model.addAttribute("user", new Utilisateur());
+		return "sell";
 	}
 
 	@PostMapping
-	public String creerArticle(@Valid @ModelAttribute("articleVendu") ItemSold itemSold,
-			BindingResult bindingResult, Principal principal, Model model) {
-		List<Category> category = categoryService.FindAll();
-		model.addAttribute("listeCategorie", category);
+	public String createArticle(@Valid @ModelAttribute("itemSold") ItemSold itemSold,
+								BindingResult bindingResult, Principal principal, Model model) {
+		List<Category> category = categoryService.findAll();
+		model.addAttribute("listCategory", category);
 		if (bindingResult.hasErrors()) {
 			System.out.println(bindingResult.getAllErrors());
-			return "vente";
+			return "sell";
 		} else {
 			System.out.println("Article vendu = " + itemSold);
 			try {
-				controlAdresse(itemSold, principal.getName(), model);
+				controlAddress(itemSold, principal.getName(), model);
 				this.itemSoldService.add(itemSold, userService.findByEmail(principal.getName()));
 				itemSold.getPickUpLocation().setIdArticle(itemSold.getIdArticle());
 				this.pickUpService.createAdress(itemSold.getPickUpLocation());
 				return "redirect:/";
 			} catch (BusinessException e) {
-				e.getListeErreurs().forEach(erreur -> {
+				e.getlistErrors().forEach(erreur -> {
 					ObjectError error = new ObjectError("globalError", erreur);
 					bindingResult.addError(error);
 				});
-				return "vente";
+				return "sell";
 			}
 		}
 	}
 
-	private void controlAdresse(ItemSold itemSold, String emailUtilisateur, Model model) {
-		User user = userService.findByEmail(emailUtilisateur);
+	private void controlAddress(ItemSold itemSold, String emailUser, Model model) {
+		User user = userService.findByEmail(emailUser);
 		if (itemSold.getPickUpLocation().getRoad() == null || itemSold.getPickUpLocation().getZipPass() == null
 				|| itemSold.getPickUpLocation().getCity() == null) {
-			model.addAttribute("utilisateur", user);
+			model.addAttribute("user", user);
 		} else {
 			System.out.println("je sais pas");
 		}
 	}
 	
 	@GetMapping("/detail")
-	public String afficherArticle(@RequestParam(name = "id", required = true)int id, Model model) {
+	public String showArticle(@RequestParam(name = "id", required = true)int id, Model model) {
 		System.out.println("Affichage article vendu " + id);
 		ItemSold itemSold = itemSoldService.FindById(id);
 		itemSold.setPickUpLocation(pickUpService.findByNum(id));
 		
-		model.addAttribute("articleVendu", itemSold);
+		model.addAttribute("itemSold", itemSold);
 		
-		return "detail-vente";
+		return "detail-sale";
 	}
 	
-	@GetMapping("/enchere")
-	public String encherir(Model model) {
+	@GetMapping("/auctions")
+	public String bid(Model model) {
 		System.out.println("help");
-		model.addAttribute("enchere", auctionsService.recoverAuctions());
+		model.addAttribute("auctions", auctionsService.recoverAuctions());
 		return"redirect:/detail";
 	}
 
-	@PostMapping("/enchere")
-	public String enregistrerEnchere(@RequestParam("noArticle") int noArticle,
-									 @RequestParam("montantEnchere") int montantEnchere,
+	@PostMapping("/auctions")
+	public String enregistrerEnchere(@RequestParam("idArticle") int idArticle,
+									 @RequestParam("amountAuction") int amountAuction,
 									 Principal principal,
 									 Model model) {
 		Auctions auctions = new Auctions();
 		auctions.setUser(userService.findByEmail(principal.getName()));
-		auctions.setItemSold(itemSoldService.FindById(noArticle));
+		auctions.setItemSold(itemSoldService.FindById(idArticle));
 		auctions.setDateAuctions(java.time.LocalDate.now());
-		auctions.setAmountAuctions(montantEnchere);
+		auctions.setAmountAuctions(amountAuction);
 		this.auctionsService.bid(auctions);
-		return "redirect:/vente/detail?id=" + noArticle;
+		return "redirect:/vente/detail?id=" + idArticle;
 	}
 	
 	

@@ -10,22 +10,22 @@ import fr.eni.enchere.dal.UserDAO;
 import fr.eni.enchere.exception.BusinessException;
 
 @Service
-public class UtilisateurServiceImpl implements UtilisateurService{
+public class UserServiceImpl implements UserService {
 
 	private UserDAO userDAO;
 	
-	public UtilisateurServiceImpl(UserDAO userDAO) {
+	public UserServiceImpl(UserDAO userDAO) {
 		this.userDAO = userDAO;
 	}
 	
 
 	@Override
 	@Transactional
-	public void add(User user, String confirmMdP) throws BusinessException {
+	public void add(User user, String ConfirmPassword) throws BusinessException {
 		BusinessException be = new BusinessException();
-		boolean valid = validerUniqueEmail(user.getEmail(), be);
-				valid &= validerUniquePseudo(user.getPseudo(), be);
-				valid &= validerConfirmMdP(user, confirmMdP, be);
+		boolean valid = validateUniqueEmail(user.getEmail(), be);
+				valid &= validateUniquePseudo(user.getPseudo(), be);
+				valid &= validateConfirmPassword(user, ConfirmPassword, be);
 		
 		if(valid) {
 			PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
@@ -40,7 +40,7 @@ public class UtilisateurServiceImpl implements UtilisateurService{
 	}
 	
 	
-	private boolean validerUniqueEmail(String email, BusinessException be) {
+	private boolean validateUniqueEmail(String email, BusinessException be) {
 		int nbEmail = userDAO.countEmail(email);
 		
 		if(nbEmail == 1) {
@@ -51,7 +51,7 @@ public class UtilisateurServiceImpl implements UtilisateurService{
 		return nbEmail == 0;
 	}
 
-	private boolean validerUniquePseudo(String pseudo, BusinessException be) {
+	private boolean validateUniquePseudo(String pseudo, BusinessException be) {
 		int nbPseudo = userDAO.countPseudo(pseudo);
 		
 		if(nbPseudo == 1) {
@@ -60,11 +60,11 @@ public class UtilisateurServiceImpl implements UtilisateurService{
 		}
 		return nbPseudo == 0;
 	}
-	
-	private boolean validerConfirmMdP(User user, String ConfirmMdP, BusinessException be) {
-		if(!user.getPassWord().equals(ConfirmMdP)) {
+
+	private boolean validateConfirmPassword(User user, String confirmPassword, BusinessException be) {
+		if(!user.getPassWord().equals(confirmPassword)) {
 			be.add("Le mot de passe est différent");
-			System.out.println("confirmMdP = " + ConfirmMdP);
+			System.out.println("confirmMdP = " + confirmPassword);
 			return false;
 		}
 		return true;
@@ -72,9 +72,9 @@ public class UtilisateurServiceImpl implements UtilisateurService{
 	
 	
 	@Override
-	public User findByEmail(String emailUtilisateur) {
-		// Il nous faut l'utilisateur et les informations associées
-		User u = userDAO.findByEmail(emailUtilisateur);
+	public User findByEmail(String emailUser) {
+		// Il nous faut l'user et les informations associées
+		User u = userDAO.findByEmail(emailUser);
 		return u;
 	}
 
@@ -83,7 +83,7 @@ public class UtilisateurServiceImpl implements UtilisateurService{
 	public void update(User user) {
 					PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 					String pwdEncoder = passwordEncoder.encode(user.getPassWord());
-					user.setMotDePasse(pwdEncoder);
+					user.setPassWord(pwdEncoder);
 					System.out.println("mdp = " + pwdEncoder);
 					userDAO.update(user);
 	}

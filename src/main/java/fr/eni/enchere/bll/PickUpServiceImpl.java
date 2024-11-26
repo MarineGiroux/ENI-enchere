@@ -3,26 +3,26 @@ package fr.eni.enchere.bll;
 import fr.eni.enchere.bo.PickUp;
 import org.springframework.stereotype.Service;
 
-import fr.eni.enchere.dal.RetraitDAO;
+import fr.eni.enchere.dal.PickUpDAO;
 
 @Service
-public class RetraitServiceImpl implements RetraitService {
+public class PickUpServiceImpl implements PickUpService {
 
-	private RetraitDAO retraitDAO;
+	private PickUpDAO pickUpDAO;
 
-	public RetraitServiceImpl(RetraitDAO retraitDAO) {
-		this.retraitDAO = retraitDAO;
+	public PickUpServiceImpl(PickUpDAO pickUpDAO) {
+		this.pickUpDAO = pickUpDAO;
 	}
 
 	@Override
 	public PickUp findByNum(int noArticle) {
-		PickUp r = retraitDAO.findByNum(noArticle);
-		return r;
+		PickUp p = pickUpDAO.findByNum(noArticle);
+		return p;
 	}
 
 	@Override
-	public void createAdresse(PickUp pickUp) {
-		retraitDAO.create(pickUp);
+	public void createAdress(PickUp pickUp) {
+		pickUpDAO.create(pickUp);
 	}
 
 }

@@ -8,153 +8,113 @@ import org.springframework.stereotype.Service;
 import fr.eni.enchere.bo.ItemSold;
 import fr.eni.enchere.dal.ItemSoldDAO;
 import fr.eni.enchere.dal.CategoryDAO;
-import fr.eni.enchere.dal.EnchereDAO;
+import fr.eni.enchere.dal.AuctionsDAO;
 import fr.eni.enchere.dal.UserDAO;
 
 @Service
-public class EnchereServiceImpl implements EnchereService{
+public class AuctionsServiceImpl implements AuctionsService {
 	
-	private EnchereDAO enchereDAO;
+	private AuctionsDAO auctionsDAO;
 	private ItemSoldDAO itemSoldDAO;
 	private UserDAO userDAO;
 	private CategoryDAO categoryDAO;
 	
 	
 
-	public EnchereServiceImpl(EnchereDAO enchereDAO, ItemSoldDAO itemSoldDAO, UserDAO userDAO,
-							  CategoryDAO categoryDAO) {
+	public AuctionsServiceImpl(AuctionsDAO auctionsDAO, ItemSoldDAO itemSoldDAO, UserDAO userDAO,
+							   CategoryDAO categoryDAO) {
 		super();
-		this.enchereDAO = enchereDAO;
+		this.auctionsDAO = auctionsDAO;
 		this.itemSoldDAO = itemSoldDAO;
 		this.userDAO = userDAO;
 		this.categoryDAO = categoryDAO;
 	}
 
 	@Override
-	public void encherir(Auctions auctions) {
+	public void bid(Auctions auctions) {
 		//verif argent suffisant
 		if (auctions.getAmountAuctions()<= itemSoldDAO.findByNum(auctions.getItemSold().getIdArticle()).getInitialPrice()) {
-			//verif date enchere
+			//verif date auctions
 			if (auctions.getDateAuctions().isAfter(itemSoldDAO.findByNum(auctions.getItemSold().getIdArticle()).getStartDateAuctions())
 					&& auctions.getDateAuctions().isBefore(itemSoldDAO.findByNum(auctions.getItemSold().getIdArticle()).getEndDateAuctions()) ){
-				//verif si une enchere existe pour l'article
-				if (enchereDAO.countEnchere(auctions.getItemSold().getIdArticle()) != 0) {
-					//deja une enchere
-					//trouver la plus grosse enchere
-					int montantMax = 0;
-					int noUtilisateurMax = 0;
-					List<Auctions> listeAuctions = enchereDAO.findByArticle(auctions.getItemSold().getIdArticle());
-					for (Auctions auctions2 : listeAuctions) {
-						if (auctions2.getAmountAuctions() > montantMax) {
-							montantMax = auctions2.getAmountAuctions();
-							noUtilisateurMax = auctions2.getUtilisateur().getIdUser();
+				//verif si une auctions existe pour l'article
+				if (auctionsDAO.countAuction(auctions.getItemSold().getIdArticle()) != 0) {
+					//deja une auctions
+					//trouver la plus grosse auctions
+					int maxAmount = 0;
+					int idUserMax = 0;
+					List<Auctions> listAuctions = auctionsDAO.findByArticle(auctions.getItemSold().getIdArticle());
+					for (Auctions auctions2 : listAuctions) {
+						if (auctions2.getAmountAuctions() > maxAmount) {
+							maxAmount = auctions2.getAmountAuctions();
+							idUserMax = auctions2.getUser().getIdUser();
 						}
 					}
-					//verif enchere suffisante
-					if (auctions.getAmountAuctions()>montantMax) {
+					//verif auctions suffisante
+					if (auctions.getAmountAuctions()>maxAmount) {
 						//debiter credit
-						userDAO.updateCredit(userDAO.findByNum(auctions.getUtilisateur().getIdUser()).getCredit()- auctions.getAmountAuctions(), userDAO.findByNum(auctions.getUtilisateur().getIdUser()));
-						//rembourser enchere precedente
-						userDAO.updateCredit(userDAO.findByNum(noUtilisateurMax).getCredit() + montantMax, userDAO.findByNum(noUtilisateurMax));
-						//verif si l'utilisateur a deja une enchere pour cet article
-						if (enchereDAO.countEnchereUtilisateur(auctions.getItemSold().getIdArticle(), auctions.getUtilisateur().getIdUser())>0) {
+						userDAO.updateCredit(userDAO.findByNum(auctions.getUser().getIdUser()).getCredit()- auctions.getAmountAuctions(), userDAO.findByNum(auctions.getUser().getIdUser()));
+						//rembourser auctions precedente
+						userDAO.updateCredit(userDAO.findByNum(idUserMax).getCredit() + maxAmount, userDAO.findByNum(idUserMax));
+						//verif si l'user a deja une auctions pour cet article
+						if (auctionsDAO.countAuctionsUser(auctions.getItemSold().getIdArticle(), auctions.getUser().getIdUser())>0) {
 							//modifier l'enchère
-							enchereDAO.surencherir(auctions);
+							auctionsDAO.outbid(auctions);
 						} else {
-							//creer l'enchere
-							enchereDAO.create(auctions);
-							itemSoldDAO.updatePrixVente(auctions);
+							//creer l'auctions
+							auctionsDAO.create(auctions);
+							itemSoldDAO.updatePriceSale(auctions);
 						}
 					}else {
-						System.out.println("montant de l'enchere inferieur aux autres enchere");
+						System.out.println("montant de l'auctions inferieur aux autres auctions");
 					}
 				} else {
 					//verif que montant>miseAPrix
 					if (auctions.getAmountAuctions() >= itemSoldDAO.findByNum(auctions.getItemSold().getIdArticle()).getInitialPrice()) {
-						//premiere enchere
+						//premiere auctions
 						//debit de credit
-						userDAO.updateCredit(userDAO.findByNum(auctions.getUtilisateur().getIdUser()).getCredit()- auctions.getAmountAuctions(), userDAO.findByNum(auctions.getUtilisateur().getIdUser()));
-						//creation de l'enchere
-						enchereDAO.create(auctions);
-						itemSoldDAO.updatePrixVente(auctions);
+						userDAO.updateCredit(userDAO.findByNum(auctions.getUser().getIdUser()).getCredit()- auctions.getAmountAuctions(), userDAO.findByNum(auctions.getUser().getIdUser()));
+						//creation de l'auctions
+						auctionsDAO.create(auctions);
+						itemSoldDAO.updatePriceSale(auctions);
 					}else {
 						System.out.println("montant inferieur a la mise a prix");
 					}	
 				}
 			}else {
-				System.out.println("enchere deja fermée");
+				System.out.println("auctions deja fermée");
 			}
 		} else {
-			System.out.println("argent insufisant pour honorer l'enchere");
+			System.out.println("argent insufisant pour honorer l'auctions");
 		}
 
 	}
 
 	@Override
-	public List<Auctions> recupererEncheres() {
-		List<Auctions> listeenchere = enchereDAO.findAll();
+	public List<Auctions> recoverAuctions() {
+		List<Auctions> auctionList = auctionsDAO.findAll();
 		
-		for (Auctions auctions : listeenchere) {
+		for (Auctions auctions : auctionList) {
 			ItemSold itemSold = itemSoldDAO.findByNum(auctions.getItemSold().getIdArticle());
 			itemSold.setCartegoryArticle(categoryDAO.findByNum(itemSold.getCartegoryArticle().getIdCategory()));
 			
 
-			auctions.setArticleVendu(itemSold);
-			auctions.setUtilisateur(userDAO.findByNum(auctions.getUtilisateur().getIdUser()));
+			auctions.setItemSold(itemSold);
+			auctions.setUser(userDAO.findByNum(auctions.getUser().getIdUser()));
 		}
-		return listeenchere;
+		return auctionList;
 	}
 
 	@Override
-	public List<Auctions> findByID(int idEnchere) {
-		List<Auctions> e = enchereDAO.findByArticle(idEnchere);
+	public List<Auctions> findByID(int idAuctions) {
+		List<Auctions> e = auctionsDAO.findByArticle(idAuctions);
 		return e;
 	}
 
 	@Override
-	public int montantEnchere(int noArticle) {
+	public int amountAuction(int idArticle) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -37,11 +37,11 @@
 
 
 	<form th:action="@{/vente/detail}" th:object="${itemSold}" method="post">
-		<h3>Détail de l'article <span data-th-text="*{nomArticle}"></span></h3>
+		<h3>Détail de l'article <span data-th-text="*{idArticle}"></span></h3>
 		<div class="form-container">
 
 			<div class="form-group">
-				<h5>Article : <span data-th-text="*{nomArticle}"></span></h5>
+				<h5>Article : <span data-th-text="*{name}"></span></h5>
 			</div>
 
 			<div class="form-group">
@@ -49,23 +49,23 @@
 			</div>
 
 			<div class="form-group">
-				<h5>Catégorie : <span data-th-text="*{categorieArticle.libelle}"></span></h5>
+				<h5>Catégorie : <span data-th-text="*{cartegoryArticle.wording}"></span></h5>
 			</div>
 
 			<div class="form-group">
-				<h5>Prix de départ : <span data-th-text="*{miseAPrix}"></span></h5>
+				<h5>Prix de départ : <span data-th-text="*{initialPrice}"></span></h5>
 			</div>
 
 			<div class="form-group">
-				<h5>Date de début : <span data-th-text="*{dateDebutEnchere}"></span></h5>
+				<h5>Date de début : <span data-th-text="*{startDateAuctions}"></span></h5>
 			</div>
 
 			<div class="form-group">
-				<h5>Date de fin : <span data-th-text="*{dateFinEnchere}"></span></h5>
+				<h5>Date de fin : <span data-th-text="*{endDateAuctions}"></span></h5>
 			</div>
 
 			<div class="form-group">
-				<h5>Lieu de pickUp : <span data-th-text="*{lieuPickUp.rue}"></span>, <span data-th-text="*{lieuPickUp.codePostal}"></span> <span data-th-text="*{lieuPickUp.ville}"></span></h5>
+				<h5>Lieu de pickUp : <span data-th-text="*{pickUpLocation.road}"></span>, <span data-th-text="*{pickUpLocation.zipPass}"></span> <span data-th-text="*{pickUpLocation.city}"></span></h5>
 			</div>
 
 		</div>
@@ -79,17 +79,17 @@
 
 	<form th:action="@{/vente/auctions}" method="post" th:object="${itemSold}">
 		<div class="form-container">
-			<input type="hidden" th:field="*{noArticle}" />
+			<input type="hidden" th:field="*{idArticle}" />
 			<div class="form-group">
-				<h5>Prix de vente : <span data-th-text="*{prixVente}"></span></h5>
+				<h5>Prix de vente : <span data-th-text="*{initialPrice}"></span></h5>
 			</div>
 			<div class="form-group">
-				<h5>Nouveaux prix : <span data-th-text="*{miseAPrix}"></span></h5>
+				<h5>Nouveaux prix : <span data-th-text="*{priceSale}"></span></h5>
 			</div>
 
 			<div class="form-group">
-				<label for="montantEnchere">Montant de l'enchère</label>
-				<input type="number" name="montantEnchere" th:value="*{miseAPrix}" class="form-control" />
+				<label for="amountAuctions">Montant de l'enchère</label>
+				<input type="number" name="amountAuctions" th:value="*{initialPrice}" class="form-control" />
 			</div>
 
 			<div class="form-actions">

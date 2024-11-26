@@ -8,32 +8,32 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class RetraitDAOImpl implements RetraitDAO{
+public class PickUpDAOImpl implements PickUpDAO {
 	
 	@Autowired
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	
 	
-	private final String INSERT = "INSERT INTO RETRAITS(noArticle, rue, codePostal, ville) VALUES (:noArticle, :rue, :codePostal, :ville)";
-	private final String FIND_BY_ID ="SELECT * FROM RETRAITS WHERE noArticle = :noArticle";
+	private final String INSERT = "INSERT INTO PICKUP(idArticle, road, zipCode, city) VALUES (:idArticle, :road, :zipCode, :city)";
+	private final String FIND_BY_ID ="SELECT * FROM PICKUP WHERE idArticle = :idArticle";
 
 	@Override
 	public void create(PickUp pickUp) {
 
 		MapSqlParameterSource nameParameters = new MapSqlParameterSource();
-		nameParameters.addValue("rue", pickUp.getRoad());
-		nameParameters.addValue("codePostal", pickUp.getZipPass());
-		nameParameters.addValue("ville", pickUp.getCity());
-		nameParameters.addValue("noArticle", pickUp.getIdArticle());
+		nameParameters.addValue("road", pickUp.getRoad());
+		nameParameters.addValue("zipCode", pickUp.getZipPass());
+		nameParameters.addValue("city", pickUp.getCity());
+		nameParameters.addValue("idArticle", pickUp.getIdArticle());
 
 		namedParameterJdbcTemplate.update(INSERT, nameParameters);
 
 	}
 
 	@Override
-	public PickUp findByNum(int noArticle) {
+	public PickUp findByNum(int idArticle) {
 		MapSqlParameterSource namMapSqlParameterSource = new MapSqlParameterSource();
-		namMapSqlParameterSource.addValue("noArticle",noArticle);
+		namMapSqlParameterSource.addValue("idArticle",idArticle);
 		return namedParameterJdbcTemplate.queryForObject(FIND_BY_ID, namMapSqlParameterSource, new BeanPropertyRowMapper<PickUp>(PickUp.class));
 	}
 

@@ -5,24 +5,24 @@ import java.util.List;
 
 public class BusinessException extends Exception {
 	
-	private List<String> listeErreurs;
+	private List<String> listErrors;
 	
 	
 	public BusinessException() {
 		super();
-		this.listeErreurs = new ArrayList<String>();
+		this.listErrors = new ArrayList<String>();
 	}
 	
-	public void add(String erreur) {
-		listeErreurs.add(erreur);
+	public void add(String error) {
+		listErrors.add(error);
 	}
 
-	public List<String> getListeErreurs() {
-		return listeErreurs;
+	public List<String> getlistErrors() {
+		return listErrors;
 	}
 	
 	public boolean isValid() {
-		return listeErreurs==null || listeErreurs.isEmpty();
+		return listErrors==null || listErrors.isEmpty();
 	}
 	
 	

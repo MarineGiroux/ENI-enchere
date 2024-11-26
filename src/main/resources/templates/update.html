@@ -23,8 +23,8 @@
 			<ul>
 				<li><a aria-current="page" data-th-href="@{/}">Accueil</a></li>
 				<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/vente}">Ventes</a></li>
-				<li th:if="${!#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/utilisateur/inscription}">Inscription</a></li>
-				<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/utilisateur/profil}">Profil</a></li>
+				<li th:if="${!#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/user/inscription}">Inscription</a></li>
+				<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/user/profil}">Profil</a></li>
 				<li th:if="${!#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/login}">Connexion</a></li>
 				<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/logout}">Déconnexion</a></li>
 			</ul>
@@ -34,22 +34,22 @@
 
 <main class="center-main">
 
-	<form th:action="@{/utilisateur/profil}" method="post" th:object="${utilisateur}">
+	<form th:action="@{/user/profil}" method="post" th:object="${user}">
 		<h3>Mise à jour : <span data-th-text="*{pseudo}">pseudo</span></h3>
 		<p style="margin : 0" >Modifiez vos informations personnelles.</p>
 		<div class="form-container">
-			<input type="hidden" data-th-field="*{noUtilisateur}" />
+			<input type="hidden" data-th-field="*{idUser}" />
 
 			<div class="form-group">
 				<label for="nom">Nom</label>
 				<div data-th-replace="~{fragments/fragment-error :: frag-error('nom')}"></div>
-				<input type="text" id="nom" class="form-control" data-th-field="*{nom}" />
+				<input type="text" id="nom" class="form-control" data-th-field="*{lastName}" />
 			</div>
 
 			<div class="form-group">
 				<label for="prenom">Prénom</label>
 				<div data-th-replace="~{fragments/fragment-error :: frag-error('prenom')}"></div>
-				<input type="text" id="prenom" class="form-control" data-th-field="*{prenom}" />
+				<input type="text" id="prenom" class="form-control" data-th-field="*{firstName}" />
 			</div>
 
 			<div class="form-group">
@@ -59,28 +59,28 @@
 
 			<div class="form-group">
 				<label for="telephone">Téléphone</label>
-				<input type="text" id="telephone" class="form-control" data-th-field="*{telephone}" />
+				<input type="text" id="telephone" class="form-control" data-th-field="*{phone}" />
 			</div>
 
 			<div class="form-group">
 				<label for="rue">Rue</label>
-				<input type="text" id="rue" class="form-control" data-th-field="*{rue}" />
+				<input type="text" id="rue" class="form-control" data-th-field="*{road}" />
 			</div>
 
 			<div class="form-group">
 				<label for="codePostal">Code Postal</label>
-				<input type="text" id="codePostal" class="form-control" data-th-field="*{codePostal}" />
+				<input type="text" id="codePostal" class="form-control" data-th-field="*{zipPass}" />
 			</div>
 
 			<div class="form-group">
 				<label for="ville">Ville</label>
-				<input type="text" id="ville" class="form-control" data-th-field="*{ville}" />
+				<input type="text" id="ville" class="form-control" data-th-field="*{city}" />
 			</div>
 
 			<div class="form-group">
 				<label for="motDePasse">Mot de passe (pour confirmer)</label>
 				<div data-th-replace="~{fragments/fragment-error :: frag-error('motDePasse')}"></div>
-				<input type="password" id="motDePasse" class="form-control" data-th-field="*{motDePasse}" />
+				<input type="password" id="motDePasse" class="form-control" data-th-field="*{passWord}" />
 			</div>
 		</div>
 

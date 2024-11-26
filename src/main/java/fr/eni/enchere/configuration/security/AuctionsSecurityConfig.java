@@ -20,7 +20,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
-public class EnchereSecurityConfig {
+public class AuctionsSecurityConfig {
 	
 //	@Bean
 	InMemoryUserDetailsManager userDetailManager() {
@@ -78,8 +78,8 @@ public class EnchereSecurityConfig {
 				.requestMatchers(HttpMethod.POST, "/").permitAll()
 				//.requestMatchers(HttpMethod.GET, "/vente").hasAnyRole("ADMIN", "MEMBRE")
 				//.requestMatchers(HttpMethod.POST, "/vente").hasAnyRole("ADMIN", "MEMBRE")
-				.requestMatchers(HttpMethod.GET, "/utilisateur/inscription").permitAll()
-				.requestMatchers(HttpMethod.POST, "/utilisateur/inscription").permitAll()
+				.requestMatchers(HttpMethod.GET, "/user/inscription").permitAll()
+				.requestMatchers(HttpMethod.POST, "/user/inscription").permitAll()
 				.requestMatchers(HttpMethod.GET, "/login").permitAll()
 				.requestMatchers(HttpMethod.POST, "/login").permitAll()
 				.requestMatchers(HttpMethod.GET, "/logout").hasAnyRole("ADMIN", "MEMBRE")

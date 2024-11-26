@@ -5,11 +5,11 @@ import fr.eni.enchere.bo.User;
 import fr.eni.enchere.exception.BusinessException;
 
 
-public interface UtilisateurService {
+public interface UserService {
 
-	void add(User user, String confirmMdP) throws BusinessException;
+	void add(User user, String ConfirmPassword) throws BusinessException;
 	
-	User findByEmail(String emailUtilisateur);
+	User findByEmail(String emailUser);
 	
 	void update(User user) throws BusinessException;
 	
