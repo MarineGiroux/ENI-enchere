@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
-public class Utilisateur {
+public class User {
 	
 
 	private int idUser;
@@ -30,11 +30,11 @@ public class Utilisateur {
 	private boolean administrator;
 	
 	
-	public Utilisateur() {
+	public User() {
 	}
 	
-	public Utilisateur(int idUser, String pseudo, String lastName, String firstName, String email, String phone,
-			String road, String zipPass, String city, String passWord, String picture, int credit, boolean administrator) {
+	public User(int idUser, String pseudo, String lastName, String firstName, String email, String phone,
+				String road, String zipPass, String city, String passWord, String picture, int credit, boolean administrator) {
 		this.idUser = idUser;
 		this.pseudo = pseudo;
 		this.lastName = lastName;
@@ -49,93 +49,116 @@ public class Utilisateur {
 		this.credit = credit;
 		this.administrator = administrator;
 	}
-	
-	
-	public int getNoUtilisateur() {
+
+	public int getIdUser() {
 		return idUser;
 	}
-	public void setNoUtilisateur(int noUtilisateur) {
-		this.idUser = noUtilisateur;
+
+	public void setIdUser(int idUser) {
+		this.idUser = idUser;
 	}
-	public String getPseudo() {
+
+	public @NotBlank @Pattern(regexp = "\\w+") String getPseudo() {
 		return pseudo;
 	}
-	public void setPseudo(String pseudo) {
+
+	public void setPseudo(@NotBlank @Pattern(regexp = "\\w+") String pseudo) {
 		this.pseudo = pseudo;
 	}
-	public String getNom() {
+
+	public @NotBlank String getLastName() {
 		return lastName;
 	}
-	public void setNom(String nom) {
-		this.lastName = nom;
+
+	public void setLastName(@NotBlank String lastName) {
+		this.lastName = lastName;
 	}
-	public String getPrenom() {
+
+	public @NotBlank String getFirstName() {
 		return firstName;
 	}
-	public void setPrenom(String prenom) {
-		this.firstName = prenom;
+
+	public void setFirstName(@NotBlank String firstName) {
+		this.firstName = firstName;
 	}
-	public String getEmail() {
+
+	public @NotBlank @Email String getEmail() {
 		return email;
 	}
-	public void setEmail(String email) {
+
+	public void setEmail(@NotBlank @Email String email) {
 		this.email = email;
 	}
-	public String getTelephone() {
+
+	public String getPhone() {
 		return phone;
 	}
-	public void setTelephone(String telephone) {
-		this.phone = telephone;
+
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
-	public String getRue() {
+
+	public String getRoad() {
 		return road;
 	}
-	public void setRue(String rue) {
-		this.road = rue;
+
+	public void setRoad(String road) {
+		this.road = road;
 	}
-	public String getCodePostal() {
+
+	public String getZipPass() {
 		return zipPass;
 	}
-	public void setCodePostal(String codePostal) {
-		this.zipPass = codePostal;
+
+	public void setZipPass(String zipPass) {
+		this.zipPass = zipPass;
 	}
-	public String getVille() {
+
+	public String getCity() {
 		return city;
 	}
-	public void setVille(String ville) {
-		this.city = ville;
+
+	public void setCity(String city) {
+		this.city = city;
 	}
-	public String getMotDePasse() {
+
+	public @NotBlank String getPassWord() {
 		return passWord;
 	}
-	public void setMotDePasse(String motDePasse) {
-		this.passWord = motDePasse;
+
+	public void setPassWord(@NotBlank String passWord) {
+		this.passWord = passWord;
 	}
+
 	public String getPicture() {
 		return picture;
 	}
+
 	public void setPicture(String picture) {
 		this.picture = picture;
 	}
+
 	public int getCredit() {
 		return credit;
 	}
+
 	public void setCredit(int credit) {
 		this.credit = credit;
 	}
+
 	public boolean isAdministrator() {
 		return administrator;
 	}
+
 	public void setAdministrator(boolean administrator) {
 		this.administrator = administrator;
 	}
 
-
 	@Override
 	public String toString() {
 		return String.format(
-				"User [idUser=%s, pseudo=%s, lastName=%s, firstName=%s, email=%s, phone=%s, road=%s, zipPass=%s, city=%s, passWord=%s, credit=%s, administrator=%s]",
-				idUser, pseudo, lastName, firstName, email, phone, road, zipPass, city, passWord, credit,
+				"User [idUser=%s, pseudo=%s, lastName=%s, firstName=%s, email=%s, phone=%s, road=%s, zipPass=%s, city=%s, passWord=%s, picture=%s, credit=%s, administrator=%s]",
+				idUser, pseudo, lastName, firstName, email, phone, road, zipPass, city, passWord, picture, credit,
 				administrator);
 	}
 	

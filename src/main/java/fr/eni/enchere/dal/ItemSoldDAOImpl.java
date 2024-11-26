@@ -4,6 +4,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import fr.eni.enchere.bo.Auctions;
+import fr.eni.enchere.bo.Category;
+import fr.eni.enchere.bo.ItemSold;
+import fr.eni.enchere.bo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -12,19 +16,14 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import fr.eni.enchere.bo.ArticleVendu;
-import fr.eni.enchere.bo.Categorie;
-import fr.eni.enchere.bo.Enchere;
-import fr.eni.enchere.bo.Utilisateur;
-
 @Repository
-public class ArticleVenduDAOImpl implements ArticleVenduDAO{
+public class ItemSoldDAOImpl implements ItemSoldDAO {
 	
-	private final String INSERT = "INSERT INTO ARTICLESVENDUS (nomArticle,description,dateDebutEncheres,dateFinEncheres,prixInitial,prixVente,noUtilisateur,noCategorie) VALUES ( :nomArticle, :description, :dateDebutEncheres, :dateFinEncheres, :prixInitial, :prixVente, :noUtilisateur, :noCategorie)";
-	private final String Find_All = "select * from ARTICLESVENDUS";
-	private final String FIND_BY_CATEGORIE = "SELECT * FROM ARTICLESVENDUS WHERE noCategorie = :noCategorie";
-	private final String FIND_BY_NO = "SELECT * FROM ARTICLESVENDUS WHERE noArticle = :noArticle";
-	private final String UPDATE_PRIX_VENTE = "UPDATE ARTICLESVENDUS SET prixVente = :prixVente where noArticle = :noArticle";
+	private final String INSERT = "INSERT INTO ITEMSOLD (idArticle,description,startDateAuctions,endDateAuctions,initialPrice,priceSale,idUser,idCategory) VALUES ( :idArticle, :description, :startDateAuctions, :endDateAuctions, :initialPrice, :priceSale, :idUser, :idCategory)";
+	private final String Find_All = "select * from ITEMSOLD";
+	private final String FIND_BY_CATEGORIE = "SELECT * FROM ITEMSOLD WHERE idCategory = :idCategory";
+	private final String FIND_BY_NO = "SELECT * FROM ITEMSOLD WHERE idArticle = :idArticle";
+	private final String UPDATE_PRIX_VENTE = "UPDATE ITEMSOLD SET prixVente = :prixVente where idArticle = :idArticle";
 	
 	@Autowired
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -32,49 +31,49 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO{
 	
 
 	@Override
-	public void create(ArticleVendu articleVendu) {
+	public void create(ItemSold itemSold) {
 		MapSqlParameterSource nameParameters = new MapSqlParameterSource();
 		
 		
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		
-		nameParameters.addValue("nomArticle", articleVendu.getNomArticle());
-		nameParameters.addValue("description", articleVendu.getDescription());
-		nameParameters.addValue("dateDebutEncheres", articleVendu.getDateDebutEnchere());
-		nameParameters.addValue("dateFinEncheres", articleVendu.getDateFinEnchere());
-		nameParameters.addValue("prixInitial", articleVendu.getMiseAPrix());
-		nameParameters.addValue("prixVente", articleVendu.getPrixVente());
-		nameParameters.addValue("noUtilisateur", articleVendu.getVend().getNoUtilisateur());
-		nameParameters.addValue("noCategorie", articleVendu.getCategorieArticle().getNoCategorie());
+		nameParameters.addValue("nomArticle", itemSold.getName());
+		nameParameters.addValue("description", itemSold.getDescription());
+		nameParameters.addValue("startDateAuctions", itemSold.getStartDateAuctions());
+		nameParameters.addValue("endDateAuctions", itemSold.getEndDateAuctions());
+		nameParameters.addValue("initialPrice", itemSold.getInitialPrice());
+		nameParameters.addValue("priceSale", itemSold.getPriceSale());
+		nameParameters.addValue("idUser", itemSold.getSell().getIdUser());
+		nameParameters.addValue("idCategory", itemSold.getCartegoryArticle().getIdCategory());
 		
 		
 		namedParameterJdbcTemplate.update(INSERT, nameParameters, keyHolder);
 		
 		if (keyHolder != null && keyHolder.getKey() != null) {
-			articleVendu.setNoArticle(keyHolder.getKey().intValue());
+			itemSold.setIdArticle(keyHolder.getKey().intValue());
 		}
 	}
 
 	
 
 	@Override
-	public List<ArticleVendu> FindAll() {
+	public List<ItemSold> FindAll() {
 		return namedParameterJdbcTemplate.query(Find_All, new ArticleVenduRowMapper());
 	}
 
 	@Override
-	public List<ArticleVendu> findByCategorie(int noCategorie) {
+	public List<ItemSold> findByCategory(int idCategory) {
 		MapSqlParameterSource nameParameters = new MapSqlParameterSource();
-		nameParameters.addValue("noCategorie", noCategorie);
+		nameParameters.addValue("idCategory", idCategory);
 		
 		
 		return namedParameterJdbcTemplate.query(FIND_BY_CATEGORIE,nameParameters, new ArticleVenduRowMapper());
 	}
 
 	@Override
-	public ArticleVendu findByNum(int noArticle) {
+	public ItemSold findByNum(int idArticle) {
 		MapSqlParameterSource nameParameters = new MapSqlParameterSource();
-		nameParameters.addValue("noArticle", noArticle);
+		nameParameters.addValue("idArticle", idArticle);
 		
 		return namedParameterJdbcTemplate.queryForObject(FIND_BY_NO, nameParameters, new ArticleVenduRowMapper());
 	}
@@ -82,10 +81,10 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO{
 
 
 	@Override
-	public void updatePrixVente(Enchere enchere) {
+	public void updatePriceSale(Auctions auctions) {
 		MapSqlParameterSource nameParameters = new MapSqlParameterSource();
-		nameParameters.addValue("noArticle", enchere.getArticleVendu().getNoArticle());
-		nameParameters.addValue("prixVente", enchere.getMontantEnchere());
+		nameParameters.addValue("idArticle", auctions.getItemSold().getIdArticle());
+		nameParameters.addValue("priceSale", auctions.getAmountAuctions());
 		
 		namedParameterJdbcTemplate.update(UPDATE_PRIX_VENTE, nameParameters);
 		
@@ -95,37 +94,37 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO{
 	
 
 }
-class ArticleVenduRowMapper implements RowMapper<ArticleVendu>{
+class ArticleVenduRowMapper implements RowMapper<ItemSold>{
 
 	@Override
-	public ArticleVendu mapRow(ResultSet rs, int rowNum) throws SQLException {
-		ArticleVendu articleVendu = new ArticleVendu();
+	public ItemSold mapRow(ResultSet rs, int rowNum) throws SQLException {
+		ItemSold itemSold = new ItemSold();
 		
-		articleVendu.setNoArticle(rs.getInt("noArticle"));
-		articleVendu.setNomArticle(rs.getString("nomArticle"));
-		articleVendu.setDescription(rs.getString("description"));
-		articleVendu.setDateDebutEnchere(rs.getDate("dateDebutEncheres").toLocalDate());
-		articleVendu.setDateFinEnchere(rs.getDate("dateFinEncheres").toLocalDate());
-		articleVendu.setMiseAPrix(rs.getInt("prixInitial"));
-		articleVendu.setPrixVente(rs.getInt("prixVente"));
+		itemSold.setIdArticle(rs.getInt("idArticle"));
+		itemSold.setName(rs.getString("nomArticle"));
+		itemSold.setDescription(rs.getString("description"));
+		itemSold.setStartDateAuctions(rs.getDate("startDateAuctions").toLocalDate());
+		itemSold.setEndDateAuctions(rs.getDate("endDateAuctions").toLocalDate());
+		itemSold.setInitialPrice(rs.getInt("initialPrice"));
+		itemSold.setPriceSale(rs.getInt("priceSale"));
 		
-		Utilisateur vendeur = new Utilisateur();
-		vendeur.setNoUtilisateur(rs.getInt("noUtilisateur"));
-		articleVendu.setVend(vendeur);
+		User vendeur = new User();
+		vendeur.setIdUser(rs.getInt("idUser"));
+		itemSold.setSell(vendeur);
 		
 //		Utilisateur achete = new Utilisateur();
-//		if (articleVendu.getAchete() != null) {
-//			achete.setNoUtilisateur(rs.getInt("noAcheteur"));
-//			articleVendu.setAchete(achete);
+//		if (itemSold.getAchete() != null) {
+//			achete.setidUser(rs.getInt("noAcheteur"));
+//			itemSold.setAchete(achete);
 //		}
 //		
-		articleVendu.setAchete(null);
+		itemSold.setBuy(null);
 		
-		Categorie categorie = new Categorie();
-		categorie.setNoCategorie(rs.getInt("noCategorie"));
-		articleVendu.setCategorieArticle(categorie);
+		Category category = new Category();
+		category.setIdCategory(rs.getInt("idCategory"));
+		itemSold.setCartegoryArticle(category);
 
-		return articleVendu;
+		return itemSold;
 	}
 	
 }

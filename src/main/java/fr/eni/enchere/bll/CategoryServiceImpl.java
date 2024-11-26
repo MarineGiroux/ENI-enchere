@@ -8,17 +8,17 @@ import org.springframework.stereotype.Service;
 import fr.eni.enchere.dal.CategoryDAO;
 
 @Service
-public class CategorieServiceImpl implements CategorieService {
+public class CategoryServiceImpl implements CategoryService {
 
 	private CategoryDAO categoryDAO;
 	
-	public CategorieServiceImpl(CategoryDAO categoryDAO) {
+	public CategoryServiceImpl(CategoryDAO categoryDAO) {
 		this.categoryDAO = categoryDAO;
 	}
 
 
 	@Override
-	public List<Category> FindAll() {
+	public List<Category> findAll() {
 		return categoryDAO.FindAll();
 	}
 

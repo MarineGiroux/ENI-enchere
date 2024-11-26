@@ -2,14 +2,14 @@ package fr.eni.enchere.dal;
 
 import java.util.List;
 
-import fr.eni.enchere.bo.Categorie;
+import fr.eni.enchere.bo.Category;
 
-public interface CategorieDAO {
+public interface CategoryDAO {
 	
-	Categorie findByNum (int noCategorie);
+	Category findByNum (int idCategory);
 	
-	void create (Categorie categorie);
+	void create (Category category);
 
-	List<Categorie> FindAll();
+	List<Category> FindAll();
 
 }

@@ -24,8 +24,8 @@
             <ul>
                 <li><a aria-current="page" data-th-href="@{/}">Accueil</a></li>
                 <li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/vente}">Ventes</a></li>
-                <li th:if="${!#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/utilisateur/inscription}">Inscription</a></li>
-                <li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/utilisateur/profil}">Profil</a></li>
+                <li th:if="${!#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/user/inscription}">Inscription</a></li>
+                <li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/user/profil}">Profil</a></li>
                 <li th:if="${!#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/login}">Connexion</a></li>
                 <li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/logout}">Déconnexion</a></li>
             </ul>
@@ -62,7 +62,7 @@
     </form>
 
     <div class="form-actions">
-        <p>Vous n'avez pas de compte ? <a data-th-href="@{/utilisateur/inscription}">S'inscrire</a></p>
+        <p>Vous n'avez pas de compte ? <a data-th-href="@{/user/inscription}">S'inscrire</a></p>
     </div>
 </main>
 

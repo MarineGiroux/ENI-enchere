@@ -5,7 +5,7 @@ import java.util.List;
 import fr.eni.enchere.bo.Category;
 
 
-public interface CategorieService {
+public interface CategoryService {
 
-	List<Category> FindAll();
+	List<Category> findAll();
 }

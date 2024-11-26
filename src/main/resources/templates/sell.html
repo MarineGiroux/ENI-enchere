@@ -51,7 +51,7 @@
 				<label for="category">Catégorie</label>
 				<select id="category" class="form-control" name="categorieArticle.noCategorie">
 					<option value="0">Sélectionnez une catégorie</option>
-					<option data-th-each="category : ${listeCategorie}" th:value="${category.noCategorie}" th:text="${category.libelle}"></option>
+					<option data-th-each="category : ${listCategory}" th:value="${category.noCategorie}" th:text="${category.libelle}"></option>
 				</select>
 			</div>
 

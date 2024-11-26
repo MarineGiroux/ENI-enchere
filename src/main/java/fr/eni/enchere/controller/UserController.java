@@ -19,58 +19,48 @@ import fr.eni.enchere.exception.BusinessException;
 import jakarta.validation.Valid;
 
 @Controller
-@RequestMapping("/utilisateur")
-public class UtilisateurController {
-	
+@RequestMapping("/user")
+public class UserController {
+
 	@Autowired
 	private UserService userService;
 
-		@GetMapping("/inscription")
-		public String creerUtilisateur(Model model) {
-			System.out.println("début creer user");
-			
-			model.addAttribute("utilisateur", new User());
-			return "inscription";
-		}
-		
-	@PostMapping("/inscription")
-		public String creerUtilisateur(
-				@Valid @ModelAttribute("utilisateur") User user,
-				BindingResult bindingResult, @RequestParam("confirmMdP") String confirmMdP) {
+	@GetMapping("/inscription")
+	public String createUser(Model model) {
+		model.addAttribute("user", new User());
+		return "registration";
+	}
 
-			System.out.println("mdp user = " + user.getPassWord());
-			
-			if (bindingResult.hasErrors()) {
-				System.out.println(bindingResult.getAllErrors());
-				return "inscription";
-			} else {
-				System.out.println("UTILISATEUR = " + user);
-				try {
-					this.userService.add(user, confirmMdP);
-					return "redirect:/login";
-				} catch (BusinessException e) {
-					e.getListeErreurs().forEach(
-							erreur -> {
-								ObjectError error = new ObjectError("globalError", erreur);
-								bindingResult.addError(error);
-							}
-					);
-					return "inscription";
-			}
+	@PostMapping("/inscription")
+	public String createUser(
+			@Valid @ModelAttribute("user") User user,
+			BindingResult bindingResult,
+			@RequestParam("confirmPassword") String confirmPassword) {
+
+		if (bindingResult.hasErrors()) {
+			return "registration";
+		}
+
+		try {
+			userService.add(user, confirmPassword);
+			return "redirect:/login";
+		} catch (BusinessException e) {
+			e.getlistErrors().forEach(error -> bindingResult.addError(new ObjectError("globalError", error)));
+			return "registration";
 		}
 	}
 	
-	@GetMapping("/profil")
-	public String afficherUtilisateur(Principal principal, Model model) {
+	@GetMapping("/profile")
+	public String showUser(Principal principal, Model model) {
 //		System.out.println("principal.getName() : " + principal.getName());
-		controlUtilisateur(principal.getName(), model);
-		return "profil";
+		controlUser(principal.getName(), model);
+		return "profile";
 	
 	}
 	
 	
 	@GetMapping("/delete")
-	public String deleteUtilisateur(Principal principal, Model model) {
+	public String deleteUser(Principal principal, Model model) {
 		System.out.println("supprimer user : " + principal.getName());
 		userService.deleteAccountByEmail(principal.getName());
 		return "redirect:/logout";
@@ -78,15 +68,15 @@ public class UtilisateurController {
 	}
 	
 	@GetMapping("/update")
-	public String modifierUtilisateur(User user, Principal principal, Model model) {
-		controlUtilisateur(principal.getName(), model);
+	public String updateUser(User user, Principal principal, Model model) {
+		controlUser(principal.getName(), model);
 		return "update";
 		
 	}
 	
-	@PostMapping("/profil")
-	public String modificationUtilisateurEnregistrer(
-			@Valid @ModelAttribute(name = "utilisateur") User user, BindingResult bindingResult) {
+	@PostMapping("/profile")
+	public String editUserSave(
+			@Valid @ModelAttribute(name = "user") User user, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			System.out.println("erreur de validation modif");
 			System.out.println(bindingResult.getAllErrors());
@@ -95,9 +85,9 @@ public class UtilisateurController {
 			System.out.println("user : " + user);
 			try {
 				this.userService.update(user);
-				return "profil";
+				return "profile";
 			} catch (BusinessException e) {
-				e.getListeErreurs().forEach(
+				e.getlistErrors().forEach(
 						erreur -> {
 							ObjectError error = new ObjectError("globalError", erreur);
 							bindingResult.addError(error);
@@ -109,15 +99,15 @@ public class UtilisateurController {
 	}
 	
 	
-	private void controlUtilisateur(String emailUtilisateur, Model model) {
-		User user = userService.findByEmail(emailUtilisateur);
-		if(emailUtilisateur != null) {
-					model.addAttribute("utilisateur", user);
-					System.out.println("user" + emailUtilisateur);
+	private void controlUser(String emailUser, Model model) {
+		User user = userService.findByEmail(emailUser);
+		if(emailUser != null) {
+					model.addAttribute("user", user);
+					System.out.println("user" + emailUser);
 		}else {
 			System.out.println("user inconnu");
 		}
-		System.out.println("email user = " + emailUtilisateur);
+		System.out.println("email user = " + emailUser);
 	}
 	
 		

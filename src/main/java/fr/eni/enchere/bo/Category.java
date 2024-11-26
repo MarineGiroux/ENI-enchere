@@ -1,40 +1,42 @@
 package fr.eni.enchere.bo;
 
-public class Categorie {
+public class Category {
 	
-	private int noCategorie;
-	private String libelle;
+	private int idCategory;
+	private String wording;
 	
 	
-	public Categorie() {
+	public Category() {
 	}
 	
 	
-	public Categorie(int noCategorie, String libelle) {
-		this.noCategorie = noCategorie;
-		this.libelle = libelle;
-	}
-	
-	
-	public int getNoCategorie() {
-		return noCategorie;
-	}
-	public void setNoCategorie(int noCategorie) {
-		this.noCategorie = noCategorie;
-	}
-	public String getLibelle() {
-		return libelle;
-	}
-	public void setLibelle(String libelle) {
-		this.libelle = libelle;
+	public Category(int noCategorie, String wording) {
+		this.idCategory = noCategorie;
+		this.wording = wording;
 	}
 
+
+	public int getIdCategory() {
+		return idCategory;
+	}
+
+	public void setIdCategory(int idCategory) {
+		this.idCategory = idCategory;
+	}
+
+	public String getWording() {
+		return wording;
+	}
+
+	public void setWording(String wording) {
+		this.wording = wording;
+	}
 
 	@Override
 	public String toString() {
-		return String.format("Categorie [noCategorie=%s, libelle=%s]", noCategorie, libelle);
+		return "Category{" +
+				"idCategory=" + idCategory +
+				", wording='" + wording + '\'' +
+				'}';
 	}
-	
-	
-
 }

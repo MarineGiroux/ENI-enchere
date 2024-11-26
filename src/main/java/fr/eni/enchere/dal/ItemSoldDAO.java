@@ -2,18 +2,18 @@ package fr.eni.enchere.dal;
 
 import java.util.List;
 
-import fr.eni.enchere.bo.ArticleVendu;
-import fr.eni.enchere.bo.Enchere;
+import fr.eni.enchere.bo.ItemSold;
+import fr.eni.enchere.bo.Auctions;
 
-public interface ArticleVenduDAO {
+public interface ItemSoldDAO {
 	
-	List<ArticleVendu>  findByCategorie (int noCategorie);
+	List<ItemSold> findByCategory(int idCategory);
 	
-	ArticleVendu  findByNum (int noArticle);
+	ItemSold findByNum (int idArticle);
 	
-	void create (ArticleVendu articleVendu);
+	void create (ItemSold itemSold);
 
-	List<ArticleVendu> FindAll();
+	List<ItemSold> FindAll();
 	
-	void updatePrixVente(Enchere enchere);
+	void updatePriceSale(Auctions auctions);
 }

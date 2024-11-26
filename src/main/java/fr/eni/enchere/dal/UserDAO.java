@@ -1,24 +1,24 @@
 package fr.eni.enchere.dal;
 
-import fr.eni.enchere.bo.Utilisateur;
+import fr.eni.enchere.bo.User;
 
-public interface UtilisateurDAO {
+public interface UserDAO {
 	
-	void create (Utilisateur utilisateur);
+	void create (User user);
 	
-	Utilisateur findByEmail (String noUtilisateur);
+	User findByEmail (String idUser);
 
 	int countEmail(String email);
 	
 	int countPseudo(String pseudo);
 	
-	void update(Utilisateur utilisateur);
+	void update(User user);
 
-	void createRole(Utilisateur utilisateur);
+	void createRole(User user);
 	
-	Utilisateur findByNum(int noUtilisateur);
+	User findByNum(int idUser);
 	
-	void updateCredit(int montant, Utilisateur utilisateur);
+	void updateCredit(int rising, User user);
 
 	void deleteAccountByEmail(String email);
 	

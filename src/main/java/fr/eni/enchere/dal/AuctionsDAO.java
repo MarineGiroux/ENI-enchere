@@ -4,21 +4,21 @@ import java.util.List;
 
 import fr.eni.enchere.bo.Auctions;
 
-public interface EnchereDAO {
-	
-	
+public interface AuctionsDAO {
+
+
 	void create (Auctions auctions);
 
-	Auctions findBynoUtilisateur(int noArticle, int noUtilisateur);
+	Auctions findByidUser(int idArticle, int idUser);
 
 	List<Auctions> findAll();
-	
-	int countEnchereUtilisateur (int noArticle,int noUtilisateur);
-	
-	int countEnchere (int noArticle);
-	
-	void surencherir (Auctions auctions);
-	
-	List<Auctions> findByArticle(int noArticle);
+
+	int countAuctionsUser(int idArticle, int idUser);
+
+	int countAuction(int idArticle);
+
+	void outbid(Auctions auctions);
+
+	List<Auctions> findByArticle(int idArticle);
 
 }

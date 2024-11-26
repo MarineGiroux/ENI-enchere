@@ -2,53 +2,52 @@ package fr.eni.enchere.bll;
 
 import java.util.List;
 
-import org.springframework.jdbc.support.KeyHolder;
+import fr.eni.enchere.bo.ItemSold;
+import fr.eni.enchere.bo.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import fr.eni.enchere.bo.ArticleVendu;
-import fr.eni.enchere.bo.Utilisateur;
-import fr.eni.enchere.dal.ArticleVenduDAO;
-import fr.eni.enchere.dal.CategorieDAO;
-import fr.eni.enchere.dal.UtilisateurDAO;
+import fr.eni.enchere.dal.ItemSoldDAO;
+import fr.eni.enchere.dal.CategoryDAO;
+import fr.eni.enchere.dal.UserDAO;
 
 @Service
-public class ArticleVenduServiceImpl implements ArticleVenduService {
+public class ItemSoldServiceImpl implements ItemSoldService {
 
-	private ArticleVenduDAO articleVenduDAO;
-	private UtilisateurDAO utilisateurDAO;
-	private CategorieDAO categorieDAO;
+	private ItemSoldDAO itemSoldDAO;
+	private UserDAO userDAO;
+	private CategoryDAO categoryDAO;
 
-	public ArticleVenduServiceImpl(ArticleVenduDAO articleVenduDAO, UtilisateurDAO utilisateurDAO,
-			CategorieDAO categorieDAO) {
-		this.articleVenduDAO = articleVenduDAO;
-		this.utilisateurDAO = utilisateurDAO;
-		this.categorieDAO = categorieDAO;
+	public ItemSoldServiceImpl(ItemSoldDAO itemSoldDAO, UserDAO userDAO,
+							   CategoryDAO categoryDAO) {
+		this.itemSoldDAO = itemSoldDAO;
+		this.userDAO = userDAO;
+		this.categoryDAO = categoryDAO;
 	}
 
 	@Override
-	public ArticleVendu FindById(int id) {
-		ArticleVendu a = articleVenduDAO.findByNum(id);
-		if (a.getAchete() != null) {
-			a.setAchete(utilisateurDAO.findByNum(a.getAchete().getNoUtilisateur()));
+	public ItemSold FindById(int id) {
+		ItemSold a = itemSoldDAO.findByNum(id);
+		if (a.getBuy() != null) {
+			a.setBuy(userDAO.findByNum(a.getBuy().getIdUser()));
 		}
-		a.setVend(utilisateurDAO.findByNum(a.getVend().getNoUtilisateur()));
-		a.setCategorieArticle(categorieDAO.findByNum(a.getCategorieArticle().getNoCategorie()));
+		a.setSell(userDAO.findByNum(a.getSell().getIdUser()));
+		a.setCartegoryArticle(categoryDAO.findByNum(a.getCartegoryArticle().getIdCategory()));
 		;
 		return a;
 	}
 
 	@Override
-	public List<ArticleVendu> FindAll() {
-		List<ArticleVendu> a = articleVenduDAO.FindAll();
-		for (ArticleVendu articleVendu : a) {
-			if (articleVendu.getAchete() != null) {
-				articleVendu.setAchete(utilisateurDAO.findByNum(articleVendu.getAchete().getNoUtilisateur()));
+	public List<ItemSold> findAll() {
+		List<ItemSold> a = itemSoldDAO.FindAll();
+		for (ItemSold itemSold : a) {
+			if (itemSold.getBuy() != null) {
+				itemSold.setBuy(userDAO.findByNum(itemSold.getBuy().getIdUser()));
 			}
-			articleVendu.setVend(utilisateurDAO.findByNum(articleVendu.getVend().getNoUtilisateur()));
+			itemSold.setSell(userDAO.findByNum(itemSold.getSell().getIdUser()));
 
-			articleVendu
-					.setCategorieArticle(categorieDAO.findByNum(articleVendu.getCategorieArticle().getNoCategorie()));
+			itemSold
+					.setCartegoryArticle(categoryDAO.findByNum(itemSold.getCartegoryArticle().getIdCategory()));
 			;
 		}
 		return a;
@@ -56,11 +55,11 @@ public class ArticleVenduServiceImpl implements ArticleVenduService {
 
 	@Override
 	@Transactional
-	public void add(ArticleVendu articleVendu, Utilisateur utilisateur ) {
-		articleVendu.setVend(utilisateur);
-		System.out.println("sos " + articleVendu);
-		articleVenduDAO.create(articleVendu);
-		articleVendu.getLieuRetrait().setNoArticle(articleVendu.getNoArticle());
+	public void add(ItemSold itemSold, User user) {
+		itemSold.setSell(user);
+		System.out.println("sos " + itemSold);
+		itemSoldDAO.create(itemSold);
+		itemSold.getPickUpLocation().setIdArticle(itemSold.getIdArticle());
 	}
 
 }

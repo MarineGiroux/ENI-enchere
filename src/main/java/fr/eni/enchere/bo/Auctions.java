@@ -2,55 +2,63 @@ package fr.eni.enchere.bo;
 
 import java.time.LocalDate;
 
-public class Enchere {
+public class Auctions {
 	
-	private LocalDate dateEnchere;
-	private int montantEnchere;
+	private LocalDate dateAuctions;
+	private int amountAuctions;
 	
 	private User user;
 	private ItemSold itemSold;
 	
-	public Enchere() {
+	public Auctions() {
 	}
-	
-	public Enchere(LocalDate dateEnchere, int montantEnchere, User user, ItemSold itemSold) {
-		this.dateEnchere = dateEnchere;
-		this.montantEnchere = montantEnchere;
+
+	public Auctions(LocalDate dateAuctions, int amountAuctions, User user, ItemSold itemSold) {
+		this.dateAuctions = dateAuctions;
+		this.amountAuctions = amountAuctions;
 		this.user = user;
 		this.itemSold = itemSold;
 	}
-	
-	public LocalDate getDateEnchere() {
-		return dateEnchere;
+
+	public LocalDate getDateAuctions() {
+		return dateAuctions;
 	}
-	public void setDateEnchere(LocalDate dateEnchere) {
-		this.dateEnchere = dateEnchere;
+
+	public void setDateAuctions(LocalDate dateAuctions) {
+		this.dateAuctions = dateAuctions;
 	}
-	public int getMontantEnchere() {
-		return montantEnchere;
+
+	public int getAmountAuctions() {
+		return amountAuctions;
 	}
-	public void setMontantEnchere(int montantEnchere) {
-		this.montantEnchere = montantEnchere;
+
+	public void setAmountAuctions(int amountAuctions) {
+		this.amountAuctions = amountAuctions;
 	}
-	public User getUtilisateur() {
+
+	public User getUser() {
 		return user;
 	}
-	public void setUtilisateur(User user) {
+
+	public void setUser(User user) {
 		this.user = user;
 	}
+
 	public ItemSold getItemSold() {
 		return itemSold;
 	}
-	public void setArticleVendu(ItemSold itemSold) {
+
+	public void setItemSold(ItemSold itemSold) {
 		this.itemSold = itemSold;
 	}
 
 	@Override
 	public String toString() {
-		return String.format("Enchere [dateEnchere=%s, montantEnchere=%s, utilisateur=%s, articleVendu=%s]",
-				dateEnchere, montantEnchere, user, itemSold);
+		return "Auctions{" +
+				"dateAuctions=" + dateAuctions +
+				", amountAuctions=" + amountAuctions +
+				", user=" + user +
+				", itemSold=" + itemSold +
+				'}';
 	}
-
-	
-	
 }

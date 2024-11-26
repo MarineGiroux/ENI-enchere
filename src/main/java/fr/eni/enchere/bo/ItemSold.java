@@ -5,132 +5,172 @@ import java.time.LocalDate;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public class ArticleVendu {
+public class ItemSold {
 	
-	private int noArticle;
+	private int idArticle;
 	@NotBlank
-	private String nomArticle;
+	private String name;
 	@NotBlank
 	private String description;
 	@NotNull
-	private LocalDate dateDebutEnchere;
+	private LocalDate startDateAuctions;
 	@NotNull
-	private LocalDate dateFinEnchere;
+	private LocalDate endDateAuctions;
 	@NotNull
-	private int miseAPrix;
-	private int prixVente;
-	private boolean etatVente;
+	private int initialPrice;
+	private int priceSale;
+	private String picture;
+	private boolean saleStatus;
 	
-	private Utilisateur achete;
-	private Utilisateur vend;
-	private Categorie categorieArticle;
-	private Retrait lieuRetrait;
+	private User Buy;
+	private User Sell;
+	private Category cartegoryArticle;
+	private PickUp pickUpLocation;
 	
-	public ArticleVendu() {
-		lieuRetrait = new Retrait();
-		vend = new Utilisateur();
-		achete = new Utilisateur();
-		categorieArticle = new Categorie();
-	}
-	
-	public ArticleVendu(int noArticle, String nomArticle, String description, LocalDate dateDebutEnchere,
-			LocalDate dateFinEnchere, int miseAPrix, int priVente, boolean etatVente, Utilisateur achete,
-			Utilisateur vend, Categorie categorieArticle, Retrait lieuRetrait) {
-		this.noArticle = noArticle;
-		this.nomArticle = nomArticle;
-		this.description = description;
-		this.dateDebutEnchere = dateDebutEnchere;
-		this.dateFinEnchere = dateFinEnchere;
-		this.miseAPrix = miseAPrix;
-		this.prixVente = priVente;
-		this.etatVente = etatVente;
-		this.achete = achete;
-		this.vend = vend;
-		this.categorieArticle = categorieArticle;
-		this.lieuRetrait = lieuRetrait;
+	public ItemSold() {
+		pickUpLocation = new PickUp();
+		Sell = new User();
+		Buy = new User();
+		cartegoryArticle = new Category();
 	}
 
-	public int getNoArticle() {
-		return noArticle;
+	public ItemSold(int idArticle, String name, String description, LocalDate startDateAuctions, LocalDate endDateAuctions, int initialPrice, int priceSale, String picture, boolean saleStatus, User buy, User sell, Category cartegoryArticle, PickUp pickUpLocation) {
+		this.idArticle = idArticle;
+		this.name = name;
+		this.description = description;
+		this.startDateAuctions = startDateAuctions;
+		this.endDateAuctions = endDateAuctions;
+		this.initialPrice = initialPrice;
+		this.priceSale = priceSale;
+		this.picture = picture;
+		this.saleStatus = saleStatus;
+		Buy = buy;
+		Sell = sell;
+		this.cartegoryArticle = cartegoryArticle;
+		this.pickUpLocation = pickUpLocation;
 	}
-	public void setNoArticle(int noArticle) {
-		this.noArticle = noArticle;
+
+	public int getIdArticle() {
+		return idArticle;
 	}
-	public String getNomArticle() {
-		return nomArticle;
+
+	public void setIdArticle(int idArticle) {
+		this.idArticle = idArticle;
 	}
-	public void setNomArticle(String nomArticle) {
-		this.nomArticle = nomArticle;
+
+	public @NotBlank String getName() {
+		return name;
 	}
-	public String getDescription() {
+
+	public void setName(@NotBlank String name) {
+		this.name = name;
+	}
+
+	public @NotBlank String getDescription() {
 		return description;
 	}
-	public void setDescription(String description) {
+
+	public void setDescription(@NotBlank String description) {
 		this.description = description;
 	}
-	public LocalDate getDateDebutEnchere() {
-		return dateDebutEnchere;
+
+	public @NotNull LocalDate getStartDateAuctions() {
+		return startDateAuctions;
 	}
-	public void setDateDebutEnchere(LocalDate dateDebutEnchere) {
-		this.dateDebutEnchere = dateDebutEnchere;
+
+	public void setStartDateAuctions(@NotNull LocalDate startDateAuctions) {
+		this.startDateAuctions = startDateAuctions;
 	}
-	public LocalDate getDateFinEnchere() {
-		return dateFinEnchere;
+
+	public @NotNull LocalDate getEndDateAuctions() {
+		return endDateAuctions;
 	}
-	public void setDateFinEnchere(LocalDate dateFinEnchere) {
-		this.dateFinEnchere = dateFinEnchere;
+
+	public void setEndDateAuctions(@NotNull LocalDate endDateAuctions) {
+		this.endDateAuctions = endDateAuctions;
 	}
-	public int getMiseAPrix() {
-		return miseAPrix;
+
+	@NotNull
+	public int getInitialPrice() {
+		return initialPrice;
 	}
-	public void setMiseAPrix(int miseAPrix) {
-		this.miseAPrix = miseAPrix;
+
+	public void setInitialPrice(@NotNull int initialPrice) {
+		this.initialPrice = initialPrice;
 	}
-	public int getPrixVente() {
-		return prixVente;
+
+	public int getPriceSale() {
+		return priceSale;
 	}
-	public void setPrixVente(int priVente) {
-		this.prixVente = priVente;
+
+	public void setPriceSale(int priceSale) {
+		this.priceSale = priceSale;
 	}
-	public boolean getEtatVente() {
-		return etatVente;
+
+	public String getPicture() {
+		return picture;
 	}
-	public void setEtatVente(boolean etatVente) {
-		this.etatVente = etatVente;
+
+	public void setPicture(String picture) {
+		this.picture = picture;
 	}
-	public Utilisateur getAchete() {
-		return achete;
+
+	public boolean isSaleStatus() {
+		return saleStatus;
 	}
-	public void setAchete(Utilisateur achete) {
-		this.achete = achete;
+
+	public void setSaleStatus(boolean saleStatus) {
+		this.saleStatus = saleStatus;
 	}
-	public Utilisateur getVend() {
-		return vend;
+
+	public User getBuy() {
+		return Buy;
 	}
-	public void setVend(Utilisateur vend) {
-		this.vend = vend;
+
+	public void setBuy(User buy) {
+		Buy = buy;
 	}
-	public Categorie getCategorieArticle() {
-		return categorieArticle;
+
+	public User getSell() {
+		return Sell;
 	}
-	public void setCategorieArticle(Categorie categorieArticle) {
-		this.categorieArticle = categorieArticle;
+
+	public void setSell(User sell) {
+		Sell = sell;
 	}
-	public Retrait getLieuRetrait() {
-		return lieuRetrait;
+
+	public Category getCartegoryArticle() {
+		return cartegoryArticle;
 	}
-	public void setLieuRetrait(Retrait lieuRetrait) {
-		this.lieuRetrait = lieuRetrait;
+
+	public void setCartegoryArticle(Category cartegoryArticle) {
+		this.cartegoryArticle = cartegoryArticle;
+	}
+
+	public PickUp getPickUpLocation() {
+		return pickUpLocation;
+	}
+
+	public void setPickUpLocation(PickUp pickUpLocation) {
+		this.pickUpLocation = pickUpLocation;
 	}
 
 	@Override
 	public String toString() {
-		return String.format(
-				"ArticleVendu [noArticle=%s, nomArticle=%s, description=%s, dateDebutEnchere=%s, dateFinEnchere=%s, miseAPrix=%s, priVente=%s, etatVente=%s, achete=%s, vend=%s, categorieArticle=%s, lieuRetrait=%s]",
-				noArticle, nomArticle, description, dateDebutEnchere, dateFinEnchere, miseAPrix, prixVente, etatVente,
-				achete, vend, categorieArticle, lieuRetrait);
+		return "ItemSold{" +
+				"idArticle=" + idArticle +
+				", name='" + name + '\'' +
+				", description='" + description + '\'' +
+				", startDateAuctions=" + startDateAuctions +
+				", endDateAuctions=" + endDateAuctions +
+				", initialPrice=" + initialPrice +
+				", priceSale=" + priceSale +
+				", picture='" + picture + '\'' +
+				", saleStatus=" + saleStatus +
+				", Buy=" + Buy +
+				", Sell=" + Sell +
+				", cartegoryArticle=" + cartegoryArticle +
+				", pickUpLocation=" + pickUpLocation +
+				'}';
 	}
-	
-	
-
 }

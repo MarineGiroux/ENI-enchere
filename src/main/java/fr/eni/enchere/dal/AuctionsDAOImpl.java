@@ -14,34 +14,34 @@ import org.springframework.stereotype.Repository;
 
 import fr.eni.enchere.bo.User;
 @Repository
-public class EnchereDAOImpl implements EnchereDAO{
+public class AuctionsDAOImpl implements AuctionsDAO {
 	
-	private final String INSERT = "INSERT INTO ENCHERES (noUtilisateur,noArticle,dateEnchere,montantEnchere)VALUES (:noUtilisateur,:noArticle,:dateEnchere,:montantEnchere)";
-	private final String FIND_ALL = "Select * FROM ENCHERES";
-	private final String FIND_BY_noArticle_noUtilisateur = "Select * FROM ENCHERES WHERE noArticle = :noArticle AND noUtilisateur = :noUtilisateur";
-	private final String COUNT_NOARTICLE_noUtilisateur = "SELECT COUNT(noArticle) FROM ENCHERES WHERE noArticle = :noArticle AND noUtilisateur = :noUtilisateur";
-	private final String COUNT_NOARTICLE = "SELECT COUNT(noArticle) FROM ENCHERES WHERE noArticle = :noArticle";
-	private final String UPDATE = "update ENCHERES SET noUtilisateur = :noUtilisateur, montantEnchere = :montantEnchere, dateEnchere = :dateEnchere WHERE noArticle = :noArticle";
-	private final String FIND_BY_noArticle = "Select * FROM ENCHERES WHERE noArticle = :noArticle";
+	private final String INSERT = "INSERT INTO AUCTIONS (idUser,idArticle,dateAuctions,amountAuctions)VALUES (:idUser,:idArticle,:dateAuctions,:amountAuctions)";
+	private final String FIND_ALL = "Select * FROM AUCTIONS";
+	private final String FIND_BY_idArticle_idUser = "Select * FROM AUCTIONS WHERE idArticle = :idArticle AND idUser = :idUser";
+	private final String COUNT_idArticle_idUser = "SELECT COUNT(idArticle) FROM AUCTIONS WHERE idArticle = :idArticle AND idUser = :idUser";
+	private final String COUNT_idArticle = "SELECT COUNT(idArticle) FROM AUCTIONS WHERE idArticle = :idArticle";
+	private final String UPDATE = "update AUCTIONS SET idUser = :idUser, amountAuctions = :amountAuctions, dateAuctions = :dateAuctions WHERE idArticle = :idArticle";
+	private final String FIND_BY_idArticle = "Select * FROM AUCTIONS WHERE idArticle = :idArticle";
 	@Autowired
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-	
+
 	@Override
-	public Auctions findBynoUtilisateur(int noArticle, int noUtilisateur) {
+	public Auctions findByidUser(int idArticle, int idUser) {
 		MapSqlParameterSource nameParameters = new MapSqlParameterSource();	
-		nameParameters.addValue("noUtilisateur", noUtilisateur);
-		nameParameters.addValue("noArticle", noArticle);
-		return namedParameterJdbcTemplate.queryForObject(FIND_BY_noArticle_noUtilisateur, nameParameters, new BeanPropertyRowMapper<Auctions>(Auctions.class));
+		nameParameters.addValue("idUser", idUser);
+		nameParameters.addValue("noArticle", idArticle);
+		return namedParameterJdbcTemplate.queryForObject(FIND_BY_idArticle_idUser, nameParameters, new BeanPropertyRowMapper<Auctions>(Auctions.class));
 	}
 
 	@Override
 	public void create(Auctions auctions) {
 		MapSqlParameterSource nameParameters = new MapSqlParameterSource();	
 		
-		nameParameters.addValue("noUtilisateur", auctions.getUtilisateur().getIdUser());
-		nameParameters.addValue("noArticle", auctions.getItemSold().getIdArticle());
-		nameParameters.addValue("dateEnchere", auctions.getDateAuctions());
-		nameParameters.addValue("montantEnchere", auctions.getAmountAuctions());
+		nameParameters.addValue("idUser", auctions.getUser().getIdUser());
+		nameParameters.addValue("idArticle", auctions.getItemSold().getIdArticle());
+		nameParameters.addValue("dateAuctions", auctions.getDateAuctions());
+		nameParameters.addValue("amountAuctions", auctions.getAmountAuctions());
 		
 		namedParameterJdbcTemplate.update(INSERT, nameParameters);
 	}
@@ -52,39 +52,39 @@ public class EnchereDAOImpl implements EnchereDAO{
 	}
 
 	@Override
-	public int countEnchereUtilisateur(int noArticle,int noUtilisateur) {
+	public int countAuctionsUser(int idArticle, int idUser) {
 
 		MapSqlParameterSource nameParameters = new MapSqlParameterSource();
-		nameParameters.addValue("noUtilisateur", noUtilisateur);
-		nameParameters.addValue("noArticle" , noArticle);
-		return namedParameterJdbcTemplate.queryForObject(COUNT_NOARTICLE_noUtilisateur, nameParameters, Integer.class);
+		nameParameters.addValue("idUser", idUser);
+		nameParameters.addValue("idArticle" , idArticle);
+		return namedParameterJdbcTemplate.queryForObject(COUNT_idArticle_idUser, nameParameters, Integer.class);
 	}
 
 	@Override
-	public void surencherir(Auctions auctions) {
+	public void outbid(Auctions auctions) {
 		MapSqlParameterSource nameParameters = new MapSqlParameterSource();
-		nameParameters.addValue("noUtilisateur", auctions.getUtilisateur().getIdUser());
-		nameParameters.addValue("montantEnchere", auctions.getAmountAuctions());
-		nameParameters.addValue("dateEnchere", auctions.getDateAuctions());
-		nameParameters.addValue("noArticle", auctions.getItemSold().getIdArticle());
+		nameParameters.addValue("idUser", auctions.getUser().getIdUser());
+		nameParameters.addValue("amountAuctions", auctions.getAmountAuctions());
+		nameParameters.addValue("dateAuctions", auctions.getDateAuctions());
+		nameParameters.addValue("idArticle", auctions.getItemSold().getIdArticle());
 		
 		namedParameterJdbcTemplate.update(UPDATE, nameParameters);
 		
 	}
 
 	@Override
-	public List<Auctions> findByArticle(int noArticle) {
+	public List<Auctions> findByArticle(int idArticle) {
 		MapSqlParameterSource nameParameters = new MapSqlParameterSource();
-		nameParameters.addValue("noArticle", noArticle);
+		nameParameters.addValue("noArticle", idArticle);
 		
-		return namedParameterJdbcTemplate.query(FIND_BY_noArticle, nameParameters,new EnchereRowMapper());
+		return namedParameterJdbcTemplate.query(FIND_BY_idArticle, nameParameters,new EnchereRowMapper());
 	}
 
 	@Override
-	public int countEnchere(int noArticle) {
+	public int countAuction(int idArticle) {
 		MapSqlParameterSource nameParameters = new MapSqlParameterSource();
-		nameParameters.addValue("noArticle" , noArticle);
-		return namedParameterJdbcTemplate.queryForObject(COUNT_NOARTICLE, nameParameters, Integer.class);
+		nameParameters.addValue("noArticle" , idArticle);
+		return namedParameterJdbcTemplate.queryForObject(COUNT_idArticle, nameParameters, Integer.class);
 	}
 
 
@@ -95,51 +95,19 @@ class EnchereRowMapper implements org.springframework.jdbc.core.RowMapper<Auctio
 	@Override
 	public Auctions mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Auctions auctions = new Auctions();
-		auctions.setAmountAuctions(rs.getInt("montantEnchere"));
-		auctions.setDateAuctions(rs.getDate("dateEnchere").toLocalDate());
+		auctions.setAmountAuctions(rs.getInt("amountAuctions"));
+		auctions.setDateAuctions(rs.getDate("dateAuctions").toLocalDate());
 		
 		User user = new User();
-		user.setNoUtilisateur(rs.getInt("noUtilisateur"));
-		auctions.setUtilisateur(user);
+		user.setIdUser(rs.getInt("idUser"));
+		auctions.setUser(user);
 		
 		ItemSold itemSold = new ItemSold();
-		itemSold.setIdArticle(rs.getInt("noArticle"));
-		auctions.setArticleVendu(itemSold);
+		itemSold.setIdArticle(rs.getInt("idArticle"));
+		auctions.setItemSold(itemSold);
 		
 		return auctions;
 	}
 	
 	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

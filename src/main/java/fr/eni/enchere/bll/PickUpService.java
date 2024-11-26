@@ -2,9 +2,9 @@ package fr.eni.enchere.bll;
 
 import fr.eni.enchere.bo.PickUp;
 
-public interface RetraitService {
+public interface PickUpService {
 	
-	void createAdresse(PickUp pickUp);
+	void createAdress(PickUp pickUp);
 
 	PickUp findByNum(int noArticle);
 	

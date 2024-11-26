@@ -1,30 +1,30 @@
 package fr.eni.enchere.controller;
 
+import fr.eni.enchere.bll.AuctionsService;
+import fr.eni.enchere.bo.Auctions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-/*import fr.eni.enchere.bll.EnchereService;
-import fr.eni.enchere.bo.Enchere;
-
+/*
 @Controller
-@RequestMapping("vente/detail")
-public class EnchereController {
+@RequestMapping("sell/detail")
+public class AuctionsController {
 
     @Autowired
-    private EnchereService enchereService;
+    private AuctionsService auctionsService;
 
-    public EnchereController(EnchereService enchereService) {
-        this.enchereService = enchereService;
+    public AuctionsController(AuctionsService auctionsService) {
+        this.auctionsService = auctionsService;
     }
 
     @GetMapping
-    public String encherir(Model model) {
+    public String bid(Model model) {
         System.out.println("help");
 
-        model.addAttribute("enchere", new Enchere());
+        model.addAttribute("auctions", new Auctions());
         return"";
     }
 

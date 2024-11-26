@@ -5,14 +5,14 @@ import java.util.List;
 import fr.eni.enchere.bo.Auctions;
 
 
-public interface EnchereService {
+public interface AuctionsService {
 
-	void encherir(Auctions auctions);
+	void bid(Auctions auctions);
 	
-	List<Auctions> recupererEncheres();
+	List<Auctions> recoverAuctions();
 	
-	List<Auctions> findByID(int idEnchere);
+	List<Auctions> findByID(int idAuctions);
 	
-	int montantEnchere (int noArticle);
+	int amountAuction(int idArticle);
 
 }
