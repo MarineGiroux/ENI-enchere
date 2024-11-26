@@ -1,6 +1,8 @@
 package fr.eni.enchere.controller;
 
 import java.security.Principal;
+
+import fr.eni.enchere.bo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,8 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import fr.eni.enchere.bll.UtilisateurService;
-import fr.eni.enchere.bo.Utilisateur;
+import fr.eni.enchere.bll.UserService;
 import fr.eni.enchere.exception.BusinessException;
 import jakarta.validation.Valid;
 
@@ -22,30 +23,30 @@ import jakarta.validation.Valid;
 public class UtilisateurController {
 	
 	@Autowired
-	private UtilisateurService utilisateurService;
+	private UserService userService;
 
 		@GetMapping("/inscription")
 		public String creerUtilisateur(Model model) {
-			System.out.println("début creer utilisateur");
+			System.out.println("début creer user");
 			
-			model.addAttribute("utilisateur", new Utilisateur());
+			model.addAttribute("utilisateur", new User());
 			return "inscription";
 		}
 		
 	@PostMapping("/inscription")
 		public String creerUtilisateur(
-				@Valid @ModelAttribute("utilisateur") Utilisateur utilisateur,
+				@Valid @ModelAttribute("utilisateur") User user,
 				BindingResult bindingResult, @RequestParam("confirmMdP") String confirmMdP) {
 
-			System.out.println("mdp utilisateur = " + utilisateur.getMotDePasse());
+			System.out.println("mdp user = " + user.getPassWord());
 			
 			if (bindingResult.hasErrors()) {
 				System.out.println(bindingResult.getAllErrors());
 				return "inscription";
 			} else {
-				System.out.println("UTILISATEUR = " + utilisateur);
+				System.out.println("UTILISATEUR = " + user);
 				try {
-					this.utilisateurService.add(utilisateur, confirmMdP);
+					this.userService.add(user, confirmMdP);
 					return "redirect:/login";
 				} catch (BusinessException e) {
 					e.getListeErreurs().forEach(
@@ -70,14 +71,14 @@ public class UtilisateurController {
 	
 	@GetMapping("/delete")
 	public String deleteUtilisateur(Principal principal, Model model) {
-		System.out.println("supprimer utilisateur : " + principal.getName());
-		utilisateurService.deleteAccountByEmail(principal.getName());
+		System.out.println("supprimer user : " + principal.getName());
+		userService.deleteAccountByEmail(principal.getName());
 		return "redirect:/logout";
 
 	}
 	
 	@GetMapping("/update")
-	public String modifierUtilisateur(Utilisateur utilisateur, Principal principal, Model model) {
+	public String modifierUtilisateur(User user, Principal principal, Model model) {
 		controlUtilisateur(principal.getName(), model);
 		return "update";
 		
@@ -85,15 +86,15 @@ public class UtilisateurController {
 	
 	@PostMapping("/profil")
 	public String modificationUtilisateurEnregistrer(
-			@Valid @ModelAttribute(name = "utilisateur") Utilisateur utilisateur, BindingResult bindingResult) {
+			@Valid @ModelAttribute(name = "utilisateur") User user, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			System.out.println("erreur de validation modif");
 			System.out.println(bindingResult.getAllErrors());
 			return "update";
 		} else {
-			System.out.println("utilisateur : " + utilisateur);
+			System.out.println("user : " + user);
 			try {
-				this.utilisateurService.update(utilisateur);
+				this.userService.update(user);
 				return "profil";
 			} catch (BusinessException e) {
 				e.getListeErreurs().forEach(
@@ -109,14 +110,14 @@ public class UtilisateurController {
 	
 	
 	private void controlUtilisateur(String emailUtilisateur, Model model) {
-		Utilisateur utilisateur = utilisateurService.findByEmail(emailUtilisateur);
+		User user = userService.findByEmail(emailUtilisateur);
 		if(emailUtilisateur != null) {
-					model.addAttribute("utilisateur",utilisateur);
-					System.out.println("utilisateur" + emailUtilisateur);
+					model.addAttribute("utilisateur", user);
+					System.out.println("user" + emailUtilisateur);
 		}else {
-			System.out.println("utilisateur inconnu");
+			System.out.println("user inconnu");
 		}
-		System.out.println("email utilisateur = " + emailUtilisateur);
+		System.out.println("email user = " + emailUtilisateur);
 	}
 	
 		

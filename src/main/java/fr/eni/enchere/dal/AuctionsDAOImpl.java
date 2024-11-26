@@ -4,15 +4,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import fr.eni.enchere.bo.Auctions;
+import fr.eni.enchere.bo.ItemSold;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import fr.eni.enchere.bo.ArticleVendu;
-import fr.eni.enchere.bo.Enchere;
-import fr.eni.enchere.bo.Utilisateur;
+import fr.eni.enchere.bo.User;
 @Repository
 public class EnchereDAOImpl implements EnchereDAO{
 	
@@ -27,27 +27,27 @@ public class EnchereDAOImpl implements EnchereDAO{
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	
 	@Override
-	public Enchere findBynoUtilisateur(int noArticle,int noUtilisateur) {
+	public Auctions findBynoUtilisateur(int noArticle, int noUtilisateur) {
 		MapSqlParameterSource nameParameters = new MapSqlParameterSource();	
 		nameParameters.addValue("noUtilisateur", noUtilisateur);
 		nameParameters.addValue("noArticle", noArticle);
-		return namedParameterJdbcTemplate.queryForObject(FIND_BY_noArticle_noUtilisateur, nameParameters, new BeanPropertyRowMapper<Enchere>(Enchere.class));
+		return namedParameterJdbcTemplate.queryForObject(FIND_BY_noArticle_noUtilisateur, nameParameters, new BeanPropertyRowMapper<Auctions>(Auctions.class));
 	}
 
 	@Override
-	public void create(Enchere enchere) {
+	public void create(Auctions auctions) {
 		MapSqlParameterSource nameParameters = new MapSqlParameterSource();	
 		
-		nameParameters.addValue("noUtilisateur", enchere.getUtilisateur().getNoUtilisateur());
-		nameParameters.addValue("noArticle", enchere.getArticleVendu().getNoArticle());
-		nameParameters.addValue("dateEnchere", enchere.getDateEnchere());
-		nameParameters.addValue("montantEnchere", enchere.getMontantEnchere());
+		nameParameters.addValue("noUtilisateur", auctions.getUtilisateur().getIdUser());
+		nameParameters.addValue("noArticle", auctions.getItemSold().getIdArticle());
+		nameParameters.addValue("dateEnchere", auctions.getDateAuctions());
+		nameParameters.addValue("montantEnchere", auctions.getAmountAuctions());
 		
 		namedParameterJdbcTemplate.update(INSERT, nameParameters);
 	}
 
 	@Override
-	public List<Enchere> findAll() {
+	public List<Auctions> findAll() {
 		return namedParameterJdbcTemplate.query(FIND_ALL, new EnchereRowMapper());
 	}
 
@@ -61,19 +61,19 @@ public class EnchereDAOImpl implements EnchereDAO{
 	}
 
 	@Override
-	public void surencherir(Enchere enchere) {
+	public void surencherir(Auctions auctions) {
 		MapSqlParameterSource nameParameters = new MapSqlParameterSource();
-		nameParameters.addValue("noUtilisateur", enchere.getUtilisateur().getNoUtilisateur());
-		nameParameters.addValue("montantEnchere", enchere.getMontantEnchere());
-		nameParameters.addValue("dateEnchere", enchere.getDateEnchere());
-		nameParameters.addValue("noArticle", enchere.getArticleVendu().getNoArticle());
+		nameParameters.addValue("noUtilisateur", auctions.getUtilisateur().getIdUser());
+		nameParameters.addValue("montantEnchere", auctions.getAmountAuctions());
+		nameParameters.addValue("dateEnchere", auctions.getDateAuctions());
+		nameParameters.addValue("noArticle", auctions.getItemSold().getIdArticle());
 		
 		namedParameterJdbcTemplate.update(UPDATE, nameParameters);
 		
 	}
 
 	@Override
-	public List<Enchere> findByArticle(int noArticle) {
+	public List<Auctions> findByArticle(int noArticle) {
 		MapSqlParameterSource nameParameters = new MapSqlParameterSource();
 		nameParameters.addValue("noArticle", noArticle);
 		
@@ -90,23 +90,23 @@ public class EnchereDAOImpl implements EnchereDAO{
 
 
 }
-class EnchereRowMapper implements org.springframework.jdbc.core.RowMapper<Enchere>{
+class EnchereRowMapper implements org.springframework.jdbc.core.RowMapper<Auctions>{
 
 	@Override
-	public Enchere mapRow(ResultSet rs, int rowNum) throws SQLException {
-		Enchere enchere = new Enchere();
-		enchere.setMontantEnchere(rs.getInt("montantEnchere"));
-		enchere.setDateEnchere(rs.getDate("dateEnchere").toLocalDate());
+	public Auctions mapRow(ResultSet rs, int rowNum) throws SQLException {
+		Auctions auctions = new Auctions();
+		auctions.setAmountAuctions(rs.getInt("montantEnchere"));
+		auctions.setDateAuctions(rs.getDate("dateEnchere").toLocalDate());
 		
-		Utilisateur utilisateur = new Utilisateur();
-		utilisateur.setNoUtilisateur(rs.getInt("noUtilisateur"));
-		enchere.setUtilisateur(utilisateur);
+		User user = new User();
+		user.setNoUtilisateur(rs.getInt("noUtilisateur"));
+		auctions.setUtilisateur(user);
 		
-		ArticleVendu articleVendu = new ArticleVendu();
-		articleVendu.setNoArticle(rs.getInt("noArticle"));
-		enchere.setArticleVendu(articleVendu);		
+		ItemSold itemSold = new ItemSold();
+		itemSold.setIdArticle(rs.getInt("noArticle"));
+		auctions.setArticleVendu(itemSold);
 		
-		return enchere;
+		return auctions;
 	}
 	
 	

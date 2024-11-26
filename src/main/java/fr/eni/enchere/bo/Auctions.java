@@ -7,17 +7,17 @@ public class Enchere {
 	private LocalDate dateEnchere;
 	private int montantEnchere;
 	
-	private Utilisateur utilisateur;
-	private ArticleVendu articleVendu;
+	private User user;
+	private ItemSold itemSold;
 	
 	public Enchere() {
 	}
 	
-	public Enchere(LocalDate dateEnchere, int montantEnchere, Utilisateur utilisateur, ArticleVendu articleVendu) {
+	public Enchere(LocalDate dateEnchere, int montantEnchere, User user, ItemSold itemSold) {
 		this.dateEnchere = dateEnchere;
 		this.montantEnchere = montantEnchere;
-		this.utilisateur = utilisateur;
-		this.articleVendu = articleVendu;
+		this.user = user;
+		this.itemSold = itemSold;
 	}
 	
 	public LocalDate getDateEnchere() {
@@ -32,23 +32,23 @@ public class Enchere {
 	public void setMontantEnchere(int montantEnchere) {
 		this.montantEnchere = montantEnchere;
 	}
-	public Utilisateur getUtilisateur() {
-		return utilisateur;
+	public User getUtilisateur() {
+		return user;
 	}
-	public void setUtilisateur(Utilisateur utilisateur) {
-		this.utilisateur = utilisateur;
+	public void setUtilisateur(User user) {
+		this.user = user;
 	}
-	public ArticleVendu getArticleVendu() {
-		return articleVendu;
+	public ItemSold getItemSold() {
+		return itemSold;
 	}
-	public void setArticleVendu(ArticleVendu articleVendu) {
-		this.articleVendu = articleVendu;
+	public void setArticleVendu(ItemSold itemSold) {
+		this.itemSold = itemSold;
 	}
 
 	@Override
 	public String toString() {
 		return String.format("Enchere [dateEnchere=%s, montantEnchere=%s, utilisateur=%s, articleVendu=%s]",
-				dateEnchere, montantEnchere, utilisateur, articleVendu);
+				dateEnchere, montantEnchere, user, itemSold);
 	}
 
 	
