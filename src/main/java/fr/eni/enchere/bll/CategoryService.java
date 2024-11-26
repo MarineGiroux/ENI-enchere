@@ -2,11 +2,10 @@ package fr.eni.enchere.bll;
 
 import java.util.List;
 
-import fr.eni.enchere.bo.Categorie;
-
+import fr.eni.enchere.bo.Category;
 
 
 public interface CategorieService {
 
-	List<Categorie> FindAll();
+	List<Category> FindAll();
 }

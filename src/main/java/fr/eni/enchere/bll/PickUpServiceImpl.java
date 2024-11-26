@@ -1,8 +1,8 @@
 package fr.eni.enchere.bll;
 
+import fr.eni.enchere.bo.PickUp;
 import org.springframework.stereotype.Service;
 
-import fr.eni.enchere.bo.Retrait;
 import fr.eni.enchere.dal.RetraitDAO;
 
 @Service
@@ -15,14 +15,14 @@ public class RetraitServiceImpl implements RetraitService {
 	}
 
 	@Override
-	public Retrait findByNum(int noArticle) {
-		Retrait r = retraitDAO.findByNum(noArticle);
+	public PickUp findByNum(int noArticle) {
+		PickUp r = retraitDAO.findByNum(noArticle);
 		return r;
 	}
 
 	@Override
-	public void createAdresse(Retrait retrait) {
-		retraitDAO.create(retrait);
+	public void createAdresse(PickUp pickUp) {
+		retraitDAO.create(pickUp);
 	}
 
 }

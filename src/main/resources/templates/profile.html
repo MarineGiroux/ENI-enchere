@@ -23,8 +23,8 @@
 			<ul>
 				<li><a aria-current="page" data-th-href="@{/}">Accueil</a></li>
 				<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/vente}">Ventes</a></li>
-				<li th:if="${!#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/utilisateur/inscription}">Inscription</a></li>
-				<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/utilisateur/profil}">Profil</a></li>
+				<li th:if="${!#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/user/inscription}">Inscription</a></li>
+				<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/user/profil}">Profil</a></li>
 				<li th:if="${!#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/login}">Connexion</a></li>
 				<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/logout}">Déconnexion</a></li>
 			</ul>
@@ -34,7 +34,7 @@
 
 <main class="center-main">
 	<section>
-		<div th:object="${utilisateur}">
+		<div th:object="${user}">
 
 			<h3>Profil de <span data-th-text="*{pseudo}"></span></h3>
 
@@ -66,8 +66,8 @@
 
 			</div>
 				<div class="form-actions">
-					<a data-th-href="@{/utilisateur/update}" class="btn btn-primary">Mise à jour du profil</a>
-					<a  data-th-href="@{/utilisateur/delete}" class="btn btn-alert" >Supprimer le profil</a>
+					<a data-th-href="@{/user/update}" class="btn btn-primary">Mise à jour du profil</a>
+					<a  data-th-href="@{/user/delete}" class="btn btn-alert" >Supprimer le profil</a>
 					<a data-th-href="@{/}" class="btn btn-secondary">Retour</a>
 				</div>
 

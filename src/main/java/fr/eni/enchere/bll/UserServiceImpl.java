@@ -1,39 +1,39 @@
 package fr.eni.enchere.bll;
 
+import fr.eni.enchere.bo.User;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import fr.eni.enchere.bo.Utilisateur;
-import fr.eni.enchere.dal.UtilisateurDAO;
+import fr.eni.enchere.dal.UserDAO;
 import fr.eni.enchere.exception.BusinessException;
 
 @Service
 public class UtilisateurServiceImpl implements UtilisateurService{
 
-	private UtilisateurDAO utilisateurDAO;
+	private UserDAO userDAO;
 	
-	public UtilisateurServiceImpl(UtilisateurDAO utilisateurDAO) {
-		this.utilisateurDAO = utilisateurDAO;
+	public UtilisateurServiceImpl(UserDAO userDAO) {
+		this.userDAO = userDAO;
 	}
 	
 
 	@Override
 	@Transactional
-	public void add(Utilisateur utilisateur, String confirmMdP) throws BusinessException {
+	public void add(User user, String confirmMdP) throws BusinessException {
 		BusinessException be = new BusinessException();
-		boolean valid = validerUniqueEmail(utilisateur.getEmail(), be);
-				valid &= validerUniquePseudo(utilisateur.getPseudo(), be);
-				valid &= validerConfirmMdP(utilisateur, confirmMdP, be);
+		boolean valid = validerUniqueEmail(user.getEmail(), be);
+				valid &= validerUniquePseudo(user.getPseudo(), be);
+				valid &= validerConfirmMdP(user, confirmMdP, be);
 		
 		if(valid) {
 			PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-			String pwdEncoder = passwordEncoder.encode(utilisateur.getMotDePasse());
-			utilisateur.setMotDePasse(pwdEncoder);
+			String pwdEncoder = passwordEncoder.encode(user.getPassWord());
+			user.setPassWord(pwdEncoder);
 			System.out.println("mdp = " + pwdEncoder);
-			utilisateurDAO.create(utilisateur);		
-			utilisateurDAO.createRole(utilisateur);
+			userDAO.create(user);
+			userDAO.createRole(user);
 		}else {
 			throw be;
 		}
@@ -41,7 +41,7 @@ public class UtilisateurServiceImpl implements UtilisateurService{
 	
 	
 	private boolean validerUniqueEmail(String email, BusinessException be) {
-		int nbEmail = utilisateurDAO.countEmail(email);
+		int nbEmail = userDAO.countEmail(email);
 		
 		if(nbEmail == 1) {
 			be.add("Email ou mot de passe incorrect");
@@ -52,7 +52,7 @@ public class UtilisateurServiceImpl implements UtilisateurService{
 	}
 
 	private boolean validerUniquePseudo(String pseudo, BusinessException be) {
-		int nbPseudo = utilisateurDAO.countPseudo(pseudo);
+		int nbPseudo = userDAO.countPseudo(pseudo);
 		
 		if(nbPseudo == 1) {
 			be.add("Le pseudo existe déja");
@@ -61,8 +61,8 @@ public class UtilisateurServiceImpl implements UtilisateurService{
 		return nbPseudo == 0;
 	}
 	
-	private boolean validerConfirmMdP(Utilisateur utilisateur, String ConfirmMdP, BusinessException be) {
-		if(!utilisateur.getMotDePasse().equals(ConfirmMdP)) {
+	private boolean validerConfirmMdP(User user, String ConfirmMdP, BusinessException be) {
+		if(!user.getPassWord().equals(ConfirmMdP)) {
 			be.add("Le mot de passe est différent");
 			System.out.println("confirmMdP = " + ConfirmMdP);
 			return false;
@@ -72,26 +72,26 @@ public class UtilisateurServiceImpl implements UtilisateurService{
 	
 	
 	@Override
-	public Utilisateur findByEmail(String emailUtilisateur) {
+	public User findByEmail(String emailUtilisateur) {
 		// Il nous faut l'utilisateur et les informations associées
-		Utilisateur u = utilisateurDAO.findByEmail(emailUtilisateur);		
+		User u = userDAO.findByEmail(emailUtilisateur);
 		return u;
 	}
 
 	
 	@Override
-	public void update(Utilisateur utilisateur) {		
+	public void update(User user) {
 					PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-					String pwdEncoder = passwordEncoder.encode(utilisateur.getMotDePasse());
-					utilisateur.setMotDePasse(pwdEncoder);
+					String pwdEncoder = passwordEncoder.encode(user.getPassWord());
+					user.setMotDePasse(pwdEncoder);
 					System.out.println("mdp = " + pwdEncoder);
-					utilisateurDAO.update(utilisateur);
+					userDAO.update(user);
 	}
 			
 
 	@Override
 	public void deleteAccountByEmail(String email) {
-		utilisateurDAO.deleteAccountByEmail(email);
+		userDAO.deleteAccountByEmail(email);
 	}
 	
 }

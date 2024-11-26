@@ -23,8 +23,8 @@
 			<ul>
 				<li><a aria-current="page" data-th-href="@{/}">Accueil</a></li>
 				<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/vente}">Ventes</a></li>
-				<li th:if="${!#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/utilisateur/inscription}">Inscription</a></li>
-				<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/utilisateur/profil}">Profil</a></li>
+				<li th:if="${!#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/user/inscription}">Inscription</a></li>
+				<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/user/profil}">Profil</a></li>
 				<li th:if="${!#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/login}">Connexion</a></li>
 				<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/logout}">Déconnexion</a></li>
 			</ul>
@@ -36,7 +36,7 @@
 <main class="center-main">
 	<h3>Inscription</h3>
 	<p>Veuillez entrer vos informations personnelles pour créer votre compte.</p>
-	<form th:action="@{/utilisateur/inscription}" method="post" th:object="${utilisateur}">
+	<form th:action="@{/user/inscription}" method="post" th:object="${user}">
 		<div class="form-container">
 			<div class="form-group">
 				<label for="pseudo">Pseudo</label>

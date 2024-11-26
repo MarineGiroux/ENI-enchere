@@ -1,12 +1,12 @@
 package fr.eni.enchere.dal;
 
+import fr.eni.enchere.bo.PickUp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import fr.eni.enchere.bo.Retrait;
 @Repository
 public class RetraitDAOImpl implements RetraitDAO{
 	
@@ -18,23 +18,23 @@ public class RetraitDAOImpl implements RetraitDAO{
 	private final String FIND_BY_ID ="SELECT * FROM RETRAITS WHERE noArticle = :noArticle";
 
 	@Override
-	public void create(Retrait retrait) {
+	public void create(PickUp pickUp) {
 
 		MapSqlParameterSource nameParameters = new MapSqlParameterSource();
-		nameParameters.addValue("rue",retrait.getRue());
-		nameParameters.addValue("codePostal",retrait.getCodePostal());
-		nameParameters.addValue("ville",retrait.getVille());
-		nameParameters.addValue("noArticle",retrait.getNoArticle());
+		nameParameters.addValue("rue", pickUp.getRoad());
+		nameParameters.addValue("codePostal", pickUp.getZipPass());
+		nameParameters.addValue("ville", pickUp.getCity());
+		nameParameters.addValue("noArticle", pickUp.getIdArticle());
 
 		namedParameterJdbcTemplate.update(INSERT, nameParameters);
 
 	}
 
 	@Override
-	public Retrait findByNum(int noArticle) {
+	public PickUp findByNum(int noArticle) {
 		MapSqlParameterSource namMapSqlParameterSource = new MapSqlParameterSource();
 		namMapSqlParameterSource.addValue("noArticle",noArticle);
-		return namedParameterJdbcTemplate.queryForObject(FIND_BY_ID, namMapSqlParameterSource, new BeanPropertyRowMapper<Retrait>(Retrait.class));
+		return namedParameterJdbcTemplate.queryForObject(FIND_BY_ID, namMapSqlParameterSource, new BeanPropertyRowMapper<PickUp>(PickUp.class));
 	}
 
 }
