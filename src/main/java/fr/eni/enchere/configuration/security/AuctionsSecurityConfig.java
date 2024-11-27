@@ -59,12 +59,14 @@ public class AuctionsSecurityConfig {
 	}
 
 	@Bean
-	UserDetailsManager userDetailsManager (DataSource dataSource) {
-		
-	
+	UserDetailsManager userDetailsManager(DataSource dataSource) {
 		JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
-		jdbcUserDetailsManager.setUsersByUsernameQuery( "SELECT email, motDePasse, 1 FROM UTILISATEURS WHERE email = ?");
-		jdbcUserDetailsManager.setAuthoritiesByUsernameQuery("SELECT email, role FROM ROLES WHERE email = ?");
+		jdbcUserDetailsManager.setUsersByUsernameQuery(
+				"SELECT email, password, 1 FROM USERS WHERE email = ?"
+		);
+		jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(
+				"SELECT u.email, r.role FROM USERS u JOIN ROLES r ON u.idRole = r.idRole WHERE u.email = ?"
+		);
 		return jdbcUserDetailsManager;
 	}
 	

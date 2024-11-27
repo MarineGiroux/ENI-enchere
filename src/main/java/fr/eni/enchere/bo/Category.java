@@ -3,16 +3,16 @@ package fr.eni.enchere.bo;
 public class Category {
 	
 	private int idCategory;
-	private String wording;
+	private String categoryName;
 	
 	
 	public Category() {
 	}
 	
 	
-	public Category(int noCategorie, String wording) {
-		this.idCategory = noCategorie;
-		this.wording = wording;
+	public Category(int idCategory, String categoryName) {
+		this.idCategory = idCategory;
+		this.categoryName = categoryName;
 	}
 
 
@@ -24,19 +24,19 @@ public class Category {
 		this.idCategory = idCategory;
 	}
 
-	public String getWording() {
-		return wording;
+	public String getCategoryName() {
+		return categoryName;
 	}
 
-	public void setWording(String wording) {
-		this.wording = wording;
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
 	}
 
 	@Override
 	public String toString() {
 		return "Category{" +
 				"idCategory=" + idCategory +
-				", wording='" + wording + '\'' +
+				", categoryName='" + categoryName + '\'' +
 				'}';
 	}
 }

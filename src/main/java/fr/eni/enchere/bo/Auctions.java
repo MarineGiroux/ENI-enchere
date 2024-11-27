@@ -8,16 +8,16 @@ public class Auctions {
 	private int amountAuctions;
 	
 	private User user;
-	private ItemSold itemSold;
+	private SoldArticles soldArticles;
 	
 	public Auctions() {
 	}
 
-	public Auctions(LocalDate dateAuctions, int amountAuctions, User user, ItemSold itemSold) {
+	public Auctions(LocalDate dateAuctions, int amountAuctions, User user, SoldArticles soldArticles) {
 		this.dateAuctions = dateAuctions;
 		this.amountAuctions = amountAuctions;
 		this.user = user;
-		this.itemSold = itemSold;
+		this.soldArticles = soldArticles;
 	}
 
 	public LocalDate getDateAuctions() {
@@ -44,12 +44,12 @@ public class Auctions {
 		this.user = user;
 	}
 
-	public ItemSold getItemSold() {
-		return itemSold;
+	public SoldArticles getItemSold() {
+		return soldArticles;
 	}
 
-	public void setItemSold(ItemSold itemSold) {
-		this.itemSold = itemSold;
+	public void setItemSold(SoldArticles soldArticles) {
+		this.soldArticles = soldArticles;
 	}
 
 	@Override
@@ -58,7 +58,7 @@ public class Auctions {
 				"dateAuctions=" + dateAuctions +
 				", amountAuctions=" + amountAuctions +
 				", user=" + user +
-				", itemSold=" + itemSold +
+				", itemSold=" + soldArticles +
 				'}';
 	}
 }

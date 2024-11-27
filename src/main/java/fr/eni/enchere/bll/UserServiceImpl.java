@@ -29,11 +29,10 @@ public class UserServiceImpl implements UserService {
 		
 		if(valid) {
 			PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-			String pwdEncoder = passwordEncoder.encode(user.getPassWord());
-			user.setPassWord(pwdEncoder);
+			String pwdEncoder = passwordEncoder.encode(user.getPassword());
+			user.setPassword(pwdEncoder);
 			System.out.println("mdp = " + pwdEncoder);
 			userDAO.create(user);
-			userDAO.createRole(user);
 		}else {
 			throw be;
 		}
@@ -62,7 +61,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	private boolean validateConfirmPassword(User user, String confirmPassword, BusinessException be) {
-		if(!user.getPassWord().equals(confirmPassword)) {
+		if(!user.getPassword().equals(confirmPassword)) {
 			be.add("Le mot de passe est différent");
 			System.out.println("confirmMdP = " + confirmPassword);
 			return false;
@@ -82,8 +81,8 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void update(User user) {
 					PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-					String pwdEncoder = passwordEncoder.encode(user.getPassWord());
-					user.setPassWord(pwdEncoder);
+					String pwdEncoder = passwordEncoder.encode(user.getPassword());
+					user.setPassword(pwdEncoder);
 					System.out.println("mdp = " + pwdEncoder);
 					userDAO.update(user);
 	}

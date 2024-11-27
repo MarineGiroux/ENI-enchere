@@ -5,14 +5,14 @@ import java.sql.SQLException;
 import java.util.List;
 
 import fr.eni.enchere.bo.Auctions;
-import fr.eni.enchere.bo.ItemSold;
+import fr.eni.enchere.bo.SoldArticles;
+import fr.eni.enchere.bo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import fr.eni.enchere.bo.User;
 @Repository
 public class AuctionsDAOImpl implements AuctionsDAO {
 	
@@ -102,9 +102,9 @@ class EnchereRowMapper implements org.springframework.jdbc.core.RowMapper<Auctio
 		user.setIdUser(rs.getInt("idUser"));
 		auctions.setUser(user);
 		
-		ItemSold itemSold = new ItemSold();
-		itemSold.setIdArticle(rs.getInt("idArticle"));
-		auctions.setItemSold(itemSold);
+		SoldArticles soldArticles = new SoldArticles();
+		soldArticles.setIdArticle(rs.getInt("idArticle"));
+		auctions.setItemSold(soldArticles);
 		
 		return auctions;
 	}

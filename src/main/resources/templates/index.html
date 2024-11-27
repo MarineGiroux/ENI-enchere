@@ -22,12 +22,12 @@
 
 	<select id="listeCat">
 		<option value="0">Catégorie : </option>
-		<option data-th-each="category : ${listCategory}" th:value="${category.idCategory}" th:text="${category.wording}"></option>
+		<option data-th-each="category : ${listCategory}" th:value="${category.idCategory}" th:text="${category.categoryName}"></option>
 	</select>
 
 	<div class="article-list">
 
-		<div class="article-card" data-th-each="item : ${itemSold}">
+		<div class="article-card" data-th-each="item : ${soldArticles}">
 			<div class="rounded-likes">
 				<span data-th-text="*{item.initialPrice}">0</span> €
 				<p>👌</p>
@@ -42,7 +42,7 @@
 			<div class="article-details">
 				<p class="article-details-h4" data-th-text="*{item.description}">Description</p>
 				<div class="article-card-detail">
-					<p><strong>Catégorie :</strong> <span data-th-text="*{item.cartegoryArticle.wording}">Catégorie</span></p>
+					<p><strong>Catégorie :</strong> <span data-th-text="*{item.cartegoryArticle.categoryName}">Catégorie</span></p>
 					<p><strong>Date de fin :</strong> <span data-th-text="*{item.endDateAuctions}">2024-01-01</span></p>
 					<p><strong>Vendeur :</strong> <span data-th-text="*{item.sell.pseudo}">Pseudo</span></p>
 				</div>

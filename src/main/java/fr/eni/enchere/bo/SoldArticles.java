@@ -5,11 +5,11 @@ import java.time.LocalDate;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public class ItemSold {
+public class SoldArticles {
 	
 	private int idArticle;
 	@NotBlank
-	private String name;
+	private String nameArticle;
 	@NotBlank
 	private String description;
 	@NotNull
@@ -27,16 +27,16 @@ public class ItemSold {
 	private Category cartegoryArticle;
 	private PickUp pickUpLocation;
 	
-	public ItemSold() {
+	public SoldArticles() {
 		pickUpLocation = new PickUp();
 		Sell = new User();
 		Buy = new User();
 		cartegoryArticle = new Category();
 	}
 
-	public ItemSold(int idArticle, String name, String description, LocalDate startDateAuctions, LocalDate endDateAuctions, int initialPrice, int priceSale, String picture, boolean saleStatus, User buy, User sell, Category cartegoryArticle, PickUp pickUpLocation) {
+	public SoldArticles(int idArticle, String nameArticle, String description, LocalDate startDateAuctions, LocalDate endDateAuctions, int initialPrice, int priceSale, String picture, boolean saleStatus, User buy, User sell, Category cartegoryArticle, PickUp pickUpLocation) {
 		this.idArticle = idArticle;
-		this.name = name;
+		this.nameArticle = nameArticle;
 		this.description = description;
 		this.startDateAuctions = startDateAuctions;
 		this.endDateAuctions = endDateAuctions;
@@ -58,12 +58,12 @@ public class ItemSold {
 		this.idArticle = idArticle;
 	}
 
-	public @NotBlank String getName() {
-		return name;
+	public @NotBlank String getNameArticle() {
+		return nameArticle;
 	}
 
-	public void setName(@NotBlank String name) {
-		this.name = name;
+	public void setNameArticle(@NotBlank String nameArticle) {
+		this.nameArticle = nameArticle;
 	}
 
 	public @NotBlank String getDescription() {
@@ -159,7 +159,7 @@ public class ItemSold {
 	public String toString() {
 		return "ItemSold{" +
 				"idArticle=" + idArticle +
-				", name='" + name + '\'' +
+				", name='" + nameArticle + '\'' +
 				", description='" + description + '\'' +
 				", startDateAuctions=" + startDateAuctions +
 				", endDateAuctions=" + endDateAuctions +

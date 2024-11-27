@@ -35,7 +35,7 @@
 <main class="center-main">
 	<h3>Nouvelle Vente</h3>
 	<p>Veuillez remplir les informations nécessaires pour proposer un nouvel article en vente.</p>
-	<form th:action="@{/vente}" method="post" th:object="${itemSold}">
+	<form th:action="@{/vente}" method="post" th:object="${soldArticles}">
 		<div class="form-container">
 			<div class="form-group">
 				<label for="article">Nom de l'article</label>
