@@ -52,7 +52,7 @@ public class SoldArticlesController {
 	}
 
 	@GetMapping
-	public String createItemSold(Model model) {
+	public String createSoldArticle(Model model) {
 		System.out.println("début creer article");
 		List<Category> category = categoryService.findAll();
 		model.addAttribute("listCategory", category);
@@ -62,7 +62,7 @@ public class SoldArticlesController {
 	}
 
 	@PostMapping
-	public String createArticle(@Valid @ModelAttribute("itemSold") SoldArticles soldArticles,
+	public String createArticle(@Valid @ModelAttribute("soldArticle") SoldArticles soldArticles,
 								BindingResult bindingResult, Principal principal, Model model) {
 		List<Category> category = categoryService.findAll();
 		model.addAttribute("listCategory", category);
@@ -103,7 +103,7 @@ public class SoldArticlesController {
 		SoldArticles soldArticles = soldArticlesService.FindById(id);
 		soldArticles.setPickUpLocation(pickUpService.findByNum(id));
 		
-		model.addAttribute("itemSold", soldArticles);
+		model.addAttribute("soldArticle", soldArticles);
 		
 		return "detail-sale";
 	}
@@ -122,7 +122,7 @@ public class SoldArticlesController {
 									 Model model) {
 		Auctions auctions = new Auctions();
 		auctions.setUser(userService.findByEmail(principal.getName()));
-		auctions.setItemSold(soldArticlesService.FindById(idArticle));
+		auctions.setSoldArticle(soldArticlesService.FindById(idArticle));
 		auctions.setDateAuctions(java.time.LocalDate.now());
 		auctions.setAmountAuctions(amountAuction);
 		this.auctionsService.bid(auctions);

@@ -44,11 +44,11 @@ public class Auctions {
 		this.user = user;
 	}
 
-	public SoldArticles getItemSold() {
+	public SoldArticles getSoldArticle() {
 		return soldArticles;
 	}
 
-	public void setItemSold(SoldArticles soldArticles) {
+	public void setSoldArticle(SoldArticles soldArticles) {
 		this.soldArticles = soldArticles;
 	}
 
@@ -58,7 +58,7 @@ public class Auctions {
 				"dateAuctions=" + dateAuctions +
 				", amountAuctions=" + amountAuctions +
 				", user=" + user +
-				", itemSold=" + soldArticles +
+				", soldArticle=" + soldArticles +
 				'}';
 	}
 }

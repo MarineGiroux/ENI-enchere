@@ -83,7 +83,7 @@ public class SoldArticlesDAOImpl implements SoldArticlesDAO {
 	@Override
 	public void updatePriceSale(Auctions auctions) {
 		MapSqlParameterSource nameParameters = new MapSqlParameterSource();
-		nameParameters.addValue("idArticle", auctions.getItemSold().getIdArticle());
+		nameParameters.addValue("idArticle", auctions.getSoldArticle().getIdArticle());
 		nameParameters.addValue("priceSale", auctions.getAmountAuctions());
 		
 		namedParameterJdbcTemplate.update(UPDATE_PRIX_VENTE, nameParameters);
@@ -113,9 +113,9 @@ class SoldArticlesRowMapper implements RowMapper<SoldArticles>{
 		soldArticles.setSell(vendeur);
 		
 //		Utilisateur achete = new Utilisateur();
-//		if (itemSold.getAchete() != null) {
+//		if (soldArticle.getAchete() != null) {
 //			achete.setidUser(rs.getInt("noAcheteur"));
-//			itemSold.setAchete(achete);
+//			soldArticle.setAchete(achete);
 //		}
 //		
 		soldArticles.setBuy(null);

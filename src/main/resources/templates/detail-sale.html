@@ -26,7 +26,7 @@
 				<li><a aria-current="page" data-th-href="@{/}">Accueil</a></li>
 				<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/vente}">Ventes</a></li>
 				<li th:if="${!#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/user/inscription}">Inscription</a></li>
-				<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/user/profil}">Profil</a></li>
+				<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/user/profile}">Profil</a></li>
 				<li th:if="${!#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/login}">Connexion</a></li>
 				<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/logout}">Déconnexion</a></li>
 			</ul>
@@ -37,7 +37,7 @@
 
 
 	<form th:action="@{/vente/detail}" th:object="${soldArticles}" method="post">
-		<h3>Détail de l'article <span data-th-text="*{idArticle}"></span></h3>
+		<h3>Détail de l'article <span data-th-text="*{id}"></span></h3>
 		<div class="form-container">
 
 			<div class="form-group">

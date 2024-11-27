@@ -41,7 +41,7 @@ public class IndexController {
 	@GetMapping
 	public String index(Model model) {
 		List<SoldArticles> soldArticles = soldArticlesService.findAll();
-		model.addAttribute("itemSold", soldArticles);
+		model.addAttribute("soldArticle", soldArticles);
 		List<Category> category = categoryService.findAll();
 		model.addAttribute("listCategory", category);
 		return "index";
@@ -52,7 +52,7 @@ public class IndexController {
 		List<SoldArticles> soldArticles = soldArticlesService.findAll().stream()
 							.filter(f -> f.getCartegoryArticle().getIdCategory() == id)
 							.collect(Collectors.toList());
-		model.addAttribute("itemSold", soldArticles);
+		model.addAttribute("soldArticle", soldArticles);
 		
 		List<Category> category = categoryService.findAll();
 		model.addAttribute("listCategory", category);
@@ -64,7 +64,7 @@ public class IndexController {
 		List<SoldArticles> soldArticles = soldArticlesService.findAll().stream()
 							.filter(f -> f.getNameArticle().toLowerCase().contains(name.toLowerCase()))
 							.collect(Collectors.toList());
-		model.addAttribute("itemSold", soldArticles);
+		model.addAttribute("soldArticle", soldArticles);
 		
 		List<Category> category = categoryService.findAll();
 		model.addAttribute("listCategory", category);
