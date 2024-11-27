@@ -39,7 +39,7 @@ public class AuctionsDAOImpl implements AuctionsDAO {
 		MapSqlParameterSource nameParameters = new MapSqlParameterSource();	
 		
 		nameParameters.addValue("idUser", auctions.getUser().getIdUser());
-		nameParameters.addValue("idArticle", auctions.getItemSold().getIdArticle());
+		nameParameters.addValue("idArticle", auctions.getSoldArticle().getIdArticle());
 		nameParameters.addValue("dateAuctions", auctions.getDateAuctions());
 		nameParameters.addValue("amountAuctions", auctions.getAmountAuctions());
 		
@@ -66,7 +66,7 @@ public class AuctionsDAOImpl implements AuctionsDAO {
 		nameParameters.addValue("idUser", auctions.getUser().getIdUser());
 		nameParameters.addValue("amountAuctions", auctions.getAmountAuctions());
 		nameParameters.addValue("dateAuctions", auctions.getDateAuctions());
-		nameParameters.addValue("idArticle", auctions.getItemSold().getIdArticle());
+		nameParameters.addValue("idArticle", auctions.getSoldArticle().getIdArticle());
 		
 		namedParameterJdbcTemplate.update(UPDATE, nameParameters);
 		
@@ -104,7 +104,7 @@ class EnchereRowMapper implements org.springframework.jdbc.core.RowMapper<Auctio
 		
 		SoldArticles soldArticles = new SoldArticles();
 		soldArticles.setIdArticle(rs.getInt("idArticle"));
-		auctions.setItemSold(soldArticles);
+		auctions.setSoldArticle(soldArticles);
 		
 		return auctions;
 	}

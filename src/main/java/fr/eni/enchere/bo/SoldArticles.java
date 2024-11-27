@@ -157,7 +157,7 @@ public class SoldArticles {
 
 	@Override
 	public String toString() {
-		return "ItemSold{" +
+		return "SoldArticle{" +
 				"idArticle=" + idArticle +
 				", name='" + nameArticle + '\'' +
 				", description='" + description + '\'' +

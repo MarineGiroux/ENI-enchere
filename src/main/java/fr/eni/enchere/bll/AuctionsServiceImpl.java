@@ -33,17 +33,17 @@ public class AuctionsServiceImpl implements AuctionsService {
 	@Override
 	public void bid(Auctions auctions) {
 		//verif argent suffisant
-		if (auctions.getAmountAuctions()<= soldArticlesDAO.findByNum(auctions.getItemSold().getIdArticle()).getInitialPrice()) {
+		if (auctions.getAmountAuctions()<= soldArticlesDAO.findByNum(auctions.getSoldArticle().getIdArticle()).getInitialPrice()) {
 			//verif date auctions
-			if (auctions.getDateAuctions().isAfter(soldArticlesDAO.findByNum(auctions.getItemSold().getIdArticle()).getStartDateAuctions())
-					&& auctions.getDateAuctions().isBefore(soldArticlesDAO.findByNum(auctions.getItemSold().getIdArticle()).getEndDateAuctions()) ){
+			if (auctions.getDateAuctions().isAfter(soldArticlesDAO.findByNum(auctions.getSoldArticle().getIdArticle()).getStartDateAuctions())
+					&& auctions.getDateAuctions().isBefore(soldArticlesDAO.findByNum(auctions.getSoldArticle().getIdArticle()).getEndDateAuctions()) ){
 				//verif si une auctions existe pour l'article
-				if (auctionsDAO.countAuction(auctions.getItemSold().getIdArticle()) != 0) {
+				if (auctionsDAO.countAuction(auctions.getSoldArticle().getIdArticle()) != 0) {
 					//deja une auctions
 					//trouver la plus grosse auctions
 					int maxAmount = 0;
 					int idUserMax = 0;
-					List<Auctions> listAuctions = auctionsDAO.findByArticle(auctions.getItemSold().getIdArticle());
+					List<Auctions> listAuctions = auctionsDAO.findByArticle(auctions.getSoldArticle().getIdArticle());
 					for (Auctions auctions2 : listAuctions) {
 						if (auctions2.getAmountAuctions() > maxAmount) {
 							maxAmount = auctions2.getAmountAuctions();
@@ -57,7 +57,7 @@ public class AuctionsServiceImpl implements AuctionsService {
 						//rembourser auctions precedente
 						userDAO.updateCredit(userDAO.findByNum(idUserMax).getCredit() + maxAmount, userDAO.findByNum(idUserMax));
 						//verif si l'user a deja une auctions pour cet article
-						if (auctionsDAO.countAuctionsUser(auctions.getItemSold().getIdArticle(), auctions.getUser().getIdUser())>0) {
+						if (auctionsDAO.countAuctionsUser(auctions.getSoldArticle().getIdArticle(), auctions.getUser().getIdUser())>0) {
 							//modifier l'enchère
 							auctionsDAO.outbid(auctions);
 						} else {
@@ -70,7 +70,7 @@ public class AuctionsServiceImpl implements AuctionsService {
 					}
 				} else {
 					//verif que montant>miseAPrix
-					if (auctions.getAmountAuctions() >= soldArticlesDAO.findByNum(auctions.getItemSold().getIdArticle()).getInitialPrice()) {
+					if (auctions.getAmountAuctions() >= soldArticlesDAO.findByNum(auctions.getSoldArticle().getIdArticle()).getInitialPrice()) {
 						//premiere auctions
 						//debit de credit
 						userDAO.updateCredit(userDAO.findByNum(auctions.getUser().getIdUser()).getCredit()- auctions.getAmountAuctions(), userDAO.findByNum(auctions.getUser().getIdUser()));
@@ -95,11 +95,11 @@ public class AuctionsServiceImpl implements AuctionsService {
 		List<Auctions> auctionList = auctionsDAO.findAll();
 		
 		for (Auctions auctions : auctionList) {
-			SoldArticles soldArticles = soldArticlesDAO.findByNum(auctions.getItemSold().getIdArticle());
+			SoldArticles soldArticles = soldArticlesDAO.findByNum(auctions.getSoldArticle().getIdArticle());
 			soldArticles.setCartegoryArticle(categoryDAO.findByNum(soldArticles.getCartegoryArticle().getIdCategory()));
 			
 
-			auctions.setItemSold(soldArticles);
+			auctions.setSoldArticle(soldArticles);
 			auctions.setUser(userDAO.findByNum(auctions.getUser().getIdUser()));
 		}
 		return auctionList;
