@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class CategoryDAOImpl implements CategoryDAO {
 	
-	private final String INSERT = "INSERT INTO CATEGORIES (wording) VALUES (:wording)";
+	private final String INSERT = "INSERT INTO CATEGORIES (categoryName) VALUES (:categoryName)";
 	private final String FIND_BY_NUM = "select * from CATEGORIES where idCategory = :idCategory";
 	private final String Find_All = "select * from CATEGORIES";
 	
@@ -29,7 +29,7 @@ public class CategoryDAOImpl implements CategoryDAO {
 	@Override
 	public void create(Category category) {
 		MapSqlParameterSource nameParameters = new MapSqlParameterSource();
-		nameParameters.addValue("wording", category.getWording());
+		nameParameters.addValue("categoryName", category.getCategoryName());
 		
 		namedParameterJdbcTemplate.update(INSERT, nameParameters);	
 	}

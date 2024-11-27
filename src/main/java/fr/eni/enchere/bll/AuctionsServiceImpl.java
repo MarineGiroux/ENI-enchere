@@ -3,10 +3,10 @@ package fr.eni.enchere.bll;
 import java.util.List;
 
 import fr.eni.enchere.bo.Auctions;
+import fr.eni.enchere.bo.SoldArticles;
 import org.springframework.stereotype.Service;
 
-import fr.eni.enchere.bo.ItemSold;
-import fr.eni.enchere.dal.ItemSoldDAO;
+import fr.eni.enchere.dal.SoldArticlesDAO;
 import fr.eni.enchere.dal.CategoryDAO;
 import fr.eni.enchere.dal.AuctionsDAO;
 import fr.eni.enchere.dal.UserDAO;
@@ -15,17 +15,17 @@ import fr.eni.enchere.dal.UserDAO;
 public class AuctionsServiceImpl implements AuctionsService {
 	
 	private AuctionsDAO auctionsDAO;
-	private ItemSoldDAO itemSoldDAO;
+	private SoldArticlesDAO soldArticlesDAO;
 	private UserDAO userDAO;
 	private CategoryDAO categoryDAO;
 	
 	
 
-	public AuctionsServiceImpl(AuctionsDAO auctionsDAO, ItemSoldDAO itemSoldDAO, UserDAO userDAO,
+	public AuctionsServiceImpl(AuctionsDAO auctionsDAO, SoldArticlesDAO soldArticlesDAO, UserDAO userDAO,
 							   CategoryDAO categoryDAO) {
 		super();
 		this.auctionsDAO = auctionsDAO;
-		this.itemSoldDAO = itemSoldDAO;
+		this.soldArticlesDAO = soldArticlesDAO;
 		this.userDAO = userDAO;
 		this.categoryDAO = categoryDAO;
 	}
@@ -33,10 +33,10 @@ public class AuctionsServiceImpl implements AuctionsService {
 	@Override
 	public void bid(Auctions auctions) {
 		//verif argent suffisant
-		if (auctions.getAmountAuctions()<= itemSoldDAO.findByNum(auctions.getItemSold().getIdArticle()).getInitialPrice()) {
+		if (auctions.getAmountAuctions()<= soldArticlesDAO.findByNum(auctions.getItemSold().getIdArticle()).getInitialPrice()) {
 			//verif date auctions
-			if (auctions.getDateAuctions().isAfter(itemSoldDAO.findByNum(auctions.getItemSold().getIdArticle()).getStartDateAuctions())
-					&& auctions.getDateAuctions().isBefore(itemSoldDAO.findByNum(auctions.getItemSold().getIdArticle()).getEndDateAuctions()) ){
+			if (auctions.getDateAuctions().isAfter(soldArticlesDAO.findByNum(auctions.getItemSold().getIdArticle()).getStartDateAuctions())
+					&& auctions.getDateAuctions().isBefore(soldArticlesDAO.findByNum(auctions.getItemSold().getIdArticle()).getEndDateAuctions()) ){
 				//verif si une auctions existe pour l'article
 				if (auctionsDAO.countAuction(auctions.getItemSold().getIdArticle()) != 0) {
 					//deja une auctions
@@ -63,20 +63,20 @@ public class AuctionsServiceImpl implements AuctionsService {
 						} else {
 							//creer l'auctions
 							auctionsDAO.create(auctions);
-							itemSoldDAO.updatePriceSale(auctions);
+							soldArticlesDAO.updatePriceSale(auctions);
 						}
 					}else {
 						System.out.println("montant de l'auctions inferieur aux autres auctions");
 					}
 				} else {
 					//verif que montant>miseAPrix
-					if (auctions.getAmountAuctions() >= itemSoldDAO.findByNum(auctions.getItemSold().getIdArticle()).getInitialPrice()) {
+					if (auctions.getAmountAuctions() >= soldArticlesDAO.findByNum(auctions.getItemSold().getIdArticle()).getInitialPrice()) {
 						//premiere auctions
 						//debit de credit
 						userDAO.updateCredit(userDAO.findByNum(auctions.getUser().getIdUser()).getCredit()- auctions.getAmountAuctions(), userDAO.findByNum(auctions.getUser().getIdUser()));
 						//creation de l'auctions
 						auctionsDAO.create(auctions);
-						itemSoldDAO.updatePriceSale(auctions);
+						soldArticlesDAO.updatePriceSale(auctions);
 					}else {
 						System.out.println("montant inferieur a la mise a prix");
 					}	
@@ -95,11 +95,11 @@ public class AuctionsServiceImpl implements AuctionsService {
 		List<Auctions> auctionList = auctionsDAO.findAll();
 		
 		for (Auctions auctions : auctionList) {
-			ItemSold itemSold = itemSoldDAO.findByNum(auctions.getItemSold().getIdArticle());
-			itemSold.setCartegoryArticle(categoryDAO.findByNum(itemSold.getCartegoryArticle().getIdCategory()));
+			SoldArticles soldArticles = soldArticlesDAO.findByNum(auctions.getItemSold().getIdArticle());
+			soldArticles.setCartegoryArticle(categoryDAO.findByNum(soldArticles.getCartegoryArticle().getIdCategory()));
 			
 
-			auctions.setItemSold(itemSold);
+			auctions.setItemSold(soldArticles);
 			auctions.setUser(userDAO.findByNum(auctions.getUser().getIdUser()));
 		}
 		return auctionList;

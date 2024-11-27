@@ -24,17 +24,17 @@ public class User {
 	private String zipPass;
 	private String city;
 	@NotBlank
-	private String passWord;
+	private String password;
 	private String picture;
 	private int credit;
-	private boolean administrator;
+	private int idRole;
 	
 	
 	public User() {
 	}
 	
 	public User(int idUser, String pseudo, String lastName, String firstName, String email, String phone,
-				String road, String zipPass, String city, String passWord, String picture, int credit, boolean administrator) {
+				String road, String zipPass, String city, String password, String picture, int credit, int idRole) {
 		this.idUser = idUser;
 		this.pseudo = pseudo;
 		this.lastName = lastName;
@@ -44,10 +44,10 @@ public class User {
 		this.road = road;
 		this.zipPass = zipPass;
 		this.city = city;
-		this.passWord = passWord;
+		this.password = password;
 		this.picture = picture;
 		this.credit = credit;
-		this.administrator = administrator;
+		this.idRole = idRole;
 	}
 
 	public int getIdUser() {
@@ -122,12 +122,12 @@ public class User {
 		this.city = city;
 	}
 
-	public @NotBlank String getPassWord() {
-		return passWord;
+	public @NotBlank String getPassword() {
+		return password;
 	}
 
-	public void setPassWord(@NotBlank String passWord) {
-		this.passWord = passWord;
+	public void setPassword(@NotBlank String password) {
+		this.password = password;
 	}
 
 	public String getPicture() {
@@ -146,20 +146,20 @@ public class User {
 		this.credit = credit;
 	}
 
-	public boolean isAdministrator() {
-		return administrator;
+	public int isIdRole() {
+		return idRole;
 	}
 
-	public void setAdministrator(boolean administrator) {
-		this.administrator = administrator;
+	public void setIdRole(int idRole) {
+		this.idRole = idRole;
 	}
 
 	@Override
 	public String toString() {
 		return String.format(
-				"User [idUser=%s, pseudo=%s, lastName=%s, firstName=%s, email=%s, phone=%s, road=%s, zipPass=%s, city=%s, passWord=%s, picture=%s, credit=%s, administrator=%s]",
-				idUser, pseudo, lastName, firstName, email, phone, road, zipPass, city, passWord, picture, credit,
-				administrator);
+				"User [idUser=%s, pseudo=%s, lastName=%s, firstName=%s, email=%s, phone=%s, road=%s, zipPass=%s, city=%s, password=%s, picture=%s, credit=%s, idRole=%s]",
+				idUser, pseudo, lastName, firstName, email, phone, road, zipPass, city, password, picture, credit,
+				idRole);
 	}
 	
 	

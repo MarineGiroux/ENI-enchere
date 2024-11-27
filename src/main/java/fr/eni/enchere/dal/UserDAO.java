@@ -14,8 +14,6 @@ public interface UserDAO {
 	
 	void update(User user);
 
-	void createRole(User user);
-	
 	User findByNum(int idUser);
 	
 	void updateCredit(int rising, User user);

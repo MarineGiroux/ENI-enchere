@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class UserDAOImpl implements UserDAO {
 
-	private final String INSERT = "INSERT INTO USERS (pseudo, lastName, firstName, email, phone, road, zipPass, city, password, credit, administrator) VALUES (:pseudo, :lastName, :firstName, :email, :phone, :road, :zipPass, :city, :password, :credit, :administrator)";
+	private final String INSERT = "INSERT INTO USERS (pseudo, lastName, firstName, email, phone, road, zipPass, city, password, credit, idRole) VALUES (:pseudo, :lastName, :firstName, :email, :phone, :road, :zipPass, :city, :password, :credit, :idRole)";
 	private final String INSERT_ROLE = "INSERT INTO ROLES (idUser, role) VALUES (:idUser, :role)";
 
 	private final String FIND_BY_NUM = "select * from USERS where idUser = :idUser";
@@ -39,23 +39,13 @@ public class UserDAOImpl implements UserDAO {
 		nameParameters.addValue("road", user.getRoad());
 		nameParameters.addValue("zipPass", user.getZipPass());
 		nameParameters.addValue("city", user.getCity());
-		nameParameters.addValue("password", user.getPassWord());
+		nameParameters.addValue("password", user.getPassword());
 		nameParameters.addValue("credit", user.getCredit());
-		nameParameters.addValue("administrator", user.isAdministrator());
-
+		nameParameters.addValue("idRole", 2);
 		namedParameterJdbcTemplate.update(INSERT, nameParameters, keyHolder, new String[]{"idUser"});
 
 		int generatedId = keyHolder.getKey().intValue();
 		user.setIdUser(generatedId);
-	}
-
-	@Override
-	public void createRole(User user) {
-		MapSqlParameterSource parameters = new MapSqlParameterSource();
-		parameters.addValue("idUser", user.getIdUser());
-		parameters.addValue("role", "MEMBRE");
-
-		namedParameterJdbcTemplate.update(INSERT_ROLE, parameters);
 	}
 
 	@Override
@@ -109,7 +99,7 @@ public class UserDAOImpl implements UserDAO {
 		mapSqlParameterSource.addValue("zipPass", user.getZipPass());
 		mapSqlParameterSource.addValue("phone", user.getPhone());
 		mapSqlParameterSource.addValue("idUser", user.getIdUser());
-		mapSqlParameterSource.addValue("password", user.getPassWord());
+		mapSqlParameterSource.addValue("password", user.getPassword());
 		namedParameterJdbcTemplate.update(UPDATE_USERS, mapSqlParameterSource);
 	}
 	@Override

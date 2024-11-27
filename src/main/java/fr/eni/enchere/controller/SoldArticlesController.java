@@ -4,7 +4,8 @@ import java.security.Principal;
 import java.util.List;
 
 import fr.eni.enchere.bo.Auctions;
-import fr.eni.enchere.bo.ItemSold;
+import fr.eni.enchere.bo.SoldArticles;
+import fr.eni.enchere.bo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,22 +17,21 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import fr.eni.enchere.bll.ItemSoldService;
+import fr.eni.enchere.bll.SoldArticlesService;
 import fr.eni.enchere.bll.CategoryService;
 import fr.eni.enchere.bll.AuctionsService;
 import fr.eni.enchere.bll.PickUpService;
 import fr.eni.enchere.bll.UserService;
 import fr.eni.enchere.bo.Category;
-import fr.eni.enchere.bo.User;
 import fr.eni.enchere.exception.BusinessException;
 import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/vente")
-public class ItemSoldController {
+public class SoldArticlesController {
 
 	@Autowired
-	private ItemSoldService itemSoldService;
+	private SoldArticlesService soldArticlesService;
 	@Autowired
 	private UserService userService;
 	@Autowired
@@ -42,9 +42,9 @@ public class ItemSoldController {
 	private AuctionsService auctionsService;
 
 
-	public ItemSoldController(ItemSoldService itemSoldService, UserService userService,
-							  CategoryService categoryService, PickUpService pickUpService, AuctionsService auctionsService) {
-		this.itemSoldService = itemSoldService;
+	public SoldArticlesController(SoldArticlesService soldArticlesService, UserService userService,
+								  CategoryService categoryService, PickUpService pickUpService, AuctionsService auctionsService) {
+		this.soldArticlesService = soldArticlesService;
 		this.userService = userService;
 		this.categoryService = categoryService;
 		this.pickUpService = pickUpService;
@@ -56,13 +56,13 @@ public class ItemSoldController {
 		System.out.println("début creer article");
 		List<Category> category = categoryService.findAll();
 		model.addAttribute("listCategory", category);
-		model.addAttribute("article", new ItemSold());
+		model.addAttribute("article", new SoldArticles());
 		// model.addAttribute("user", new Utilisateur());
 		return "sell";
 	}
 
 	@PostMapping
-	public String createArticle(@Valid @ModelAttribute("itemSold") ItemSold itemSold,
+	public String createArticle(@Valid @ModelAttribute("itemSold") SoldArticles soldArticles,
 								BindingResult bindingResult, Principal principal, Model model) {
 		List<Category> category = categoryService.findAll();
 		model.addAttribute("listCategory", category);
@@ -70,12 +70,12 @@ public class ItemSoldController {
 			System.out.println(bindingResult.getAllErrors());
 			return "sell";
 		} else {
-			System.out.println("Article vendu = " + itemSold);
+			System.out.println("Article vendu = " + soldArticles);
 			try {
-				controlAddress(itemSold, principal.getName(), model);
-				this.itemSoldService.add(itemSold, userService.findByEmail(principal.getName()));
-				itemSold.getPickUpLocation().setIdArticle(itemSold.getIdArticle());
-				this.pickUpService.createAdress(itemSold.getPickUpLocation());
+				controlAddress(soldArticles, principal.getName(), model);
+				this.soldArticlesService.add(soldArticles, userService.findByEmail(principal.getName()));
+				soldArticles.getPickUpLocation().setIdArticle(soldArticles.getIdArticle());
+				this.pickUpService.createAdress(soldArticles.getPickUpLocation());
 				return "redirect:/";
 			} catch (BusinessException e) {
 				e.getlistErrors().forEach(erreur -> {
@@ -87,10 +87,10 @@ public class ItemSoldController {
 		}
 	}
 
-	private void controlAddress(ItemSold itemSold, String emailUser, Model model) {
+	private void controlAddress(SoldArticles soldArticles, String emailUser, Model model) {
 		User user = userService.findByEmail(emailUser);
-		if (itemSold.getPickUpLocation().getRoad() == null || itemSold.getPickUpLocation().getZipPass() == null
-				|| itemSold.getPickUpLocation().getCity() == null) {
+		if (soldArticles.getPickUpLocation().getRoad() == null || soldArticles.getPickUpLocation().getZipPass() == null
+				|| soldArticles.getPickUpLocation().getCity() == null) {
 			model.addAttribute("user", user);
 		} else {
 			System.out.println("je sais pas");
@@ -100,10 +100,10 @@ public class ItemSoldController {
 	@GetMapping("/detail")
 	public String showArticle(@RequestParam(name = "id", required = true)int id, Model model) {
 		System.out.println("Affichage article vendu " + id);
-		ItemSold itemSold = itemSoldService.FindById(id);
-		itemSold.setPickUpLocation(pickUpService.findByNum(id));
+		SoldArticles soldArticles = soldArticlesService.FindById(id);
+		soldArticles.setPickUpLocation(pickUpService.findByNum(id));
 		
-		model.addAttribute("itemSold", itemSold);
+		model.addAttribute("itemSold", soldArticles);
 		
 		return "detail-sale";
 	}
@@ -122,7 +122,7 @@ public class ItemSoldController {
 									 Model model) {
 		Auctions auctions = new Auctions();
 		auctions.setUser(userService.findByEmail(principal.getName()));
-		auctions.setItemSold(itemSoldService.FindById(idArticle));
+		auctions.setItemSold(soldArticlesService.FindById(idArticle));
 		auctions.setDateAuctions(java.time.LocalDate.now());
 		auctions.setAmountAuctions(amountAuction);
 		this.auctionsService.bid(auctions);
