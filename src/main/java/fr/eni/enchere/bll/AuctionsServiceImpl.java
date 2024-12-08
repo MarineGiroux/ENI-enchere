@@ -17,9 +17,6 @@ public class AuctionsServiceImpl implements AuctionsService {
 	private AuctionsDAO auctionsDAO;
 	private SoldArticlesDAO soldArticlesDAO;
 	private UserDAO userDAO;
-	private CategoryDAO categoryDAO;
-	
-	
 
 	public AuctionsServiceImpl(AuctionsDAO auctionsDAO, SoldArticlesDAO soldArticlesDAO, UserDAO userDAO,
 							   CategoryDAO categoryDAO) {
@@ -27,7 +24,6 @@ public class AuctionsServiceImpl implements AuctionsService {
 		this.auctionsDAO = auctionsDAO;
 		this.soldArticlesDAO = soldArticlesDAO;
 		this.userDAO = userDAO;
-		this.categoryDAO = categoryDAO;
 	}
 
 	@Override
@@ -96,9 +92,6 @@ public class AuctionsServiceImpl implements AuctionsService {
 		
 		for (Auctions auctions : auctionList) {
 			SoldArticles soldArticles = soldArticlesDAO.findByNum(auctions.getSoldArticle().getIdArticle());
-			soldArticles.setCartegoryArticle(categoryDAO.findByNum(soldArticles.getCartegoryArticle().getIdCategory()));
-			
-
 			auctions.setSoldArticle(soldArticles);
 			auctions.setUser(userDAO.findByNum(auctions.getUser().getIdUser()));
 		}
@@ -107,8 +100,7 @@ public class AuctionsServiceImpl implements AuctionsService {
 
 	@Override
 	public List<Auctions> findByID(int idAuctions) {
-		List<Auctions> e = auctionsDAO.findByArticle(idAuctions);
-		return e;
+		return auctionsDAO.findByArticle(idAuctions);
 	}
 
 	@Override

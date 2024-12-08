@@ -12,9 +12,12 @@ public class PickUpDAOImpl implements PickUpDAO {
 	
 	@Autowired
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-	
-	
-	private final String INSERT = "INSERT INTO PICKUP(idArticle, road, zipCode, city) VALUES (:idArticle, :road, :zipCode, :city)";
+
+
+	private final String INSERT = """
+									INSERT INTO PICKUP(idArticle, road, zipPass, city)
+									VALUES (:idArticle, :road, :zipPass, :city)
+								""";
 	private final String FIND_BY_ID ="SELECT * FROM PICKUP WHERE idArticle = :idArticle";
 
 	@Override
@@ -22,7 +25,7 @@ public class PickUpDAOImpl implements PickUpDAO {
 
 		MapSqlParameterSource nameParameters = new MapSqlParameterSource();
 		nameParameters.addValue("road", pickUp.getRoad());
-		nameParameters.addValue("zipCode", pickUp.getZipPass());
+		nameParameters.addValue("zipPass", pickUp.getZipPass());
 		nameParameters.addValue("city", pickUp.getCity());
 		nameParameters.addValue("idArticle", pickUp.getIdArticle());
 
@@ -34,7 +37,7 @@ public class PickUpDAOImpl implements PickUpDAO {
 	public PickUp findByNum(int idArticle) {
 		MapSqlParameterSource namMapSqlParameterSource = new MapSqlParameterSource();
 		namMapSqlParameterSource.addValue("idArticle",idArticle);
-		return namedParameterJdbcTemplate.queryForObject(FIND_BY_ID, namMapSqlParameterSource, new BeanPropertyRowMapper<PickUp>(PickUp.class));
+		return namedParameterJdbcTemplate.queryForObject(FIND_BY_ID, namMapSqlParameterSource, new BeanPropertyRowMapper<>(PickUp.class));
 	}
 
 }

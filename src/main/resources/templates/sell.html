@@ -35,57 +35,57 @@
 <main class="center-main">
 	<h3>Nouvelle Vente</h3>
 	<p>Veuillez remplir les informations nécessaires pour proposer un nouvel article en vente.</p>
-	<form th:action="@{/vente}" method="post" th:object="${soldArticles}">
+	<form th:action="@{/vente}" method="post" th:object="${soldArticleViewModel}">
 		<div class="form-container">
 			<div class="form-group">
-				<label for="article">Nom de l'article</label>
-				<input type="text" id="article" class="form-control" name="nomArticle" placeholder="Entrez le nom de l'article" />
+				<label for="nameArticle">Nom de l'article</label>
+				<input type="text" id="nameArticle" class="form-control" data-th-field="*{soldArticles.nameArticle}" placeholder="Entrez le nom de l'article" />
 			</div>
 
 			<div class="form-group">
 				<label for="description">Description</label>
-				<input type="text" id="description" class="form-control" name="description" placeholder="Entrez une description" />
+				<input type="text" id="description" class="form-control" data-th-field="*{soldArticles.description}" placeholder="Entrez une description" />
 			</div>
 
 			<div class="form-group">
 				<label for="category">Catégorie</label>
-				<select id="category" class="form-control" name="categorieArticle.noCategorie">
-					<option value="0">Sélectionnez une catégorie</option>
-					<option data-th-each="category : ${listCategory}" th:value="${category.noCategorie}" th:text="${category.libelle}"></option>
+				<select id="category" class="form-control" data-th-field="*{soldArticles.idCategory}">
+					<option value="-1">Sélectionnez une catégorie</option>
+					<option data-th-each="category : ${listCategory}" th:value="${category.idCategory}" th:text="${category.categoryName}"></option>
 				</select>
 			</div>
 
 			<div class="form-group">
-				<label for="miseAPrix">Prix de départ</label>
-				<input type="number" id="miseAPrix" class="form-control" name="miseAPrix" placeholder="Entrez le prix de départ" />
+				<label for="initialPrice">Prix de départ</label>
+				<input type="number" id="initialPrice" class="form-control" data-th-field="*{soldArticles.initialPrice}" placeholder="Entrez le prix de départ" />
 			</div>
 
 			<div class="form-group">
-				<label for="dateDebut">Date de début</label>
-				<input type="date" id="dateDebut" class="form-control" name="dateDebutEnchere" />
+				<label for="startDateAuctions">Date de début</label>
+				<input type="date" id="startDateAuctions" class="form-control" data-th-field="*{soldArticles.startDateAuctions}" />
 			</div>
 
 			<div class="form-group">
-				<label for="dateFin">Date de fin</label>
-				<input type="date" id="dateFin" class="form-control" name="dateFinEnchere" />
+				<label for="endDateAuctions">Date de fin</label>
+				<input type="date" id="endDateAuctions" class="form-control" data-th-field="*{soldArticles.endDateAuctions}" />
 			</div>
 
 		</div>
 			<h4>Lieu de pickUp</h4>
 			<div class="form-container">
 			<div class="form-group">
-				<label for="rue">Rue</label>
-				<input type="text" id="rue" class="form-control" name="lieuPickUp.rue" placeholder="Entrez la rue" />
+				<label for="pickUpLocationRoad">Rue</label>
+				<input type="text" id="pickUpLocationRoad" class="form-control" data-th-field="*{pickUpLocation.road}" placeholder="Entrez la rue" />
 			</div>
 
 			<div class="form-group">
-				<label for="codePostal">Code Postal</label>
-				<input type="text" id="codePostal" class="form-control" name="lieuPickUp.codePostal" placeholder="Entrez le code postal" />
+				<label for="pickUpLocationZipPass">Code Postal</label>
+				<input type="text" id="pickUpLocationZipPass" class="form-control" data-th-field="*{pickUpLocation.zipPass}" placeholder="Entrez le code postal" />
 			</div>
 
 			<div class="form-group">
-				<label for="ville">Ville</label>
-				<input type="text" id="ville" class="form-control" name="lieuPickUp.ville" placeholder="Entrez la ville" />
+				<label for="pickUpLocationCity">Ville</label>
+				<input type="text" id="pickUpLocationCity" class="form-control" data-th-field="*{pickUpLocation.city}" placeholder="Entrez la ville" />
 			</div>
 		</div>
 		<div class="form-container">

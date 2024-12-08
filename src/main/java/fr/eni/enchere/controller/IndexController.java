@@ -48,9 +48,9 @@ public class IndexController {
 	}
 	
 	@GetMapping("/category")
-	public String filterArticle(@RequestParam(name = "id", required = true) long id, Model model) {
+	public String filterArticle(@RequestParam(name = "id", required = true) int id, Model model) {
 		List<SoldArticles> soldArticles = soldArticlesService.findAll().stream()
-							.filter(f -> f.getCartegoryArticle().getIdCategory() == id)
+							.filter(f -> f.getIdCategory() == id)
 							.collect(Collectors.toList());
 		model.addAttribute("soldArticle", soldArticles);
 		

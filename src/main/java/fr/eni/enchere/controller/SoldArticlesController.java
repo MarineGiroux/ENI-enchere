@@ -1,34 +1,28 @@
 package fr.eni.enchere.controller;
 
-import java.security.Principal;
-import java.util.List;
-
+import fr.eni.enchere.bll.*;
 import fr.eni.enchere.bo.Auctions;
+import fr.eni.enchere.bo.PickUp;
 import fr.eni.enchere.bo.SoldArticles;
 import fr.eni.enchere.bo.User;
+import fr.eni.enchere.controller.viewmodel.SoldArticleViewModel;
+import fr.eni.enchere.exception.BusinessException;
+import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
-import fr.eni.enchere.bll.SoldArticlesService;
-import fr.eni.enchere.bll.CategoryService;
-import fr.eni.enchere.bll.AuctionsService;
-import fr.eni.enchere.bll.PickUpService;
-import fr.eni.enchere.bll.UserService;
-import fr.eni.enchere.bo.Category;
-import fr.eni.enchere.exception.BusinessException;
-import jakarta.validation.Valid;
+import java.security.Principal;
 
 @Controller
 @RequestMapping("/vente")
 public class SoldArticlesController {
+	private final static Logger LOGGER = LoggerFactory.getLogger(SoldArticlesController.class);
 
 	@Autowired
 	private SoldArticlesService soldArticlesService;
@@ -53,46 +47,48 @@ public class SoldArticlesController {
 
 	@GetMapping
 	public String createSoldArticle(Model model) {
-		System.out.println("début creer article");
-		List<Category> category = categoryService.findAll();
-		model.addAttribute("listCategory", category);
-		model.addAttribute("article", new SoldArticles());
-		// model.addAttribute("user", new Utilisateur());
+		LOGGER.info("Init article model");
+		model.addAttribute("soldArticleViewModel", new SoldArticleViewModel());
+		model.addAttribute("listCategory", categoryService.findAll());
 		return "sell";
 	}
 
 	@PostMapping
-	public String createArticle(@Valid @ModelAttribute("soldArticle") SoldArticles soldArticles,
+	public String createArticle(@Valid @ModelAttribute("soldArticleViewModel") SoldArticleViewModel soldArticleViewModel,
 								BindingResult bindingResult, Principal principal, Model model) {
-		List<Category> category = categoryService.findAll();
-		model.addAttribute("listCategory", category);
-		if (bindingResult.hasErrors()) {
-			System.out.println(bindingResult.getAllErrors());
-			return "sell";
-		} else {
-			System.out.println("Article vendu = " + soldArticles);
+		if (!bindingResult.hasErrors()) {
+			LOGGER.debug("Sold article {}", soldArticleViewModel);
 			try {
-				controlAddress(soldArticles, principal.getName(), model);
-				this.soldArticlesService.add(soldArticles, userService.findByEmail(principal.getName()));
-				soldArticles.getPickUpLocation().setIdArticle(soldArticles.getIdArticle());
-				this.pickUpService.createAdress(soldArticles.getPickUpLocation());
+				controlAddress(soldArticleViewModel.getPickUpLocation(), principal.getName(), model);
+
+				SoldArticles soldArticles = soldArticleViewModel.getSoldArticles();
+				soldArticles.setIdUser(userService.findByEmail(principal.getName()).getIdUser());
+
+				this.soldArticlesService.add(soldArticleViewModel);
+
 				return "redirect:/";
 			} catch (BusinessException e) {
+				LOGGER.error("Error while creation soldArticleViewModel", e);
 				e.getlistErrors().forEach(erreur -> {
 					ObjectError error = new ObjectError("globalError", erreur);
 					bindingResult.addError(error);
 				});
-				return "sell";
 			}
 		}
+
+		LOGGER.debug("soldArticleViewModel {} , errors {}", soldArticleViewModel, bindingResult.getAllErrors());
+		model.addAttribute("listCategory", categoryService.findAll());
+		model.addAttribute("soldArticleViewModel", soldArticleViewModel);
+
+		return "sell";
 	}
 
-	private void controlAddress(SoldArticles soldArticles, String emailUser, Model model) {
+	private void controlAddress(PickUp pickUpLocation, String emailUser, Model model) {
 		User user = userService.findByEmail(emailUser);
-		if (soldArticles.getPickUpLocation().getRoad() == null || soldArticles.getPickUpLocation().getZipPass() == null
-				|| soldArticles.getPickUpLocation().getCity() == null) {
+		if (pickUpLocation.getRoad() == null || pickUpLocation.getZipPass() == null || pickUpLocation.getCity() == null) {
 			model.addAttribute("user", user);
 		} else {
+			// TODO créer une erreur avec BindingResult
 			System.out.println("je sais pas");
 		}
 	}
@@ -100,10 +96,12 @@ public class SoldArticlesController {
 	@GetMapping("/detail")
 	public String showArticle(@RequestParam(name = "id", required = true)int id, Model model) {
 		System.out.println("Affichage article vendu " + id);
-		SoldArticles soldArticles = soldArticlesService.FindById(id);
-		soldArticles.setPickUpLocation(pickUpService.findByNum(id));
+		SoldArticleViewModel soldArticleViewModel = new SoldArticleViewModel();
+		SoldArticles soldArticles = soldArticlesService.findById(id);
+		soldArticleViewModel.setSoldArticles(soldArticles);
+		soldArticleViewModel.setPickUpLocation(pickUpService.findByNum(id));
 		
-		model.addAttribute("soldArticle", soldArticles);
+		model.addAttribute("soldArticleViewModel", soldArticleViewModel);
 		
 		return "detail-sale";
 	}
@@ -122,7 +120,7 @@ public class SoldArticlesController {
 									 Model model) {
 		Auctions auctions = new Auctions();
 		auctions.setUser(userService.findByEmail(principal.getName()));
-		auctions.setSoldArticle(soldArticlesService.FindById(idArticle));
+		auctions.setSoldArticle(soldArticlesService.findById(idArticle));
 		auctions.setDateAuctions(java.time.LocalDate.now());
 		auctions.setAmountAuctions(amountAuction);
 		this.auctionsService.bid(auctions);

@@ -7,13 +7,13 @@ import fr.eni.enchere.bo.Auctions;
 
 public interface SoldArticlesDAO {
 	
-	List<SoldArticles> findByCategory(int idCategory);
+	List<SoldArticles>findByCategory(int idCategory);
 	
-	SoldArticles findByNum (int idArticle);
-	
-	void create (SoldArticles soldArticles);
+	SoldArticles findByNum(int idArticle);
 
-	List<SoldArticles> FindAll();
+	SoldArticles create(SoldArticles soldArticles);
+
+	List<SoldArticles> findAll();
 	
 	void updatePriceSale(Auctions auctions);
 }

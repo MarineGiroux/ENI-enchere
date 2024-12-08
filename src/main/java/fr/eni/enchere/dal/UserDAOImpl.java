@@ -20,7 +20,7 @@ public class UserDAOImpl implements UserDAO {
 	private static final String COUNT_EMAIL = "SELECT COUNT(email) FROM USERS WHERE email = :email";
 	private static final String COUNT_PSEUDO = "SELECT COUNT(pseudo) FROM USERS WHERE pseudo = :pseudo";
 	private static final String FIND_BY_EMAIL = "SELECT * from USERS where email = :email";
-	private static final String UPDATE_USERS = "  UPDATE USERS SET pseudo = :pseudo, lastName= :lastName, firstName = :firstName, phone = :phone, rue = :rue, zipPass = :zipPass, city = :city, password = :password WHERE idUser = :idUser";
+	private static final String UPDATE_USERS = "  UPDATE USERS SET pseudo = :pseudo, lastName= :lastName, firstName = :firstName, phone = :phone, road = :road, zipPass = :zipPass, city = :city, password = :password WHERE idUser = :idUser";
 	private static final String UPDATE_CREDIT = "UPDATE USERS SET credit = :credit WHERE idUser = :idUser";
 	private static final String DELETE_USERS = "  DELETE from USERS where email = :email";
 

@@ -4,8 +4,8 @@ import fr.eni.enchere.bo.PickUp;
 
 public interface PickUpDAO {
 	
-	void create (PickUp pickUp);
+	void create(PickUp pickUp);
 	
-	PickUp findByNum (int idArticle);
+	PickUp findByNum(int idArticle);
 
 }

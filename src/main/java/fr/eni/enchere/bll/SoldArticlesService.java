@@ -1,17 +1,17 @@
 package fr.eni.enchere.bll;
 
-import java.util.List;
-
 import fr.eni.enchere.bo.SoldArticles;
-import fr.eni.enchere.bo.User;
+import fr.eni.enchere.controller.viewmodel.SoldArticleViewModel;
 import fr.eni.enchere.exception.BusinessException;
+
+import java.util.List;
 
 public interface SoldArticlesService {
 	
-	SoldArticles FindById (int id);
+	SoldArticles findById(int id);
 	
 	List<SoldArticles> findAll();
-	
-	void add(SoldArticles soldArticles, User user) throws BusinessException;
+
+	SoldArticles add(SoldArticleViewModel soldArticleViewModel) throws BusinessException;
 
 }
