@@ -33,11 +33,12 @@
 </header>
 
 <main class="center-main">
-
-	<form th:action="@{/user/profil}" method="post" th:object="${user}">
+	
+		<form th:action="@{/user/profile}" method="post" th:object="${user}">
 		<h3>Mise à jour : <span data-th-text="*{pseudo}">pseudo</span></h3>
 		<p style="margin : 0" >Modifiez vos informations personnelles.</p>
 		<div class="form-container">
+			<input type="hidden" data-th-field="*{pseudo}" />
 			<input type="hidden" data-th-field="*{idUser}" />
 
 			<div class="form-group">

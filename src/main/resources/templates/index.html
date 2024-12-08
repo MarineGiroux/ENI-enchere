@@ -27,13 +27,13 @@
 
 	<div class="article-list">
 
-		<div class="article-card" data-th-each="item : ${soldArticles}">
+		<div class="article-card" data-th-each="item : ${soldArticle}">
 			<div class="rounded-likes">
 				<span data-th-text="*{item.initialPrice}">0</span> €
 				<p>👌</p>
 			</div>
 
-			<h4 data-th-text="*{item.name}">Nom de l'article</h4>
+			<h4 data-th-text="*{item.nameArticle}">Nom de l'article</h4>
 
 			<div class="article-image">
 				<img data-th-src="@{/images/carton.jpg}" alt="Image de l'article">
@@ -42,9 +42,9 @@
 			<div class="article-details">
 				<p class="article-details-h4" data-th-text="*{item.description}">Description</p>
 				<div class="article-card-detail">
-					<p><strong>Catégorie :</strong> <span data-th-text="*{item.cartegoryArticle.categoryName}">Catégorie</span></p>
+<!--					<p><strong>Catégorie :</strong> <span data-th-text="*{item.}">Catégorie</span></p>-->
 					<p><strong>Date de fin :</strong> <span data-th-text="*{item.endDateAuctions}">2024-01-01</span></p>
-					<p><strong>Vendeur :</strong> <span data-th-text="*{item.sell.pseudo}">Pseudo</span></p>
+<!--					<p><strong>Vendeur :</strong> <span data-th-text="*{item.pseudo}">Pseudo</span></p>-->
 				</div>
 			</div>
 

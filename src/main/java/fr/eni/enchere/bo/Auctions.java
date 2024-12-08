@@ -58,7 +58,7 @@ public class Auctions {
 				"dateAuctions=" + dateAuctions +
 				", amountAuctions=" + amountAuctions +
 				", user=" + user +
-				", soldArticle=" + soldArticles +
+				", soldArticleViewModel=" + soldArticles +
 				'}';
 	}
 }
