@@ -2,12 +2,10 @@ package fr.eni.enchere.bll;
 
 import fr.eni.enchere.bo.Category;
 import fr.eni.enchere.bo.SoldArticles;
-import fr.eni.enchere.bo.User;
 import fr.eni.enchere.controller.viewmodel.SoldArticleViewModel;
 import fr.eni.enchere.dal.CategoryDAO;
 import fr.eni.enchere.dal.PickUpDAO;
 import fr.eni.enchere.dal.SoldArticlesDAO;
-import fr.eni.enchere.dal.UserDAO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -68,6 +66,19 @@ public class SoldArticlesServiceImpl implements SoldArticlesService {
         this.pickUpDAO.create(soldArticleViewModel.getPickUpLocation());
 
         return soldArticles;
+    }
+
+    @Override
+    public List<SoldArticleViewModel> searchByName(String searchArticleName) {
+        List<SoldArticles> articlesFound = soldArticlesDAO.searchByName(searchArticleName);
+        return articlesFound.stream().map(soldArticles -> {
+            SoldArticleViewModel soldArticleViewModel = new SoldArticleViewModel();
+            soldArticleViewModel.setSoldArticles(soldArticles);
+
+            Category soldArticleCategory = categoryDAO.findByNum(soldArticles.getIdCategory());
+            soldArticleViewModel.setCategory(soldArticleCategory);
+            return soldArticleViewModel;
+        }).toList();
     }
 
 }

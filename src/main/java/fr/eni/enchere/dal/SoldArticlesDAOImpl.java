@@ -29,6 +29,9 @@ public class SoldArticlesDAOImpl implements SoldArticlesDAO {
 					""";
 	private final String FIND_BY_NO = "SELECT * FROM SOLD_ARTICLES WHERE idArticle = :idArticle";
 	private final String UPDATE_PRIX_VENTE = "UPDATE SOLD_ARTICLES SET prixVente = :prixVente where idArticle = :idArticle";
+	private static final String SEARCH_BY_NAME = """
+					SELECT * FROM SOLD_ARTICLES WHERE lower(nameArticle) LIKE :searchArticleName;
+					""";
 
 	@Autowired
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -92,6 +95,14 @@ public class SoldArticlesDAOImpl implements SoldArticlesDAO {
 
 	}
 
+	@Override
+	public List<SoldArticles> searchByName(String searchArticleName) {
+		MapSqlParameterSource nameParameters = new MapSqlParameterSource();
+		nameParameters.addValue("searchArticleName", "%" + searchArticleName.toLowerCase() + "%");
+
+		return namedParameterJdbcTemplate.query(SEARCH_BY_NAME, nameParameters, new SoldArticlesRowMapper());
+	}
+
 
 	static class SoldArticlesRowMapper implements RowMapper<SoldArticles> {
 
@@ -121,42 +132,4 @@ public class SoldArticlesDAOImpl implements SoldArticlesDAO {
 
 	}
 
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

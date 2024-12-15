@@ -2,9 +2,7 @@ package fr.eni.enchere.controller;
 
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-import fr.eni.enchere.bo.SoldArticles;
 import fr.eni.enchere.controller.viewmodel.SoldArticleViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,20 +19,12 @@ import fr.eni.enchere.bo.Category;
 
 @Controller
 public class IndexController {
-	
-	@Autowired
-	private UserService userService;
-	@Autowired
-	private AuctionsService auctionsService;
 	@Autowired
 	private SoldArticlesService soldArticlesService;
 	@Autowired
 	private CategoryService categoryService;
 	
-	public IndexController(UserService userService, AuctionsService auctionsService,
-						   SoldArticlesService soldArticlesService, CategoryService categoryService) {
-		this.userService = userService;
-		this.auctionsService = auctionsService;
+	public IndexController(SoldArticlesService soldArticlesService, CategoryService categoryService) {
 		this.soldArticlesService = soldArticlesService;
 		this.categoryService = categoryService;
 	}
@@ -46,6 +36,7 @@ public class IndexController {
 
 		List<Category> category = categoryService.findAll();
 		model.addAttribute("listCategory", category);
+
 		return "index";
 	}
 	
@@ -63,14 +54,14 @@ public class IndexController {
 	}
 	
 	@GetMapping("/search")
-	public String rechercheArticle(@RequestParam(name = "name", required = true) String name, Model model) {
-//		List<SoldArticles> soldArticles = soldArticlesService.findAll().stream()
-//							.filter(f -> f.getNameArticle().toLowerCase().contains(name.toLowerCase()))
-//							.collect(Collectors.toList());
-//		model.addAttribute("soldArticle", soldArticles);
+	public String searchByName(@RequestParam(name = "searchArticleName", required = true) String searchArticleName, Model model) {
+		// Filtered article
+		List<SoldArticleViewModel> soldArticles = soldArticlesService.searchByName(searchArticleName);
+		model.addAttribute("soldArticlesViewModel", soldArticles);
 		
 		List<Category> category = categoryService.findAll();
 		model.addAttribute("listCategory", category);
+
 		return "index";
 	}
 	
