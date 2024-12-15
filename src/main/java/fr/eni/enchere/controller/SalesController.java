@@ -20,9 +20,9 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 
 @Controller
-@RequestMapping("/vente")
-public class SoldArticlesController {
-	private final static Logger LOGGER = LoggerFactory.getLogger(SoldArticlesController.class);
+@RequestMapping("/sales")
+public class SalesController {
+	private final static Logger LOGGER = LoggerFactory.getLogger(SalesController.class);
 
 	@Autowired
 	private SoldArticlesService soldArticlesService;
@@ -36,8 +36,8 @@ public class SoldArticlesController {
 	private AuctionsService auctionsService;
 
 
-	public SoldArticlesController(SoldArticlesService soldArticlesService, UserService userService,
-								  CategoryService categoryService, PickUpService pickUpService, AuctionsService auctionsService) {
+	public SalesController(SoldArticlesService soldArticlesService, UserService userService,
+						   CategoryService categoryService, PickUpService pickUpService, AuctionsService auctionsService) {
 		this.soldArticlesService = soldArticlesService;
 		this.userService = userService;
 		this.categoryService = categoryService;
@@ -94,14 +94,8 @@ public class SoldArticlesController {
 	}
 	
 	@GetMapping("/detail")
-	public String showArticle(@RequestParam(name = "id", required = true)int id, Model model) {
-		System.out.println("Affichage article vendu " + id);
-		SoldArticleViewModel soldArticleViewModel = new SoldArticleViewModel();
-		SoldArticles soldArticles = soldArticlesService.findById(id);
-		soldArticleViewModel.setSoldArticles(soldArticles);
-		soldArticleViewModel.setPickUpLocation(pickUpService.findByNum(id));
-		
-		model.addAttribute("soldArticleViewModel", soldArticleViewModel);
+	public String showArticle(@RequestParam(name = "id", required = true) int id, Model model) {
+		model.addAttribute("soldArticleViewModel", soldArticlesService.findById(id));
 		
 		return "detail-sale";
 	}
@@ -120,11 +114,11 @@ public class SoldArticlesController {
 									 Model model) {
 		Auctions auctions = new Auctions();
 		auctions.setUser(userService.findByEmail(principal.getName()));
-		auctions.setSoldArticle(soldArticlesService.findById(idArticle));
+		auctions.setSoldArticle(soldArticlesService.findById(idArticle).getSoldArticles());
 		auctions.setDateAuctions(java.time.LocalDate.now());
 		auctions.setAmountAuctions(amountAuction);
 		this.auctionsService.bid(auctions);
-		return "redirect:/vente/detail?id=" + idArticle;
+		return "redirect:/sales/detail?id=" + idArticle;
 	}
 	
 	

@@ -16,7 +16,7 @@ public class PickUpServiceImpl implements PickUpService {
 
 	@Override
 	public PickUp findByNum(int noArticle) {
-		PickUp p = pickUpDAO.findByNum(noArticle);
+		PickUp p = pickUpDAO.findByIdArticle(noArticle);
 		return p;
 	}
 

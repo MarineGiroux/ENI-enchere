@@ -78,8 +78,8 @@ public class AuctionsSecurityConfig {
 		http.authorizeHttpRequests(auth -> auth
 				.requestMatchers(HttpMethod.GET, "/").permitAll()
 				.requestMatchers(HttpMethod.POST, "/").permitAll()
-				//.requestMatchers(HttpMethod.GET, "/vente").hasAnyRole("ADMIN", "MEMBRE")
-				//.requestMatchers(HttpMethod.POST, "/vente").hasAnyRole("ADMIN", "MEMBRE")
+				//.requestMatchers(HttpMethod.GET, "/sales").hasAnyRole("ADMIN", "MEMBRE")
+				//.requestMatchers(HttpMethod.POST, "/sales").hasAnyRole("ADMIN", "MEMBRE")
 				.requestMatchers(HttpMethod.GET, "/user/inscription").permitAll()
 				.requestMatchers(HttpMethod.POST, "/user/inscription").permitAll()
 				.requestMatchers(HttpMethod.GET, "/login").permitAll()

@@ -11,7 +11,7 @@
 			<div id="navbarTogglerDemo02">
 				<ul>
 					<li><a aria-current="page" data-th-href="@{/}">Accueil</a></li>
-					<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/vente}">Ventes</a></li>
+					<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/sales}">Ventes</a></li>
 					<li th:if="${!#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/user/inscription}">Inscription</a></li>
 					<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/user/profile}">Profil</a></li>
 					<li th:if="${!#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/login}">Connexion</a></li>

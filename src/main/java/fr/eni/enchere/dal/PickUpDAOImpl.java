@@ -18,7 +18,9 @@ public class PickUpDAOImpl implements PickUpDAO {
 									INSERT INTO PICKUP(idArticle, road, zipPass, city)
 									VALUES (:idArticle, :road, :zipPass, :city)
 								""";
-	private final String FIND_BY_ID ="SELECT * FROM PICKUP WHERE idArticle = :idArticle";
+	private final String FIND_BY_ID_ARTICLE = """
+									SELECT * FROM PICKUP WHERE idArticle = :idArticle
+								""";
 
 	@Override
 	public void create(PickUp pickUp) {
@@ -34,10 +36,11 @@ public class PickUpDAOImpl implements PickUpDAO {
 	}
 
 	@Override
-	public PickUp findByNum(int idArticle) {
+	public PickUp findByIdArticle(int idArticle) {
 		MapSqlParameterSource namMapSqlParameterSource = new MapSqlParameterSource();
-		namMapSqlParameterSource.addValue("idArticle",idArticle);
-		return namedParameterJdbcTemplate.queryForObject(FIND_BY_ID, namMapSqlParameterSource, new BeanPropertyRowMapper<>(PickUp.class));
+		namMapSqlParameterSource.addValue("idArticle", idArticle);
+
+		return namedParameterJdbcTemplate.queryForObject(FIND_BY_ID_ARTICLE, namMapSqlParameterSource, new BeanPropertyRowMapper<>(PickUp.class));
 	}
 
 }
