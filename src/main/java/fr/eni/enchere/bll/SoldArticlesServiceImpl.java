@@ -1,5 +1,6 @@
 package fr.eni.enchere.bll;
 
+import fr.eni.enchere.bo.Category;
 import fr.eni.enchere.bo.SoldArticles;
 import fr.eni.enchere.bo.User;
 import fr.eni.enchere.controller.viewmodel.SoldArticleViewModel;
@@ -17,10 +18,12 @@ public class SoldArticlesServiceImpl implements SoldArticlesService {
 
     private final SoldArticlesDAO soldArticlesDAO;
     private final PickUpDAO pickUpDAO;
+    private final CategoryDAO categoryDAO;
 
-    public SoldArticlesServiceImpl(SoldArticlesDAO soldArticlesDAO, PickUpDAO pickUpDAO) {
+    public SoldArticlesServiceImpl(SoldArticlesDAO soldArticlesDAO, PickUpDAO pickUpDAO, CategoryDAO categoryDAO) {
         this.soldArticlesDAO = soldArticlesDAO;
         this.pickUpDAO = pickUpDAO;
+        this.categoryDAO = categoryDAO;
     }
 
     @Override
@@ -30,8 +33,28 @@ public class SoldArticlesServiceImpl implements SoldArticlesService {
     }
 
     @Override
-    public List<SoldArticles> findAll() {
-        return soldArticlesDAO.findAll();
+    public List<SoldArticleViewModel> findAll() {
+        List<SoldArticles> all = soldArticlesDAO.findAll();
+        return all.stream().map(soldArticles -> {
+            SoldArticleViewModel soldArticleViewModel = new SoldArticleViewModel();
+            soldArticleViewModel.setSoldArticles(soldArticles);
+
+            Category soldArticleCategory = categoryDAO.findByNum(soldArticles.getIdCategory());
+            soldArticleViewModel.setCategory(soldArticleCategory);
+            return soldArticleViewModel;
+        }).toList();
+    }
+
+    @Override
+    public List<SoldArticleViewModel> findByIdCategory(int idCategory) {
+        Category category = categoryDAO.findByNum(idCategory);
+        List<SoldArticles> articlesFound = soldArticlesDAO.findByCategory(idCategory);
+        return articlesFound.stream().map(soldArticles -> {
+            SoldArticleViewModel soldArticleViewModel = new SoldArticleViewModel();
+            soldArticleViewModel.setSoldArticles(soldArticles);
+            soldArticleViewModel.setCategory(category);
+            return soldArticleViewModel;
+        }).toList();
     }
 
     @Override

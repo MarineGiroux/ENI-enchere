@@ -24,7 +24,9 @@ public class SoldArticlesDAOImpl implements SoldArticlesDAO {
 					VALUES (:nameArticle, :description, :startDateAuctions, :endDateAuctions, :initialPrice, :idUser, :idCategory)
 					""";
 	private final String FIND_All = "select * from SOLD_ARTICLES";
-	private final String FIND_BY_CATEGORIE = "SELECT * FROM SOLD_ARTICLES WHERE idCategory = :idCategory";
+	private final String FIND_BY_CATEGORIE = """
+					SELECT * FROM SOLD_ARTICLES WHERE idCategory = :idCategory
+					""";
 	private final String FIND_BY_NO = "SELECT * FROM SOLD_ARTICLES WHERE idArticle = :idArticle";
 	private final String UPDATE_PRIX_VENTE = "UPDATE SOLD_ARTICLES SET prixVente = :prixVente where idArticle = :idArticle";
 

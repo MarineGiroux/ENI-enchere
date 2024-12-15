@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import fr.eni.enchere.bo.SoldArticles;
+import fr.eni.enchere.controller.viewmodel.SoldArticleViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,31 +41,33 @@ public class IndexController {
 
 	@GetMapping
 	public String index(Model model) {
-		List<SoldArticles> soldArticles = soldArticlesService.findAll();
-		model.addAttribute("soldArticle", soldArticles);
+		List<SoldArticleViewModel> soldArticles = soldArticlesService.findAll();
+		model.addAttribute("soldArticlesViewModel", soldArticles);
+
 		List<Category> category = categoryService.findAll();
 		model.addAttribute("listCategory", category);
 		return "index";
 	}
 	
 	@GetMapping("/category")
-	public String filterArticle(@RequestParam(name = "id", required = true) int id, Model model) {
-		List<SoldArticles> soldArticles = soldArticlesService.findAll().stream()
-							.filter(f -> f.getIdCategory() == id)
-							.collect(Collectors.toList());
-		model.addAttribute("soldArticle", soldArticles);
-		
+	public String filterArticle(@RequestParam(name = "id", required = true) int idCategory, Model model) {
+		// Filtered article
+		List<SoldArticleViewModel> soldArticles = soldArticlesService.findByIdCategory(idCategory);
+		model.addAttribute("soldArticlesViewModel", soldArticles);
+
+		// Category list
 		List<Category> category = categoryService.findAll();
 		model.addAttribute("listCategory", category);
+
 		return "index";
 	}
 	
 	@GetMapping("/search")
 	public String rechercheArticle(@RequestParam(name = "name", required = true) String name, Model model) {
-		List<SoldArticles> soldArticles = soldArticlesService.findAll().stream()
-							.filter(f -> f.getNameArticle().toLowerCase().contains(name.toLowerCase()))
-							.collect(Collectors.toList());
-		model.addAttribute("soldArticle", soldArticles);
+//		List<SoldArticles> soldArticles = soldArticlesService.findAll().stream()
+//							.filter(f -> f.getNameArticle().toLowerCase().contains(name.toLowerCase()))
+//							.collect(Collectors.toList());
+//		model.addAttribute("soldArticle", soldArticles);
 		
 		List<Category> category = categoryService.findAll();
 		model.addAttribute("listCategory", category);
