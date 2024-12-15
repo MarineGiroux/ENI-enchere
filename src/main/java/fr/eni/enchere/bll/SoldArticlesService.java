@@ -9,8 +9,10 @@ import java.util.List;
 public interface SoldArticlesService {
 	
 	SoldArticles findById(int id);
-	
-	List<SoldArticles> findAll();
+
+	List<SoldArticleViewModel> findAll();
+
+	List<SoldArticleViewModel> findByIdCategory(int idCategory);
 
 	SoldArticles add(SoldArticleViewModel soldArticleViewModel) throws BusinessException;
 
