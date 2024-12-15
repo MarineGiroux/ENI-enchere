@@ -16,4 +16,5 @@ public interface SoldArticlesService {
 
 	SoldArticles add(SoldArticleViewModel soldArticleViewModel) throws BusinessException;
 
+	List<SoldArticleViewModel> searchByName(String searchArticleName);
 }

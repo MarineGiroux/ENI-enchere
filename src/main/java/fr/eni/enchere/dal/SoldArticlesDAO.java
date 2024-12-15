@@ -16,4 +16,6 @@ public interface SoldArticlesDAO {
 	List<SoldArticles> findAll();
 	
 	void updatePriceSale(Auctions auctions);
+
+	List<SoldArticles> searchByName(String searchArticleName);
 }
