@@ -1,6 +1,5 @@
 package fr.eni.enchere.bll;
 
-import fr.eni.enchere.bo.Category;
 import fr.eni.enchere.bo.SoldArticles;
 import fr.eni.enchere.controller.viewmodel.SoldArticleViewModel;
 import fr.eni.enchere.dal.CategoryDAO;
@@ -28,21 +27,20 @@ public class SoldArticlesServiceImpl implements SoldArticlesService {
     }
 
     @Override
-    public SoldArticles findById(int id) {
-        SoldArticles a = soldArticlesDAO.findByNum(id);
-        return a;
+    public SoldArticleViewModel findById(int id) {
+        return this.mapSoldArticlesToViewModel(soldArticlesDAO.findByNum(id));
     }
 
     @Override
     public List<SoldArticleViewModel> findAll() {
         List<SoldArticles> all = soldArticlesDAO.findAll();
-        return mapSoldArticlesToViewModel(all);
+        return mapSoldArticlesToViewModelList(all);
     }
 
     @Override
     public List<SoldArticleViewModel> findByIdCategory(int idCategory) {
         List<SoldArticles> articlesFound = soldArticlesDAO.findByCategory(idCategory);
-        return mapSoldArticlesToViewModel(articlesFound);
+        return mapSoldArticlesToViewModelList(articlesFound);
     }
 
     @Override
@@ -61,17 +59,20 @@ public class SoldArticlesServiceImpl implements SoldArticlesService {
     @Override
     public List<SoldArticleViewModel> searchByName(String searchArticleName) {
         List<SoldArticles> articlesFound = soldArticlesDAO.searchByName(searchArticleName);
-        return mapSoldArticlesToViewModel(articlesFound);
+        return mapSoldArticlesToViewModelList(articlesFound);
     }
 
-    private List<SoldArticleViewModel> mapSoldArticlesToViewModel(List<SoldArticles> articlesFound) {
-        return articlesFound.stream().map(soldArticles -> {
-            SoldArticleViewModel soldArticleViewModel = new SoldArticleViewModel();
-            soldArticleViewModel.setSoldArticles(soldArticles);
-            soldArticleViewModel.setSeller(userDAO.findByNum(soldArticles.getIdUser()));
-            soldArticleViewModel.setCategory(categoryDAO.findByNum(soldArticles.getIdCategory()));
-            return soldArticleViewModel;
-        }).toList();
+    private List<SoldArticleViewModel> mapSoldArticlesToViewModelList(List<SoldArticles> articlesFound) {
+        return articlesFound.stream().map(this::mapSoldArticlesToViewModel).toList();
+    }
+
+    private SoldArticleViewModel mapSoldArticlesToViewModel(SoldArticles soldArticles) {
+        SoldArticleViewModel soldArticleViewModel = new SoldArticleViewModel();
+        soldArticleViewModel.setSoldArticles(soldArticles);
+        soldArticleViewModel.setSeller(userDAO.findByNum(soldArticles.getIdUser()));
+        soldArticleViewModel.setCategory(categoryDAO.findByNum(soldArticles.getIdCategory()));
+        soldArticleViewModel.setPickUpLocation(pickUpDAO.findByIdArticle(soldArticles.getIdArticle()));
+        return soldArticleViewModel;
     }
 
 }

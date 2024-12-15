@@ -50,7 +50,7 @@
 
 			<div class="article-actions">
 				<a class="details-btn" th:if="${#authorization.expression('isAuthenticated()')}"
-				   data-th-href="@{/vente/detail(id=${item.soldArticles.idArticle})}">
+				   data-th-href="@{/sales/detail(id=${item.soldArticles.idArticle})}">
 					Détail de la vente
 				</a>
 			</div>

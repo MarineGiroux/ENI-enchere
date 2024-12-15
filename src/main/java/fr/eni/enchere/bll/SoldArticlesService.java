@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface SoldArticlesService {
 	
-	SoldArticles findById(int id);
+	SoldArticleViewModel findById(int id);
 
 	List<SoldArticleViewModel> findAll();
 
