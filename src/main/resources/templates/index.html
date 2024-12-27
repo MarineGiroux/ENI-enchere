@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html html xmlns="http://www.thymeleaf.org" data-th-replace="~{fragments/layout :: layout-auctions(titrePage= ~{:: title},
-																							contenuPage= ~{:: .center-main},
-																							ressourcesSupp= ~{})}">
+<html xmlns:th="http://www.thymeleaf.org"
+	  th:replace="~{fragments/layout :: layout-auctions(titrePage=~{:: title},
+                                                       contenuPage=~{:: .center-main},
+                                                       ressourcesSupp=~{})}">
 
 <head>
 	<title>ENI Enchères</title>
@@ -36,7 +37,8 @@
 			<h4 data-th-text="*{item.soldArticles.nameArticle}">Nom de l'article</h4>
 
 			<div class="article-image">
-				<img data-th-src="@{/images/carton.jpg}" alt="Image de l'article">
+				<img th:src="@{${item.soldArticles.picture != null ? '/images/uploads/' + item.soldArticles.picture : '/images/carton.jpg'}}"
+					 th:alt="${item.soldArticles.nameArticle}">
 			</div>
 
 			<div class="article-details">
@@ -52,6 +54,10 @@
 				<a class="details-btn" th:if="${#authorization.expression('isAuthenticated()')}"
 				   data-th-href="@{/sales/detail(id=${item.soldArticles.idArticle})}">
 					Détail de la vente
+				</a>
+				<a class="details-btn-modify" th:if="${item.seller.email == #authentication.name}"
+				   th:href="@{/sales/edit/{id}(id=${item.soldArticles.idArticle})}">
+					Modifier
 				</a>
 			</div>
 		</div>

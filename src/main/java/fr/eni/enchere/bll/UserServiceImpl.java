@@ -72,7 +72,6 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public User findByEmail(String emailUser) {
-		// Il nous faut l'user et les informations associées
 		User u = userDAO.findByEmail(emailUser);
 		return u;
 	}

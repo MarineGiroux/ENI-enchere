@@ -1,5 +1,7 @@
 package fr.eni.enchere.bo;
 
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -13,10 +15,13 @@ public class SoldArticles {
     @NotBlank
     private String description;
     @NotNull
+    @FutureOrPresent
     private LocalDate startDateAuctions;
     @NotNull
+    @FutureOrPresent
     private LocalDate endDateAuctions;
     @NotNull
+    @Min(value = 1)
     private int initialPrice;
     private int priceSale;
     private String picture;

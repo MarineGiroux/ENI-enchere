@@ -5,8 +5,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 import fr.eni.enchere.bo.Auctions;
-import fr.eni.enchere.bo.Category;
 import fr.eni.enchere.bo.SoldArticles;
+import fr.eni.enchere.bo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -20,8 +20,8 @@ public class SoldArticlesDAOImpl implements SoldArticlesDAO {
 
 	private final String INSERT =
 					"""
-					INSERT INTO SOLD_ARTICLES (nameArticle, description, startDateAuctions, endDateAuctions, initialPrice, idUser, idCategory)
-					VALUES (:nameArticle, :description, :startDateAuctions, :endDateAuctions, :initialPrice, :idUser, :idCategory)
+					INSERT INTO SOLD_ARTICLES (nameArticle, description, startDateAuctions, endDateAuctions, initialPrice, picture, idUser, idCategory)
+					VALUES (:nameArticle, :description, :startDateAuctions, :endDateAuctions, :initialPrice, :picture, :idUser, :idCategory)
 					""";
 	private final String FIND_All = "select * from SOLD_ARTICLES";
 	private final String FIND_BY_CATEGORIE = """
@@ -32,6 +32,17 @@ public class SoldArticlesDAOImpl implements SoldArticlesDAO {
 	private static final String SEARCH_BY_NAME = """
 					SELECT * FROM SOLD_ARTICLES WHERE lower(nameArticle) LIKE :searchArticleName;
 					""";
+	private static final String UPDATE_ARTICLES = """
+						UPDATE SOLD_ARTICLES
+						SET nameArticle = :nameArticle,
+							description = :description,
+							startDateAuctions = :startDateAuctions,
+							endDateAuctions = :endDateAuctions,
+							initialPrice = :initialPrice,
+							picture = :picture
+						WHERE idArticle = :idArticle
+					""";
+
 
 	@Autowired
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -50,6 +61,7 @@ public class SoldArticlesDAOImpl implements SoldArticlesDAO {
 		nameParameters.addValue("startDateAuctions", soldArticles.getStartDateAuctions());
 		nameParameters.addValue("endDateAuctions", soldArticles.getEndDateAuctions());
 		nameParameters.addValue("initialPrice", soldArticles.getInitialPrice());
+		nameParameters.addValue("picture", soldArticles.getPicture());
 		nameParameters.addValue("idUser", soldArticles.getIdUser());
 		nameParameters.addValue("idCategory", soldArticles.getIdCategory());
 
@@ -96,6 +108,20 @@ public class SoldArticlesDAOImpl implements SoldArticlesDAO {
 	}
 
 	@Override
+	public void update(SoldArticles soldArticles) {
+		MapSqlParameterSource params = new MapSqlParameterSource();
+		params.addValue("nameArticle", soldArticles.getNameArticle());
+		params.addValue("description", soldArticles.getDescription());
+		params.addValue("startDateAuctions", soldArticles.getStartDateAuctions());
+		params.addValue("endDateAuctions", soldArticles.getEndDateAuctions());
+		params.addValue("initialPrice", soldArticles.getInitialPrice());
+		params.addValue("picture", soldArticles.getPicture());
+		params.addValue("idArticle", soldArticles.getIdArticle());
+		namedParameterJdbcTemplate.update(UPDATE_ARTICLES, params);
+	}
+
+
+	@Override
 	public List<SoldArticles> searchByName(String searchArticleName) {
 		MapSqlParameterSource nameParameters = new MapSqlParameterSource();
 		nameParameters.addValue("searchArticleName", "%" + searchArticleName.toLowerCase() + "%");
@@ -116,6 +142,7 @@ public class SoldArticlesDAOImpl implements SoldArticlesDAO {
 			soldArticles.setStartDateAuctions(rs.getDate("startDateAuctions").toLocalDate());
 			soldArticles.setEndDateAuctions(rs.getDate("endDateAuctions").toLocalDate());
 			soldArticles.setInitialPrice(rs.getInt("initialPrice"));
+			soldArticles.setPicture(rs.getString("picture"));
 			soldArticles.setPriceSale(rs.getInt("priceSale"));
 			soldArticles.setSaleStatus(rs.getBoolean("saleStatus"));
 			soldArticles.setIdUser(rs.getInt("idUser"));
@@ -131,5 +158,4 @@ public class SoldArticlesDAOImpl implements SoldArticlesDAO {
 		}
 
 	}
-
 }

@@ -6,6 +6,7 @@ import fr.eni.enchere.dal.CategoryDAO;
 import fr.eni.enchere.dal.PickUpDAO;
 import fr.eni.enchere.dal.SoldArticlesDAO;
 import fr.eni.enchere.dal.UserDAO;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,6 +61,11 @@ public class SoldArticlesServiceImpl implements SoldArticlesService {
     public List<SoldArticleViewModel> searchByName(String searchArticleName) {
         List<SoldArticles> articlesFound = soldArticlesDAO.searchByName(searchArticleName);
         return mapSoldArticlesToViewModelList(articlesFound);
+    }
+
+    @Override
+    public void update(@Valid SoldArticles soldArticleViewModel){
+        soldArticlesDAO.update(soldArticleViewModel);
     }
 
     private List<SoldArticleViewModel> mapSoldArticlesToViewModelList(List<SoldArticles> articlesFound) {

@@ -11,18 +11,30 @@ import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.security.Principal;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/sales")
 public class SalesController {
 	private final static Logger LOGGER = LoggerFactory.getLogger(SalesController.class);
+
+	@Value("${upload.path}")
+	private String uploadPath;
 
 	@Autowired
 	private SoldArticlesService soldArticlesService;
@@ -32,8 +44,10 @@ public class SalesController {
 	private CategoryService categoryService;
 	@Autowired
 	private PickUpService pickUpService;
-	@Autowired
+	@Autowired @Lazy
 	private AuctionsService auctionsService;
+    @Autowired
+    private FileService fileService;
 
 
 	public SalesController(SoldArticlesService soldArticlesService, UserService userService,
@@ -54,34 +68,48 @@ public class SalesController {
 	}
 
 	@PostMapping
-	public String createArticle(@Valid @ModelAttribute("soldArticleViewModel") SoldArticleViewModel soldArticleViewModel,
-								BindingResult bindingResult, Principal principal, Model model) {
-		if (!bindingResult.hasErrors()) {
-			LOGGER.debug("Sold article {}", soldArticleViewModel);
-			try {
-				controlAddress(soldArticleViewModel.getPickUpLocation(), principal.getName(), model);
+	public String createArticle(
+			@Valid @ModelAttribute("soldArticleViewModel") SoldArticleViewModel soldArticleViewModel,
+			@RequestParam(value = "picture", required = false) MultipartFile picture,
+			BindingResult bindingResult,
+			Principal principal,
+			Model model) {
 
+		if (!bindingResult.hasErrors()) {
+			try {
+				String picturePath = fileService.saveFile(picture);
+				if (picturePath != null) {
+					soldArticleViewModel.getSoldArticles().setPicture(picturePath);
+				}
 				SoldArticles soldArticles = soldArticleViewModel.getSoldArticles();
 				soldArticles.setIdUser(userService.findByEmail(principal.getName()).getIdUser());
-
-				this.soldArticlesService.add(soldArticleViewModel);
+				soldArticlesService.add(soldArticleViewModel);
 
 				return "redirect:/";
-			} catch (BusinessException e) {
-				LOGGER.error("Error while creation soldArticleViewModel", e);
-				e.getlistErrors().forEach(erreur -> {
-					ObjectError error = new ObjectError("globalError", erreur);
-					bindingResult.addError(error);
-				});
+			} catch (Exception e) {
+				LOGGER.error("Error during article creation", e);
+				bindingResult.rejectValue("soldArticles.picture", "error.picture", "Erreur lors de l'upload.");
 			}
 		}
 
-		LOGGER.debug("soldArticleViewModel {} , errors {}", soldArticleViewModel, bindingResult.getAllErrors());
 		model.addAttribute("listCategory", categoryService.findAll());
-		model.addAttribute("soldArticleViewModel", soldArticleViewModel);
-
 		return "sell";
 	}
+
+
+//	private String saveImage(MultipartFile file) throws IOException {
+//		String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+//		Path uploadDir = Paths.get(uploadPath);
+//
+//		if (!Files.exists(uploadDir)) {
+//			Files.createDirectories(uploadDir);
+//		}
+//
+//		Path destination = uploadDir.resolve(fileName);
+//		Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
+//
+//		return fileName; // Retourne juste le nom du fichier
+//	}
 
 	private void controlAddress(PickUp pickUpLocation, String emailUser, Model model) {
 		User user = userService.findByEmail(emailUser);
@@ -120,7 +148,37 @@ public class SalesController {
 		this.auctionsService.bid(auctions);
 		return "redirect:/sales/detail?id=" + idArticle;
 	}
-	
-	
+
+	@GetMapping("/edit/{id}")
+	public String showEditForm(@PathVariable("id") int id, Model model, Principal principal) {
+		SoldArticleViewModel viewModel = soldArticlesService.findById(id);
+		if (viewModel.getSoldArticles().getIdUser() !=
+				userService.findByEmail(principal.getName()).getIdUser()) {
+			return "redirect:/error";
+		}
+
+		model.addAttribute("article", viewModel.getSoldArticles());
+		model.addAttribute("categories", categoryService.findAll());
+		return "updateArticle";
+	}
+
+	@PostMapping("/edit")
+	public String updateArticle(
+			@Valid @ModelAttribute("article") SoldArticles article,
+			BindingResult bindingResult) {
+
+		if (bindingResult.hasErrors()) {
+			return "updateArticle";
+		}
+
+		try {
+			soldArticlesService.update(article);
+			return "redirect:/sales/detail?id=" + article.getIdArticle();
+		} catch (BusinessException e) {
+			e.getlistErrors().forEach(error ->
+					bindingResult.addError(new ObjectError("globalError", error)));
+			return "updateArticle";
+		}
+	}
 
 }

@@ -50,7 +50,6 @@ public class UserController {
 	
 	@GetMapping("/profile")
 	public String showUser(Principal principal, Model model) {
-//		System.out.println("principal.getName() : " + principal.getName());
 		controlUser(principal.getName(), model);
 		return "profile";
 	
