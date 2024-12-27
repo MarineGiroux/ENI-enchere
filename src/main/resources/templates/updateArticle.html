@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" data-th-href="@{/css/main.css}">
+  <link rel="stylesheet" data-th-href="@{/css/error.css}">
+  <title>ENI Enchères - Mise à jour du profil</title>
+  <link rel="icon" data-th-href="@{/images/logoEnchere-1.png}" />
+</head>
+<body>
+<header xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-entete">
+  <nav>
+        <span>
+            <a href="/">
+                <img src="/images/LogoEnchere.png" alt="Logo">
+            </a>
+        </span>
+    <div>
+      <a href="/">ENI Enchères</a>
+    </div>
+    <div id="navbarTogglerDemo02">
+      <ul>
+        <li><a aria-current="page" data-th-href="@{/}">Accueil</a></li>
+        <li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/sales}">Ventes</a></li>
+        <li th:if="${!#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/user/inscription}">Inscription</a></li>
+        <li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/user/profile}">Profil</a></li>
+        <li th:if="${!#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/login}">Connexion</a></li>
+        <li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/logout}">Déconnexion</a></li>
+      </ul>
+    </div>
+  </nav>
+</header>
+
+<main class="center-main">
+  <form th:action="@{/sales/edit}" method="post" th:object="${article}" enctype="multipart/form-data">
+    <h3>Modifier l'article</h3>
+    <div class="form-container">
+      <input type="hidden" th:field="*{idArticle}" />
+
+      <div class="form-group">
+        <label for="nameArticle">Nom de l'article</label>
+        <input type="text" id="nameArticle" class="form-control" th:field="*{nameArticle}" />
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" class="form-control" th:field="*{description}"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="initialPrice">Prix de départ</label>
+        <input type="number" id="initialPrice" class="form-control" th:field="*{initialPrice}" />
+      </div>
+
+      <div class="form-group">
+        <label for="startDateAuctions">Date de début</label>
+        <input type="datetime-local" id="startDateAuctions" class="form-control" th:field="*{startDateAuctions}" />
+      </div>
+
+      <div class="form-group">
+        <label for="endDateAuctions">Date de fin</label>
+        <input type="datetime-local" id="endDateAuctions" class="form-control" th:field="*{endDateAuctions}" />
+      </div>
+
+      <div class="form-group">
+        <label for="picture">Image</label>
+        <input type="file" id="picture" class="form-control" th:field="*{picture}" />
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+        <a th:href="@{/sales/detail/{id}(id=${article.idArticle})}" class="btn btn-secondary">Annuler</a>
+      </div>
+    </div>
+  </form>
+</main>
+
+<footer class="footer">
+  <p>© 2024 ENI Enchères. Tous droits réservés.</p>
+</footer>
+</body>
+</html>

@@ -4,6 +4,7 @@ import java.util.List;
 
 import fr.eni.enchere.bo.SoldArticles;
 import fr.eni.enchere.bo.Auctions;
+import fr.eni.enchere.bo.User;
 
 public interface SoldArticlesDAO {
 	
@@ -16,6 +17,8 @@ public interface SoldArticlesDAO {
 	List<SoldArticles> findAll();
 	
 	void updatePriceSale(Auctions auctions);
+
+	void update(SoldArticles soldArticles);
 
 	List<SoldArticles> searchByName(String searchArticleName);
 }

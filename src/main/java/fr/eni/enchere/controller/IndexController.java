@@ -42,11 +42,9 @@ public class IndexController {
 	
 	@GetMapping("/category")
 	public String filterArticle(@RequestParam(name = "id", required = true) int idCategory, Model model) {
-		// Filtered article
 		List<SoldArticleViewModel> soldArticles = soldArticlesService.findByIdCategory(idCategory);
 		model.addAttribute("soldArticlesViewModel", soldArticles);
 
-		// Category list
 		List<Category> category = categoryService.findAll();
 		model.addAttribute("listCategory", category);
 
@@ -55,7 +53,6 @@ public class IndexController {
 	
 	@GetMapping("/search")
 	public String searchByName(@RequestParam(name = "searchArticleName", required = true) String searchArticleName, Model model) {
-		// Filtered article
 		List<SoldArticleViewModel> soldArticles = soldArticlesService.searchByName(searchArticleName);
 		model.addAttribute("soldArticlesViewModel", soldArticles);
 		

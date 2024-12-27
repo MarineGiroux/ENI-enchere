@@ -37,6 +37,7 @@
 	<h3>Inscription</h3>
 	<p>Veuillez entrer vos informations personnelles pour créer votre compte.</p>
 	<form th:action="@{/user/inscription}" method="post" th:object="${user}">
+		<div data-th-replace="~{fragments/fragment-errors :: frag-errors}"></div>
 		<div class="form-container">
 			<div class="form-group">
 				<label for="pseudo">Pseudo</label>
