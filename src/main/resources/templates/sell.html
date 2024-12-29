@@ -39,6 +39,7 @@
 		<div class="form-container">
 			<div class="form-group">
 				<label for="nameArticle">Nom de l'article</label>
+				<div th:replace="~{fragments/fragment-error :: frag-error('soldArticles.nameArticle')}"></div>
 				<input type="text" id="nameArticle" class="form-control" data-th-field="*{soldArticles.nameArticle}" placeholder="Entrez le nom de l'article" />
 			</div>
 
@@ -70,6 +71,11 @@
 				<input type="date" id="endDateAuctions" class="form-control" data-th-field="*{soldArticles.endDateAuctions}" />
 			</div>
 
+			<div class="form-group">
+				<label for="picture">Image</label>
+				<input type="file" id="picture" name="picture" class="photoInput form-control" accept=".png,.jpg,.jpeg" />
+			</div>
+
 		</div>
 			<h4>Lieu de pickUp</h4>
 			<div class="form-container">
@@ -86,12 +92,6 @@
 			<div class="form-group">
 				<label for="pickUpLocationCity">Ville</label>
 				<input type="text" id="pickUpLocationCity" class="form-control" data-th-field="*{pickUpLocation.city}" placeholder="Entrez la ville" />
-			</div>
-		</div>
-		<div class="form-container">
-			<div class="form-group">
-				<label for="picture">Image</label>
-				<input type="file" id="picture" name="picture" class="photoInput form-control" accept=".png,.jpg,.jpeg"/>
 			</div>
 		</div>
 
