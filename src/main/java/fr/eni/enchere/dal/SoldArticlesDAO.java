@@ -21,4 +21,9 @@ public interface SoldArticlesDAO {
 	void update(SoldArticles soldArticles);
 
 	List<SoldArticles> searchByName(String searchArticleName);
+
+	void deleteArticleById(String idArticle);
+
+	void deleteExpiredArticles();
+
 }

@@ -8,9 +8,11 @@ import fr.eni.enchere.dal.SoldArticlesDAO;
 import fr.eni.enchere.dal.UserDAO;
 import fr.eni.enchere.exception.BusinessException;
 import jakarta.validation.Valid;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -77,6 +79,16 @@ public class SoldArticlesServiceImpl implements SoldArticlesService {
         soldArticleViewModel.setCategory(categoryDAO.findByNum(soldArticles.getIdCategory()));
         soldArticleViewModel.setPickUpLocation(pickUpDAO.findByIdArticle(soldArticles.getIdArticle()));
         return soldArticleViewModel;
+    }
+
+    @Override
+    public void deleteArticleById(String idArticle) {
+        soldArticlesDAO.deleteArticleById(idArticle);
+    }
+
+    @Override
+    public void deleteExpiredArticles() {
+        soldArticlesDAO.deleteExpiredArticles();
     }
 
 }

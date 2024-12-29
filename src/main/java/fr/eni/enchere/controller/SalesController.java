@@ -26,6 +26,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.Principal;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -177,5 +179,31 @@ public class SalesController {
 			return "updateArticle";
 		}
 	}
+
+	@GetMapping("/deleteArticle/{id}")
+	public String deleteArticle(@PathVariable("id") int id, Principal principal) {
+		SoldArticles article = soldArticlesService.findById(id).getSoldArticles();
+		if (article.getIdUser() != userService.findByEmail(principal.getName()).getIdUser()) {
+			return "redirect:/error";
+		}
+		soldArticlesService.deleteArticleById(String.valueOf(id));
+		return "redirect:/";
+	}
+
+	@PostMapping("/checkExpiredArticles")
+	public String checkExpiredArticles() {
+		List<SoldArticleViewModel> allArticles = soldArticlesService.findAll();
+
+		LocalDate currentDate = LocalDate.now();
+		for (SoldArticleViewModel articleViewModel : allArticles) {
+			SoldArticles article = articleViewModel.getSoldArticles();
+			if (article.getEndDateAuctions().isBefore(currentDate) && !article.isSaleStatus()) {
+				LOGGER.info("Suppression de l'article expiré avec ID: " + article.getIdArticle());
+				soldArticlesService.deleteArticleById(String.valueOf(article.getIdArticle()));
+			}
+		}
+		return "redirect:/";
+	}
+
 
 }

@@ -472,6 +472,11 @@ div.rounded-likes {
     margin-bottom: 15px;
 }
 
+textarea {
+    width: 102%;
+    height: 80px;
+}
+
 .logout-message {
     color: #5cb85c;
 }
