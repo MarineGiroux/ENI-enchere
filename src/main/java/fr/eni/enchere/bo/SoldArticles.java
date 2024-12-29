@@ -17,10 +17,10 @@ public class SoldArticles {
     @NotBlank
     private String description;
     @NotNull
-    @FutureOrPresent
+//    @FutureOrPresent
     private LocalDate startDateAuctions;
     @NotNull
-    @FutureOrPresent
+//    @FutureOrPresent
     private LocalDate endDateAuctions;
     @NotNull
     @Min(value = 1)

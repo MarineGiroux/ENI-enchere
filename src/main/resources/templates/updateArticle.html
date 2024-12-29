@@ -68,11 +68,19 @@
         <input type="file" id="picture" class="form-control" th:field="*{picture}" />
       </div>
 
-      <div class="form-actions">
-        <button type="submit" class="btn btn-primary">Enregistrer</button>
-        <a th:href="@{/sales/detail/{id}(id=${article.idArticle})}" class="btn btn-secondary">Annuler</a>
-      </div>
+
     </div>
+    <div class="form-actions">
+    <button type="submit" class="btn btn-primary">Enregistrer</button>
+      <a th:href="@{/sales/deleteArticle/{id}(id=${article.idArticle})}"
+         class="btn btn-alert"
+         onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet article ?')">
+        Supprimer l'article
+      </a>
+      <a class="btn btn-secondary" th:href="@{/}">
+        Annuler
+      </a>
+  </div>
   </form>
 </main>
 

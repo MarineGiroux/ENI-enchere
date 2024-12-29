@@ -45,7 +45,9 @@
 				<p class="article-details-h4" data-th-text="*{item.soldArticles.description}">Description</p>
 				<div class="article-card-detail">
 					<p><strong>Catégorie :</strong> <span data-th-text="*{item.category.categoryName}">Catégorie</span></p>
-					<p><strong>Date de fin :</strong> <span data-th-text="*{item.soldArticles.endDateAuctions}">2024-01-01</span></p>
+					<p><strong>Date de fin :</strong>
+						<span data-th-text="${#temporals.format(item.soldArticles.endDateAuctions, 'dd-MM-yyyy')}">2024-01-01</span>
+					</p>
 					<p><strong>Vendeur :</strong> <span data-th-text="*{item.seller.pseudo}">Pseudo</span></p>
 				</div>
 			</div>

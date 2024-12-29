@@ -44,9 +44,8 @@
 			</div>
 
 			<div class="form-group">
-				<div th:replace="~{fragments/fragment-error :: frag-error('soldArticles.description')}"></div>
-				<label for="description">Description</label>
-				<input type="text" id="description" class="form-control" data-th-field="*{soldArticles.description}" placeholder="Entrez une description" />
+				<label for="picture">Image</label>
+				<input type="file" id="picture" name="picture" class="photoInput form-control" accept=".png,.jpg,.jpeg" />
 			</div>
 
 			<div class="form-group">
@@ -67,7 +66,8 @@
 				<div th:replace="~{fragments/fragment-error :: frag-error('soldArticles.startDateAuctions')}"></div>
 				<label for="startDateAuctions">Date de début</label>
 				<input type="date" id="startDateAuctions"
-					   class="form-control"/>
+					   class="form-control"
+					   th:field="*{soldArticles.startDateAuctions}"/>
 			</div>
 
 			<div class="form-group">
@@ -80,17 +80,17 @@
 					   class="form-control"
 					   th:field="*{soldArticles.endDateAuctions}"
 					   th:errorclass="is-invalid" />
-
 			</div>
-
-			<div class="form-group">
-				<label for="picture">Image</label>
-				<input type="file" id="picture" name="picture" class="photoInput form-control" accept=".png,.jpg,.jpeg" />
-			</div>
-
 		</div>
+
+		<div class="form-group">
+			<div th:replace="~{fragments/fragment-error :: frag-error('soldArticles.description')}"></div>
+			<label for="description">Description</label>
+			<textarea id="description" class="form-control" data-th-field="*{soldArticles.description}" placeholder="Entrez une description"></textarea>
+		</div>
+
 			<h4>Lieu de pickUp</h4>
-			<div class="form-container">
+
 			<div class="form-group">
 				<label for="pickUpLocationRoad">Rue</label>
 				<input type="text" id="pickUpLocationRoad" class="form-control" data-th-field="*{pickUpLocation.road}" placeholder="Entrez la rue" />

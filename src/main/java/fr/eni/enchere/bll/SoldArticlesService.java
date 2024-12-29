@@ -21,4 +21,8 @@ public interface SoldArticlesService {
 
 	void update(@Valid SoldArticles soldArticleViewModel) throws BusinessException;
 
+	void deleteArticleById(String idArticle);
+
+	void deleteExpiredArticles();
+
 }

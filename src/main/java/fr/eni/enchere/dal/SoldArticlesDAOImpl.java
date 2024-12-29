@@ -42,7 +42,10 @@ public class SoldArticlesDAOImpl implements SoldArticlesDAO {
 							picture = :picture
 						WHERE idArticle = :idArticle
 					""";
-
+	private static final String DELETE_ARTICLES = "  DELETE from SOLD_ARTICLES where idArticle = :idArticle";
+	private static final String DELETE_EXPIRED_ARTICLES = """
+						DELETE FROM SOLD_ARTICLES WHERE endDateAuctions < CURRENT_DATE
+					""";
 
 	@Autowired
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -129,6 +132,17 @@ public class SoldArticlesDAOImpl implements SoldArticlesDAO {
 		return namedParameterJdbcTemplate.query(SEARCH_BY_NAME, nameParameters, new SoldArticlesRowMapper());
 	}
 
+	@Override
+	public void deleteArticleById(String idArticle) {
+		MapSqlParameterSource nameParameters = new MapSqlParameterSource();
+		nameParameters.addValue("idArticle", idArticle);
+		namedParameterJdbcTemplate.update(DELETE_ARTICLES, nameParameters);
+	}
+
+	@Override
+	public void deleteExpiredArticles() {
+		namedParameterJdbcTemplate.update(DELETE_EXPIRED_ARTICLES, new MapSqlParameterSource());
+	}
 
 	static class SoldArticlesRowMapper implements RowMapper<SoldArticles> {
 
