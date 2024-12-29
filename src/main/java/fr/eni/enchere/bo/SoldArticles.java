@@ -1,5 +1,6 @@
 package fr.eni.enchere.bo;
 
+import fr.eni.enchere.configuration.security.DateRange;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -7,6 +8,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 
+@DateRange(message = "La date de fin doit être postérieure à la date de début")
 public class SoldArticles {
 
     private int idArticle;

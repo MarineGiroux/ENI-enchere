@@ -6,6 +6,7 @@ import fr.eni.enchere.dal.CategoryDAO;
 import fr.eni.enchere.dal.PickUpDAO;
 import fr.eni.enchere.dal.SoldArticlesDAO;
 import fr.eni.enchere.dal.UserDAO;
+import fr.eni.enchere.exception.BusinessException;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
