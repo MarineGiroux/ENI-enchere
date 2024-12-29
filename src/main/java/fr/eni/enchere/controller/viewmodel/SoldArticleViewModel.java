@@ -4,10 +4,13 @@ import fr.eni.enchere.bo.Category;
 import fr.eni.enchere.bo.PickUp;
 import fr.eni.enchere.bo.SoldArticles;
 import fr.eni.enchere.bo.User;
+import jakarta.validation.Valid;
 
 public class SoldArticleViewModel {
+    @Valid
     SoldArticles soldArticles;
     Category category;
+    @Valid
     PickUp pickUpLocation;
     User seller;
     User buyer;

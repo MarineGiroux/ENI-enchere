@@ -70,32 +70,42 @@ public class SalesController {
 	@PostMapping
 	public String createArticle(
 			@Valid @ModelAttribute("soldArticleViewModel") SoldArticleViewModel soldArticleViewModel,
-			@RequestParam(value = "picture", required = false) MultipartFile picture,
 			BindingResult bindingResult,
+			@RequestParam(value = "picture", required = false) MultipartFile picture,
 			Principal principal,
 			Model model) {
 
-		if (!bindingResult.hasErrors()) {
-			try {
-				String picturePath = fileService.saveFile(picture);
-				if (picturePath != null) {
-					soldArticleViewModel.getSoldArticles().setPicture(picturePath);
-				}
-				SoldArticles soldArticles = soldArticleViewModel.getSoldArticles();
-				soldArticles.setIdUser(userService.findByEmail(principal.getName()).getIdUser());
-				soldArticlesService.add(soldArticleViewModel);
-
-				return "redirect:/";
-			} catch (Exception e) {
-				LOGGER.error("Error during article creation", e);
-				bindingResult.rejectValue("soldArticles.picture", "error.picture", "Erreur lors de l'upload.");
-			}
+		if (soldArticleViewModel.getSoldArticles().getEndDateAuctions() != null &&
+				soldArticleViewModel.getSoldArticles().getStartDateAuctions() != null &&
+				!soldArticleViewModel.getSoldArticles().getEndDateAuctions()
+						.isAfter(soldArticleViewModel.getSoldArticles().getStartDateAuctions())) {
+			bindingResult.rejectValue("soldArticles.endDateAuctions",
+					"DateRange.soldArticles",
+					"La date de fin doit être postérieure à la date de début");
 		}
 
-		model.addAttribute("listCategory", categoryService.findAll());
-		return "sell";
-	}
+		if (bindingResult.hasErrors()) {
+			model.addAttribute("listCategory", categoryService.findAll());
+			return "sell";
+		}
 
+		try {
+			String picturePath = fileService.saveFile(picture);
+			if (picturePath != null) {
+				soldArticleViewModel.getSoldArticles().setPicture(picturePath);
+			}
+			SoldArticles soldArticles = soldArticleViewModel.getSoldArticles();
+			soldArticles.setIdUser(userService.findByEmail(principal.getName()).getIdUser());
+			soldArticlesService.add(soldArticleViewModel);
+
+			return "redirect:/";
+		} catch (Exception e) {
+			LOGGER.error("Error during article creation", e);
+			bindingResult.rejectValue("soldArticles.picture", "error.picture", "Erreur lors de l'upload.");
+			model.addAttribute("listCategory", categoryService.findAll());
+			return "sell";
+		}
+	}
 
 	private void controlAddress(PickUp pickUpLocation, String emailUser, Model model) {
 		User user = userService.findByEmail(emailUser);
