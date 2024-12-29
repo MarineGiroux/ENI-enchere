@@ -97,20 +97,6 @@ public class SalesController {
 	}
 
 
-//	private String saveImage(MultipartFile file) throws IOException {
-//		String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
-//		Path uploadDir = Paths.get(uploadPath);
-//
-//		if (!Files.exists(uploadDir)) {
-//			Files.createDirectories(uploadDir);
-//		}
-//
-//		Path destination = uploadDir.resolve(fileName);
-//		Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
-//
-//		return fileName; // Retourne juste le nom du fichier
-//	}
-
 	private void controlAddress(PickUp pickUpLocation, String emailUser, Model model) {
 		User user = userService.findByEmail(emailUser);
 		if (pickUpLocation.getRoad() == null || pickUpLocation.getZipPass() == null || pickUpLocation.getCity() == null) {
@@ -165,7 +151,8 @@ public class SalesController {
 	@PostMapping("/edit")
 	public String updateArticle(
 			@Valid @ModelAttribute("article") SoldArticles article,
-			BindingResult bindingResult) {
+			BindingResult bindingResult,
+			Principal principal) {
 
 		if (bindingResult.hasErrors()) {
 			return "updateArticle";

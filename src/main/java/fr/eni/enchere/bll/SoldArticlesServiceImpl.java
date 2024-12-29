@@ -47,10 +47,7 @@ public class SoldArticlesServiceImpl implements SoldArticlesService {
     @Override
     @Transactional
     public SoldArticles add(SoldArticleViewModel soldArticleViewModel) {
-        // Create article to sold
         SoldArticles soldArticles = soldArticlesDAO.create(soldArticleViewModel.getSoldArticles());
-
-        // Assign pickup location to the article
         soldArticleViewModel.getPickUpLocation().setIdArticle(soldArticles.getIdArticle());
         this.pickUpDAO.create(soldArticleViewModel.getPickUpLocation());
 
