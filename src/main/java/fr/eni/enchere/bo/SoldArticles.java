@@ -1,10 +1,12 @@
 package fr.eni.enchere.bo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import fr.eni.enchere.configuration.security.DateRange;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
@@ -17,10 +19,12 @@ public class SoldArticles {
     @NotBlank
     private String description;
     @NotNull
-//    @FutureOrPresent
+    @FutureOrPresent
     private LocalDate startDateAuctions;
     @NotNull
-//    @FutureOrPresent
+    @FutureOrPresent
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate endDateAuctions;
     @NotNull
     @Min(value = 1)

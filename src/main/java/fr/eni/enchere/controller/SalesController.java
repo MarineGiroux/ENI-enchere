@@ -128,7 +128,6 @@ public class SalesController {
 	
 	@GetMapping("/auctions")
 	public String bid(Model model) {
-		System.out.println("help");
 		model.addAttribute("auctions", auctionsService.recoverAuctions());
 		return"redirect:/detail";
 	}
@@ -189,21 +188,5 @@ public class SalesController {
 		soldArticlesService.deleteArticleById(String.valueOf(id));
 		return "redirect:/";
 	}
-
-	@PostMapping("/checkExpiredArticles")
-	public String checkExpiredArticles() {
-		List<SoldArticleViewModel> allArticles = soldArticlesService.findAll();
-
-		LocalDate currentDate = LocalDate.now();
-		for (SoldArticleViewModel articleViewModel : allArticles) {
-			SoldArticles article = articleViewModel.getSoldArticles();
-			if (article.getEndDateAuctions().isBefore(currentDate) && !article.isSaleStatus()) {
-				LOGGER.info("Suppression de l'article expiré avec ID: " + article.getIdArticle());
-				soldArticlesService.deleteArticleById(String.valueOf(article.getIdArticle()));
-			}
-		}
-		return "redirect:/";
-	}
-
 
 }

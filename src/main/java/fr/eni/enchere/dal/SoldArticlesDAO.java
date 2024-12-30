@@ -24,6 +24,4 @@ public interface SoldArticlesDAO {
 
 	void deleteArticleById(String idArticle);
 
-	void deleteExpiredArticles();
-
 }

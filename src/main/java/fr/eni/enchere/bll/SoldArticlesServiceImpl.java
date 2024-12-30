@@ -6,9 +6,7 @@ import fr.eni.enchere.dal.CategoryDAO;
 import fr.eni.enchere.dal.PickUpDAO;
 import fr.eni.enchere.dal.SoldArticlesDAO;
 import fr.eni.enchere.dal.UserDAO;
-import fr.eni.enchere.exception.BusinessException;
 import jakarta.validation.Valid;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,7 +36,12 @@ public class SoldArticlesServiceImpl implements SoldArticlesService {
     @Override
     public List<SoldArticleViewModel> findAll() {
         List<SoldArticles> all = soldArticlesDAO.findAll();
-        return mapSoldArticlesToViewModelList(all);
+        LocalDate today = LocalDate.now();
+        List<SoldArticles> activeArticles = all.stream()
+                .filter(article -> !article.getEndDateAuctions().isBefore(today))
+                .toList();
+
+        return mapSoldArticlesToViewModelList(activeArticles);
     }
 
     @Override
@@ -84,11 +87,6 @@ public class SoldArticlesServiceImpl implements SoldArticlesService {
     @Override
     public void deleteArticleById(String idArticle) {
         soldArticlesDAO.deleteArticleById(idArticle);
-    }
-
-    @Override
-    public void deleteExpiredArticles() {
-        soldArticlesDAO.deleteExpiredArticles();
     }
 
 }
