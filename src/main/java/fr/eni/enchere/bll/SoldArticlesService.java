@@ -23,6 +23,4 @@ public interface SoldArticlesService {
 
 	void deleteArticleById(String idArticle);
 
-	void deleteExpiredArticles();
-
 }

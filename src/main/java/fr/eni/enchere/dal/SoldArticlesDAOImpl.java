@@ -73,8 +73,6 @@ public class SoldArticlesDAOImpl implements SoldArticlesDAO {
 		return this.findByNum(keyHolder.getKey().intValue());
 	}
 
-
-
 	@Override
 	public List<SoldArticles> findAll() {
 		return namedParameterJdbcTemplate.query(FIND_All, new SoldArticlesRowMapper());
@@ -84,7 +82,6 @@ public class SoldArticlesDAOImpl implements SoldArticlesDAO {
 	public List<SoldArticles> findByCategory(int idCategory) {
 		MapSqlParameterSource nameParameters = new MapSqlParameterSource();
 		nameParameters.addValue("idCategory", idCategory);
-
 
 		return namedParameterJdbcTemplate.query(FIND_BY_CATEGORIE,nameParameters, new SoldArticlesRowMapper());
 	}
@@ -97,8 +94,6 @@ public class SoldArticlesDAOImpl implements SoldArticlesDAO {
 		return namedParameterJdbcTemplate.queryForObject(FIND_BY_NO, nameParameters, new SoldArticlesRowMapper());
 	}
 
-
-
 	@Override
 	public void updatePriceSale(Auctions auctions) {
 		MapSqlParameterSource nameParameters = new MapSqlParameterSource();
@@ -106,8 +101,6 @@ public class SoldArticlesDAOImpl implements SoldArticlesDAO {
 		nameParameters.addValue("priceSale", auctions.getAmountAuctions());
 
 		namedParameterJdbcTemplate.update(UPDATE_PRIX_VENTE, nameParameters);
-
-
 	}
 
 	@Override
@@ -123,7 +116,6 @@ public class SoldArticlesDAOImpl implements SoldArticlesDAO {
 		namedParameterJdbcTemplate.update(UPDATE_ARTICLES, params);
 	}
 
-
 	@Override
 	public List<SoldArticles> searchByName(String searchArticleName) {
 		MapSqlParameterSource nameParameters = new MapSqlParameterSource();
@@ -137,11 +129,6 @@ public class SoldArticlesDAOImpl implements SoldArticlesDAO {
 		MapSqlParameterSource nameParameters = new MapSqlParameterSource();
 		nameParameters.addValue("idArticle", idArticle);
 		namedParameterJdbcTemplate.update(DELETE_ARTICLES, nameParameters);
-	}
-
-	@Override
-	public void deleteExpiredArticles() {
-		namedParameterJdbcTemplate.update(DELETE_EXPIRED_ARTICLES, new MapSqlParameterSource());
 	}
 
 	static class SoldArticlesRowMapper implements RowMapper<SoldArticles> {
@@ -170,6 +157,5 @@ public class SoldArticlesDAOImpl implements SoldArticlesDAO {
 
 			return soldArticles;
 		}
-
 	}
 }
