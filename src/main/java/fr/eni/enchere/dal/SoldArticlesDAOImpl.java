@@ -43,9 +43,6 @@ public class SoldArticlesDAOImpl implements SoldArticlesDAO {
 						WHERE idArticle = :idArticle
 					""";
 	private static final String DELETE_ARTICLES = "  DELETE from SOLD_ARTICLES where idArticle = :idArticle";
-	private static final String DELETE_EXPIRED_ARTICLES = """
-						DELETE FROM SOLD_ARTICLES WHERE endDateAuctions < CURRENT_DATE
-					""";
 
 	@Autowired
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;

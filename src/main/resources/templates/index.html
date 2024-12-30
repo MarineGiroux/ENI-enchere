@@ -31,7 +31,7 @@
 		<div class="article-card" data-th-each="item : ${soldArticlesViewModel}">
 			<div class="rounded-likes">
 				<span data-th-text="*{item.soldArticles.initialPrice}">0</span>
-				<p>👌</p>
+				<p>👍</p>
 			</div>
 
 			<h4 data-th-text="*{item.soldArticles.nameArticle}">Nom de l'article</h4>
@@ -39,6 +39,12 @@
 			<div class="article-image">
 				<img th:src="@{${item.soldArticles.picture != null ? '/images/uploads/' + item.soldArticles.picture : '/images/carton.jpg'}}"
 					 th:alt="${item.soldArticles.nameArticle}">
+			</div>
+
+			<div class="status-banner"
+				 th:if="${item.soldArticles.startDateAuctions.isBefore(T(java.time.LocalDate).now()) ||
+                 item.soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now())}">
+				En cours
 			</div>
 
 			<div class="article-details">
@@ -57,7 +63,11 @@
 				   data-th-href="@{/sales/detail(id=${item.soldArticles.idArticle})}">
 					Détail de la vente
 				</a>
-				<a class="details-btn-modify" th:if="${item.seller.email == #authentication.name}"
+				<a class="details-btn-modify"
+				   th:if="${item.seller.email == #authentication.name &&
+               item.soldArticles.startDateAuctions.isAfter(T(java.time.LocalDate).now())
+               ||
+               item.soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now())}"
 				   th:href="@{/sales/edit/{id}(id=${item.soldArticles.idArticle})}">
 					Modifier
 				</a>

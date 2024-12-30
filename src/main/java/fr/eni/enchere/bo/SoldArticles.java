@@ -20,11 +20,11 @@ public class SoldArticles {
     private String description;
     @NotNull
     @FutureOrPresent
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate startDateAuctions;
     @NotNull
     @FutureOrPresent
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    @JsonFormat(pattern = "dd/MM/yyyy")
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate endDateAuctions;
     @NotNull
     @Min(value = 1)
