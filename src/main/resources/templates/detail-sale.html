@@ -37,7 +37,10 @@
 
 
 	<form th:action="@{/sales/detail}" th:object="${soldArticleViewModel}" method="post">
-		<h3>Détail de l'article <span data-th-text="*{soldArticles.nameArticle}"></span></h3>
+		<h3><span data-th-text="*{soldArticles.nameArticle}"></span> vendu par <span data-th-text="*{seller.pseudo}"></span></h3>
+		<a class="details-btn" th:href="@{/user/seller/{id}(id=*{seller.idUser})}">
+			Profil de <span data-th-text="*{seller.pseudo}"></span>
+		</a>
 		<div class="form-container">
 			<div class="form-group">
 				<h5>Article : <span data-th-text="*{soldArticles.nameArticle}"></span></h5>

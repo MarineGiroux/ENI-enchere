@@ -2,6 +2,7 @@ package fr.eni.enchere.controller;
 
 import fr.eni.enchere.bll.UserService;
 import fr.eni.enchere.bo.User;
+import fr.eni.enchere.dal.UserDAOImpl;
 import fr.eni.enchere.exception.BusinessException;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -22,6 +23,8 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
+    @Autowired
+    private UserDAOImpl userDAOImpl;
 
 	@GetMapping("/inscription")
 	public String createUser(Model model) {
@@ -106,6 +109,16 @@ public class UserController {
 			LOGGER.warn("User inconnu");
 		}
 	}
-	
-		
+
+	@GetMapping("/seller/{id}")
+	public String showSellerProfile(@PathVariable("id") int sellerId, Model model) {
+		User seller = userDAOImpl.findByNum(sellerId);
+		if (seller != null) {
+			model.addAttribute("user", seller);
+			model.addAttribute("isSeller", true);
+			return "profile";
+		}
+		return "redirect:/error";
+	}
+
 }
