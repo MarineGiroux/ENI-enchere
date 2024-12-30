@@ -38,7 +38,9 @@
 
 	<form th:action="@{/sales/detail}" th:object="${soldArticleViewModel}" method="post">
 		<h3><span data-th-text="*{soldArticles.nameArticle}"></span> vendu par <span data-th-text="*{seller.pseudo}"></span></h3>
-		<a class="details-btn" th:href="@{/user/seller/{id}(id=*{seller.idUser})}">
+		<a class="details-btn"
+		   th:if="${soldArticleViewModel.seller.email != #authentication.name}"
+		   th:href="@{/user/seller/{id}(id=*{seller.idUser})}">
 			Profil de <span data-th-text="*{seller.pseudo}"></span>
 		</a>
 		<div class="form-container">
@@ -59,11 +61,11 @@
 			</div>
 
 			<div class="form-group">
-				<h5>Date de début : <span data-th-text="*{soldArticles.startDateAuctions}"></span></h5>
+				<h5>Date de début : <span data-th-text="${#temporals.format(soldArticleViewModel.soldArticles.startDateAuctions, 'dd-MM-yyyy')}">2024-01-01</span></h5>
 			</div>
 
 			<div class="form-group">
-				<h5>Date de fin : <span data-th-text="*{soldArticles.endDateAuctions}"></span></h5>
+				<h5>Date de fin : <span data-th-text="${#temporals.format(soldArticleViewModel.soldArticles.endDateAuctions, 'dd-MM-yyyy')}">2024-01-01</span></h5>
 			</div>
 
 			<div class="form-group">
@@ -96,6 +98,9 @@
 			<div class="form-actions">
 				<button type="submit" class="btn btn-primary">Nouvelle Offre</button>
 			</div>
+		</div>
+		<div class="form-actions">
+			<a data-th-href="@{/}" class="btn btn-secondary">Retour</a>
 		</div>
 	</form>
 </main>

@@ -6,6 +6,7 @@ import fr.eni.enchere.dal.CategoryDAO;
 import fr.eni.enchere.dal.PickUpDAO;
 import fr.eni.enchere.dal.SoldArticlesDAO;
 import fr.eni.enchere.dal.UserDAO;
+import fr.eni.enchere.exception.BusinessException;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -67,8 +68,23 @@ public class SoldArticlesServiceImpl implements SoldArticlesService {
     }
 
     @Override
-    public void update(@Valid SoldArticles soldArticleViewModel){
-        soldArticlesDAO.update(soldArticleViewModel);
+    @Transactional
+    public void update(@Valid SoldArticles article) throws BusinessException {
+        BusinessException be = new BusinessException();
+
+        if (article.getEndDateAuctions().isBefore(article.getStartDateAuctions())) {
+            be.add("La date de fin doit être postérieure à la date de début");
+        }
+
+        if (article.getInitialPrice() <= 0) {
+            be.add("Le prix initial doit être supérieur à 0");
+        }
+
+        if (be.getlistErrors().isEmpty()) {
+            soldArticlesDAO.update(article);
+        } else {
+            throw be;
+        }
     }
 
     private List<SoldArticleViewModel> mapSoldArticlesToViewModelList(List<SoldArticles> articlesFound) {

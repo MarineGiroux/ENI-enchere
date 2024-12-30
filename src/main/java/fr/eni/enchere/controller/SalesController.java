@@ -149,10 +149,13 @@ public class SalesController {
 	@GetMapping("/edit/{id}")
 	public String showEditForm(@PathVariable("id") int id, Model model, Principal principal) {
 		SoldArticleViewModel viewModel = soldArticlesService.findById(id);
+
 		if (viewModel.getSoldArticles().getIdUser() !=
 				userService.findByEmail(principal.getName()).getIdUser()) {
 			return "redirect:/error";
 		}
+
+		LOGGER.debug("Date de début : {}", viewModel.getSoldArticles().getStartDateAuctions());
 
 		model.addAttribute("article", viewModel.getSoldArticles());
 		model.addAttribute("categories", categoryService.findAll());
@@ -163,21 +166,45 @@ public class SalesController {
 	public String updateArticle(
 			@Valid @ModelAttribute("article") SoldArticles article,
 			BindingResult bindingResult,
-			Principal principal) {
+			@RequestParam(value = "pictureFile", required = false) MultipartFile pictureFile,
+			Principal principal,
+			Model model) {
+
+		if (article.getEndDateAuctions() != null &&
+				article.getStartDateAuctions() != null &&
+				!article.getEndDateAuctions().isAfter(article.getStartDateAuctions())) {
+			bindingResult.rejectValue("endDateAuctions",
+					"DateRange",
+					"La date de fin doit être postérieure à la date de début");
+		}
 
 		if (bindingResult.hasErrors()) {
+			LOGGER.debug("Date reçue : {}", article.getStartDateAuctions());
+
+			model.addAttribute("categories", categoryService.findAll());
 			return "updateArticle";
 		}
 
 		try {
+			if (pictureFile != null && !pictureFile.isEmpty()) {
+				String picturePath = fileService.saveFile(pictureFile);
+				if (picturePath != null) {
+					article.setPicture(picturePath);
+				}
+			}
+
 			soldArticlesService.update(article);
 			return "redirect:/sales/detail?id=" + article.getIdArticle();
 		} catch (BusinessException e) {
 			e.getlistErrors().forEach(error ->
 					bindingResult.addError(new ObjectError("globalError", error)));
+			model.addAttribute("categories", categoryService.findAll());
 			return "updateArticle";
-		}
-	}
+		} catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 	@GetMapping("/deleteArticle/{id}")
 	public String deleteArticle(@PathVariable("id") int id, Principal principal) {
