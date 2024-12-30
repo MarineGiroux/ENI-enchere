@@ -70,14 +70,17 @@
 				</div>
 
 			</div>
-				<div class="form-actions">
-					<a data-th-href="@{/user/update}" class="btn btn-primary">Mise à jour du profil</a>
-					<a  data-th-href="@{/user/delete}" class="btn btn-alert"
-						onclick="return confirm('Êtes-vous sûr de vouloir supprimer votre profil ?')">
-						Supprimer le profil
-					</a>
-					<a data-th-href="@{/}" class="btn btn-secondary">Retour</a>
-				</div>
+			<div class="form-actions" th:unless="${isSeller}">
+				<a data-th-href="@{/user/update}" class="btn btn-primary">Mise à jour du profil</a>
+				<a data-th-href="@{/user/delete}" class="btn btn-alert"
+				   onclick="return confirm('Êtes-vous sûr de vouloir supprimer votre profil ?')">
+					Supprimer le profil
+				</a>
+			</div>
+
+			<div class="form-actions" th:if="${isSeller}">
+				<a data-th-href="@{/}" class="btn btn-secondary">Retour</a>
+			</div>
 
 
 
