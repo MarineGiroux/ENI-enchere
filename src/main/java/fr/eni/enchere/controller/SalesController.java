@@ -132,13 +132,13 @@ public class SalesController {
 	}
 
 	@PostMapping("/auctions")
-	public String enregistrerEnchere(@RequestParam("idArticle") int idArticle,
+	public String enregistrerEnchere(@RequestParam("soldArticles.idArticle") int idArticle,
 									 @RequestParam("amountAuction") int amountAuction,
 									 Principal principal,
 									 Model model) {
 		Auctions auctions = new Auctions();
 		auctions.setUser(userService.findByEmail(principal.getName()));
-		auctions.setSoldArticle(soldArticlesService.findById(idArticle).getSoldArticles());
+		auctions.setSoldArticles(soldArticlesService.findById(idArticle).getSoldArticles());
 		auctions.setDateAuctions(java.time.LocalDate.now());
 		auctions.setAmountAuctions(amountAuction);
 		this.auctionsService.bid(auctions);

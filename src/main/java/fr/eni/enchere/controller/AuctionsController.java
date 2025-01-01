@@ -43,7 +43,7 @@ public class AuctionsController {
 
             SoldArticles article = new SoldArticles();
             article.setIdArticle(viewModel.getSoldArticles().getIdArticle());
-            auction.setSoldArticle(article);
+            auction.setSoldArticles(article);
 
             auctionsService.bid(auction);
 

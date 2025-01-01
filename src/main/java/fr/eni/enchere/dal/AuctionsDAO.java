@@ -21,4 +21,6 @@ public interface AuctionsDAO {
 
 	List<Auctions> findByArticle(int idArticle);
 
+	Auctions findBiggerAuction(int idArticle);
+
 }

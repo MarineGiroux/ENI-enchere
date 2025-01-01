@@ -83,7 +83,6 @@
 	<form th:action="@{/sales/auctions}" method="post" th:object="${soldArticleViewModel}">
 		<input type="hidden" th:field="*{soldArticles.idArticle}" />
 		<div class="form-container">
-			<input type="hidden" th:field="*{soldArticles.idArticle}"/>
 			<div class="form-group">
 				<h5>Prix de vente : <span data-th-text="*{soldArticles.initialPrice}"></span></h5>
 			</div>
@@ -96,8 +95,8 @@
 			<div class="form-group" th:if="${soldArticleViewModel.soldArticles.startDateAuctions.isBefore(T(java.time.LocalDate).now())
                ||
                soldArticleViewModel.soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now())}">
-				<label for="amountAuctions">Montant de l'enchère</label>
-				<input id="amountAuctions" type="number" name="amountAuctions" th:value="*{soldArticles.initialPrice}" class="form-control" />
+				<label for="amountAuction">Montant de l'enchère</label>
+				<input id="amountAuction" type="number" name="amountAuction" th:value="*{soldArticles.initialPrice}" class="form-control" />
 			</div>
 
 			<div class="form-actions" th:if="${soldArticleViewModel.soldArticles.startDateAuctions.isBefore(T(java.time.LocalDate).now())

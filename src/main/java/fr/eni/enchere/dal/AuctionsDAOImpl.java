@@ -23,6 +23,15 @@ public class AuctionsDAOImpl implements AuctionsDAO {
 	private final String COUNT_idArticle = "SELECT COUNT(idArticle) FROM AUCTIONS WHERE idArticle = :idArticle";
 	private final String UPDATE = "update AUCTIONS SET idUser = :idUser, amountAuctions = :amountAuctions, dateAuctions = :dateAuctions WHERE idArticle = :idArticle";
 	private final String FIND_BY_idArticle = "Select * FROM AUCTIONS WHERE idArticle = :idArticle";
+
+	private final String FIND_BIGGER_AUCTION_OF_ARTICLE = """
+		WITH max_amount AS (
+		SELECT MAX(amountAuctions) as max, idUser, idArticle, amountAuctions, dateAuctions
+		FROM AUCTIONS WHERE idArticle = :idArticle
+		GROUP BY idUser, idArticle, amountAuctions, dateAuctions)
+		SELECT idUser, idArticle, amountAuctions, dateAuctions from max_amount;
+	""";
+
 	@Autowired
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -39,7 +48,7 @@ public class AuctionsDAOImpl implements AuctionsDAO {
 		MapSqlParameterSource nameParameters = new MapSqlParameterSource();	
 		
 		nameParameters.addValue("idUser", auctions.getUser().getIdUser());
-		nameParameters.addValue("idArticle", auctions.getSoldArticle().getIdArticle());
+		nameParameters.addValue("idArticle", auctions.getSoldArticles().getIdArticle());
 		nameParameters.addValue("dateAuctions", auctions.getDateAuctions());
 		nameParameters.addValue("amountAuctions", auctions.getAmountAuctions());
 		
@@ -66,7 +75,7 @@ public class AuctionsDAOImpl implements AuctionsDAO {
 		nameParameters.addValue("idUser", auctions.getUser().getIdUser());
 		nameParameters.addValue("amountAuctions", auctions.getAmountAuctions());
 		nameParameters.addValue("dateAuctions", auctions.getDateAuctions());
-		nameParameters.addValue("idArticle", auctions.getSoldArticle().getIdArticle());
+		nameParameters.addValue("idArticle", auctions.getSoldArticles().getIdArticle());
 		
 		namedParameterJdbcTemplate.update(UPDATE, nameParameters);
 		
@@ -78,6 +87,14 @@ public class AuctionsDAOImpl implements AuctionsDAO {
 		nameParameters.addValue("noArticle", idArticle);
 		
 		return namedParameterJdbcTemplate.query(FIND_BY_idArticle, nameParameters,new EnchereRowMapper());
+	}
+
+	@Override
+	public Auctions findBiggerAuction(int idArticle) {
+		MapSqlParameterSource nameParameters = new MapSqlParameterSource();
+		nameParameters.addValue("idArticle", idArticle);
+
+		return namedParameterJdbcTemplate.queryForObject(FIND_BIGGER_AUCTION_OF_ARTICLE, nameParameters, new BeanPropertyRowMapper<>(Auctions.class));
 	}
 
 	@Override
@@ -104,7 +121,7 @@ class EnchereRowMapper implements org.springframework.jdbc.core.RowMapper<Auctio
 		
 		SoldArticles soldArticles = new SoldArticles();
 		soldArticles.setIdArticle(rs.getInt("idArticle"));
-		auctions.setSoldArticle(soldArticles);
+		auctions.setSoldArticles(soldArticles);
 		
 		return auctions;
 	}

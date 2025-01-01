@@ -3,21 +3,41 @@ package fr.eni.enchere.bo;
 import java.time.LocalDate;
 
 public class Auctions {
-	
+
+	private int idUser;
+	private int idArticle;
 	private LocalDate dateAuctions;
 	private int amountAuctions;
-	
+
 	private User user;
 	private SoldArticles soldArticles;
-	
+
 	public Auctions() {
 	}
 
-	public Auctions(LocalDate dateAuctions, int amountAuctions, User user, SoldArticles soldArticles) {
+	public Auctions(int idUser, int idArticle, LocalDate dateAuctions, int amountAuctions, User user, SoldArticles soldArticles) {
+		this.idUser = idUser;
+		this.idArticle = idArticle;
 		this.dateAuctions = dateAuctions;
 		this.amountAuctions = amountAuctions;
 		this.user = user;
 		this.soldArticles = soldArticles;
+	}
+
+	public int getIdUser() {
+		return idUser;
+	}
+
+	public void setIdUser(int idUser) {
+		this.idUser = idUser;
+	}
+
+	public int getIdArticle() {
+		return idArticle;
+	}
+
+	public void setIdArticle(int idArticle) {
+		this.idArticle = idArticle;
 	}
 
 	public LocalDate getDateAuctions() {
@@ -44,21 +64,23 @@ public class Auctions {
 		this.user = user;
 	}
 
-	public SoldArticles getSoldArticle() {
+	public SoldArticles getSoldArticles() {
 		return soldArticles;
 	}
 
-	public void setSoldArticle(SoldArticles soldArticles) {
+	public void setSoldArticles(SoldArticles soldArticles) {
 		this.soldArticles = soldArticles;
 	}
 
 	@Override
 	public String toString() {
 		return "Auctions{" +
-				"dateAuctions=" + dateAuctions +
+				"idUser=" + idUser +
+				", idArticle=" + idArticle +
+				", dateAuctions=" + dateAuctions +
 				", amountAuctions=" + amountAuctions +
 				", user=" + user +
-				", soldArticleViewModel=" + soldArticles +
+				", soldArticles=" + soldArticles +
 				'}';
 	}
 }
