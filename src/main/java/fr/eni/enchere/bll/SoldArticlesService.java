@@ -19,7 +19,7 @@ public interface SoldArticlesService {
 
 	List<SoldArticleViewModel> searchByName(String searchArticleName);
 
-	void update(@Valid SoldArticles soldArticleViewModel) throws BusinessException;
+	void update(@Valid SoldArticleViewModel SoldArticleViewModel) throws BusinessException;
 
 	void deleteArticleById(String idArticle);
 

@@ -69,19 +69,20 @@ public class SoldArticlesServiceImpl implements SoldArticlesService {
 
     @Override
     @Transactional
-    public void update(@Valid SoldArticles article) throws BusinessException {
+    public void update(@Valid SoldArticleViewModel soldArticleViewModel) throws BusinessException {
         BusinessException be = new BusinessException();
 
-        if (article.getEndDateAuctions().isBefore(article.getStartDateAuctions())) {
+        if (soldArticleViewModel.getSoldArticles().getEndDateAuctions().isBefore(soldArticleViewModel.getSoldArticles().getStartDateAuctions())) {
             be.add("La date de fin doit être postérieure à la date de début");
         }
 
-        if (article.getInitialPrice() <= 0) {
+        if (soldArticleViewModel.getSoldArticles().getInitialPrice() <= 0) {
             be.add("Le prix initial doit être supérieur à 0");
         }
 
         if (be.getlistErrors().isEmpty()) {
-            soldArticlesDAO.update(article);
+            soldArticlesDAO.update(soldArticleViewModel.getSoldArticles());
+            pickUpDAO.update(soldArticleViewModel.getPickUpLocation());
         } else {
             throw be;
         }

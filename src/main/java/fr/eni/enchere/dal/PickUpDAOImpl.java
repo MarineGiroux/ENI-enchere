@@ -1,6 +1,7 @@
 package fr.eni.enchere.dal;
 
 import fr.eni.enchere.bo.PickUp;
+import fr.eni.enchere.bo.SoldArticles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -21,6 +22,23 @@ public class PickUpDAOImpl implements PickUpDAO {
 	private final String FIND_BY_ID_ARTICLE = """
 									SELECT * FROM PICKUP WHERE idArticle = :idArticle
 								""";
+	private static final String UPDATE_PICKUP = """
+						UPDATE PICKUP
+						SET road = :road,
+							zipPass = :zipPass,
+							city = :city
+						WHERE idArticle = :idArticle
+					""";
+
+	@Override
+	public void update(PickUp pickUp) {
+		MapSqlParameterSource params = new MapSqlParameterSource();
+		params.addValue("idArticle", pickUp.getIdArticle());
+		params.addValue("road", pickUp.getRoad());
+		params.addValue("zipPass", pickUp.getZipPass());
+		params.addValue("city", pickUp.getCity());
+		namedParameterJdbcTemplate.update(UPDATE_PICKUP, params);
+	}
 
 	@Override
 	public void create(PickUp pickUp) {

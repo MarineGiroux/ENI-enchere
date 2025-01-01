@@ -33,29 +33,30 @@
 </header>
 
 <main class="center-main">
-  <form th:action="@{/sales/edit}" method="post" th:object="${article}" enctype="multipart/form-data">
+  <form th:action="@{/sales/edit/{id}(id=*{soldArticles.idArticle})}" method="post" th:object="${soldArticleViewModel}" enctype="multipart/form-data">
     <h3>Modifier l'article</h3>
     <div class="form-container">
-      <input type="hidden" th:field="*{idArticle}" />
-      <input type="hidden" th:field="*{idUser}" />
-      <input type="hidden" th:field="*{idCategory}" />
+      <div data-th-replace="~{fragments/fragment-error :: frag-error('soldArticles.idArticle')}"></div>
+      <input type="hidden" th:field="*{soldArticles.idArticle}" />
+      <input type="hidden" th:field="*{soldArticles.idUser}" />
+      <input type="hidden" th:field="*{soldArticles.idCategory}" />
 
       <div class="form-group">
-        <div data-th-replace="~{fragments/fragment-error :: frag-error('nameArticle')}"></div>
+        <div data-th-replace="~{fragments/fragment-error :: frag-error('soldArticles.nameArticle')}"></div>
         <label for="nameArticle">Nom de l'article</label>
-        <input type="text" id="nameArticle" class="form-control" th:field="*{nameArticle}" />
+        <input type="text" id="nameArticle" class="form-control" th:field="*{soldArticles.nameArticle}" />
       </div>
 
       <div class="form-group">
         <label for="picture">Image</label>
         <input type="file" id="picture" name="pictureFile" class="form-control" />
-        <input type="hidden" th:field="*{picture}" />
+        <input type="hidden" th:field="*{soldArticles.picture}" />
       </div>
 
       <div class="form-group">
-        <div data-th-replace="~{fragments/fragment-error :: frag-error('idCategory')}"></div>
+        <div data-th-replace="~{fragments/fragment-error :: frag-error('soldArticles.idCategory')}"></div>
         <label for="category">Catégorie</label>
-        <select id="category" class="form-control" th:field="*{idCategory}">
+        <select id="category" class="form-control" th:field="*{soldArticles.idCategory}">
           <option th:each="cat : ${categories}"
                   th:value="${cat.idCategory}"
                   th:text="${cat.categoryName}">
@@ -64,39 +65,56 @@
       </div>
 
       <div class="form-group">
-        <div data-th-replace="~{fragments/fragment-error :: frag-error('initialPrice')}"></div>
+        <div data-th-replace="~{fragments/fragment-error :: frag-error('soldArticles.initialPrice')}"></div>
         <label for="initialPrice">Prix de départ</label>
-        <input type="number" id="initialPrice" class="form-control" th:field="*{initialPrice}" />
-        <span class="error" th:if="${#fields.hasErrors('initialPrice')}" th:errors="*{initialPrice}"></span>
+        <input type="number" id="initialPrice" class="form-control" th:field="*{soldArticles.initialPrice}" />
+        <span class="error" th:if="${#fields.hasErrors('soldArticles.initialPrice')}" th:errors="*{soldArticles.initialPrice}"></span>
       </div>
 
       <div class="form-group">
-        <div data-th-replace="~{fragments/fragment-error :: frag-error('startDateAuctions')}"></div>
+        <div data-th-replace="~{fragments/fragment-error :: frag-error('soldArticles.startDateAuctions')}"></div>
         <label for="startDateAuctions">Date de début</label>
         <input type="date" id="startDateAuctions" class="form-control"
-               th:value="${#temporals.format(article.startDateAuctions, 'yyyy-MM-dd')}"
-               name="startDateAuctions" />
+               th:field="*{soldArticles.startDateAuctions}" />
       </div>
 
       <div class="form-group">
-        <div data-th-replace="~{fragments/fragment-error :: frag-error('endDateAuctions')}"></div>
+        <div data-th-replace="~{fragments/fragment-error :: frag-error('soldArticles.endDateAuctions')}"></div>
         <label for="endDateAuctions">Date de fin</label>
         <input type="date" id="endDateAuctions" class="form-control"
-               th:value="${#temporals.format(article.endDateAuctions, 'yyyy-MM-dd')}"
-               name="endDateAuctions" />
+               th:field="*{soldArticles.endDateAuctions}" />
       </div>
 
 
     </div>
     <div class="form-group">
-      <div data-th-replace="~{fragments/fragment-error :: frag-error('description')}"></div>
+      <div data-th-replace="~{fragments/fragment-error :: frag-error('soldArticles.description')}"></div>
       <label for="description">Description</label>
-      <textarea id="description" class="form-control" th:field="*{description}"></textarea>
+      <textarea id="description" class="form-control" th:field="*{soldArticles.description}"></textarea>
+    </div>
+
+    <h4>Lieu de retrait</h4>
+
+    <input type="hidden" th:field="*{pickUpLocation.idArticle}" />
+
+    <div class="form-group">
+      <label for="pickUpLocationRoad">Rue</label>
+      <input type="text" id="pickUpLocationRoad" class="form-control" data-th-field="*{pickUpLocation.road}" placeholder="Entrez la rue" />
+    </div>
+
+    <div class="form-group">
+      <label for="pickUpLocationZipPass">Code Postal</label>
+      <input type="text" id="pickUpLocationZipPass" class="form-control" data-th-field="*{pickUpLocation.zipPass}" placeholder="Entrez le code postal" />
+    </div>
+
+    <div class="form-group">
+      <label for="pickUpLocationCity">Ville</label>
+      <input type="text" id="pickUpLocationCity" class="form-control" data-th-field="*{pickUpLocation.city}" placeholder="Entrez la ville" />
     </div>
 
     <div class="form-actions">
       <button type="submit" class="btn btn-primary">Enregistrer</button>
-      <a th:href="@{/sales/deleteArticle/{id}(id=${article.idArticle})}"
+      <a th:href="@{/sales/deleteArticle/{id}(id=*{soldArticles.idArticle})}"
          class="btn btn-alert"
          onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet article ?')">
         Supprimer l'article
