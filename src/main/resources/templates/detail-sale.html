@@ -69,35 +69,45 @@
 			</div>
 
 			<div class="form-group">
-				<h5>Lieu de retrait : <span data-th-text="*{pickUpLocation.road}"></span> <span data-th-text="*{pickUpLocation.zipPass}"></span> <span data-th-text="*{pickUpLocation.city}"></span></h5>
+				<h5>Lieu de retrait : <br><br>
+					<span data-th-text="*{pickUpLocation.road}"></span> <br><br>
+					<span data-th-text="*{pickUpLocation.zipPass}"></span> <br><br>
+					<span data-th-text="*{pickUpLocation.city}"></span><br><br>
+				</h5>
+			</div>
+
+			<div class="form-group">
+				<img id="imageArticle" th:src="@{${soldArticleViewModel.soldArticles.picture != null ? '/images/uploads/' + soldArticleViewModel.soldArticles.picture : '/images/carton.jpg'}}"
+					 th:alt="${soldArticleViewModel.soldArticles.picture}" class="img-detail">
 			</div>
 		</div>
 
-		<div class="form-group">
-			<label for="imageArticle">Image</label>
-			<img id="imageArticle" th:src="@{${soldArticleViewModel.soldArticles.picture != null ? '/images/uploads/' + soldArticleViewModel.soldArticles.picture : '/images/carton.jpg'}}"
-				 th:alt="${soldArticleViewModel.soldArticles.picture}" class="img-detail">
-		</div>
+
 	</form>
 
 	<form th:action="@{/sales/auctions}" method="post" th:object="${soldArticleViewModel}">
+		<h3>Veux-tu enchérir ?</h3>
 		<input type="hidden" th:field="*{soldArticles.idArticle}" />
 		<div class="form-container">
 			<div class="form-group">
-				<h5>Prix de vente : <span data-th-text="*{soldArticles.initialPrice}"></span></h5>
+				<h5>Crédits de départ : <span data-th-text="*{soldArticles.initialPrice}"></span></h5>
 			</div>
 			<div class="form-group"  th:if="${soldArticleViewModel.soldArticles.startDateAuctions.isBefore(T(java.time.LocalDate).now())
                ||
                soldArticleViewModel.soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now())}">
-				<h5>Nouveaux prix : <span data-th-text="*{soldArticles.priceSale}"></span></h5>
+				<h5>Plus haute enchère : <span data-th-text="*{soldArticles.priceSale}"></span>  crédits </h5>
 			</div>
 
 			<div class="form-group" th:if="${soldArticleViewModel.soldArticles.startDateAuctions.isBefore(T(java.time.LocalDate).now())
-               ||
-               soldArticleViewModel.soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now())}">
+				|| soldArticleViewModel.soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now())}">
 				<label for="amountAuction">Montant de l'enchère</label>
-				<input id="amountAuction" type="number" name="amountAuction" th:value="*{soldArticles.initialPrice}" class="form-control" />
+				<input id="amountAuction"
+					   type="number"
+					   name="amountAuction"
+					   th:value="*{soldArticles.priceSale > 0} ? *{soldArticles.priceSale} : *{soldArticles.initialPrice}"
+					   class="form-control" />
 			</div>
+
 
 			<div class="form-actions" th:if="${soldArticleViewModel.soldArticles.startDateAuctions.isBefore(T(java.time.LocalDate).now())
                ||
@@ -108,7 +118,7 @@
 		<div class="form-actions">
 			<a data-th-href="@{/}" class="btn btn-secondary">Retour</a>
 		</div>
-	</form>
+		</form>
 </main>
 
 <footer class="footer">
