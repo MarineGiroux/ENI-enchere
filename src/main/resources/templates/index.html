@@ -66,9 +66,7 @@
 				<a class="details-btn-modify"
 				   th:if="${#authorization.expression('isAuthenticated()') &&
 				   item.seller.email == #authentication.name &&
-				   (item.soldArticles.startDateAuctions.isAfter(T(java.time.LocalDate).now())
-				   ||
-				   item.soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now()))}"
+				   (item.soldArticles.startDateAuctions.isAfter(T(java.time.LocalDate).now()))}"
 				   th:href="@{/sales/edit/{id}(id=${item.soldArticles.idArticle})}">
 					Modifier
 				</a>

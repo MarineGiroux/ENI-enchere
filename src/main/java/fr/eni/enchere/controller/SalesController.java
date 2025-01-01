@@ -156,29 +156,36 @@ public class SalesController {
 
 		LOGGER.debug("Date de début : {}", viewModel.getSoldArticles().getStartDateAuctions());
 
-		model.addAttribute("article", viewModel.getSoldArticles());
+		model.addAttribute("soldArticleViewModel", viewModel);
 		model.addAttribute("categories", categoryService.findAll());
 		return "updateArticle";
 	}
 
-	@PostMapping("/edit")
+	@PostMapping("/edit/{id}")
 	public String updateArticle(
-			@Valid @ModelAttribute("article") SoldArticles article,
+			@PathVariable("id") int id,
+			@Valid @ModelAttribute("soldArticleViewModel") SoldArticleViewModel soldArticleViewModel,
 			BindingResult bindingResult,
 			@RequestParam(value = "pictureFile", required = false) MultipartFile pictureFile,
 			Principal principal,
 			Model model) {
 
-		if (article.getEndDateAuctions() != null &&
-				article.getStartDateAuctions() != null &&
-				!article.getEndDateAuctions().isAfter(article.getStartDateAuctions())) {
+		if (id != soldArticleViewModel.getSoldArticles().getIdArticle()) {
+			bindingResult.rejectValue("idArticle",
+					"Id",
+					"L'id dans l'URL ne correspond pas au formulaire");
+		}
+
+		if (soldArticleViewModel.getSoldArticles().getEndDateAuctions() != null &&
+				soldArticleViewModel.getSoldArticles().getStartDateAuctions() != null &&
+				!soldArticleViewModel.getSoldArticles().getEndDateAuctions().isAfter(soldArticleViewModel.getSoldArticles().getStartDateAuctions())) {
 			bindingResult.rejectValue("endDateAuctions",
 					"DateRange",
 					"La date de fin doit être postérieure à la date de début");
 		}
 
 		if (bindingResult.hasErrors()) {
-			LOGGER.debug("Date reçue : {}", article.getStartDateAuctions());
+			LOGGER.debug("Date reçue : {}", soldArticleViewModel.getSoldArticles().getStartDateAuctions());
 
 			model.addAttribute("categories", categoryService.findAll());
 			return "updateArticle";
@@ -188,12 +195,12 @@ public class SalesController {
 			if (pictureFile != null && !pictureFile.isEmpty()) {
 				String picturePath = fileService.saveFile(pictureFile);
 				if (picturePath != null) {
-					article.setPicture(picturePath);
+					soldArticleViewModel.getSoldArticles().setPicture(picturePath);
 				}
 			}
 
-			soldArticlesService.update(article);
-			return "redirect:/sales/detail?id=" + article.getIdArticle();
+			soldArticlesService.update(soldArticleViewModel);
+			return "redirect:/sales/detail?id=" + soldArticleViewModel.getSoldArticles().getIdArticle();
 		} catch (BusinessException e) {
 			e.getlistErrors().forEach(error ->
 					bindingResult.addError(new ObjectError("globalError", error)));
