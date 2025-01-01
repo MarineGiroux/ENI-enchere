@@ -30,7 +30,7 @@
 
 		<div class="article-card" data-th-each="item : ${soldArticlesViewModel}">
 			<div class="rounded-likes">
-				<span data-th-text="*{item.soldArticles.initialPrice}">0</span>
+				<span data-th-text="*{item.soldArticles.priceSale > 0} ? *{item.soldArticles.priceSale} : *{item.soldArticles.initialPrice}">0</span>
 				<p>👍</p>
 			</div>
 
