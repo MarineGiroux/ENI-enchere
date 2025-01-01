@@ -6,7 +6,6 @@ import java.util.List;
 
 import fr.eni.enchere.bo.Auctions;
 import fr.eni.enchere.bo.SoldArticles;
-import fr.eni.enchere.bo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -28,7 +27,7 @@ public class SoldArticlesDAOImpl implements SoldArticlesDAO {
 					SELECT * FROM SOLD_ARTICLES WHERE idCategory = :idCategory
 					""";
 	private final String FIND_BY_NO = "SELECT * FROM SOLD_ARTICLES WHERE idArticle = :idArticle";
-	private final String UPDATE_PRIX_VENTE = "UPDATE SOLD_ARTICLES SET prixVente = :prixVente where idArticle = :idArticle";
+	private final String UPDATE_PRICE_SALE = "UPDATE SOLD_ARTICLES SET priceSale = :priceSale where idArticle = :idArticle";
 	private static final String SEARCH_BY_NAME = """
 					SELECT * FROM SOLD_ARTICLES WHERE lower(nameArticle) LIKE :searchArticleName;
 					""";
@@ -94,10 +93,10 @@ public class SoldArticlesDAOImpl implements SoldArticlesDAO {
 	@Override
 	public void updatePriceSale(Auctions auctions) {
 		MapSqlParameterSource nameParameters = new MapSqlParameterSource();
-		nameParameters.addValue("idArticle", auctions.getSoldArticle().getIdArticle());
+		nameParameters.addValue("idArticle", auctions.getSoldArticles().getIdArticle());
 		nameParameters.addValue("priceSale", auctions.getAmountAuctions());
 
-		namedParameterJdbcTemplate.update(UPDATE_PRIX_VENTE, nameParameters);
+		namedParameterJdbcTemplate.update(UPDATE_PRICE_SALE, nameParameters);
 	}
 
 	@Override
