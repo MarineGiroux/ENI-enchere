@@ -59,8 +59,6 @@ public class UserDAOImpl implements UserDAO {
 	public User findByEmail(String idUser) {
 		MapSqlParameterSource nameParameters = new MapSqlParameterSource();
 		nameParameters.addValue("email", idUser);
-		System.out.println("email = " + idUser);
-
 		try {
 			return namedParameterJdbcTemplate.queryForObject(FIND_BY_EMAIL, nameParameters,
 					new BeanPropertyRowMapper<User>(User.class));
@@ -108,19 +106,14 @@ public class UserDAOImpl implements UserDAO {
 		mapSqlParameterSource.addValue("credit", rising);
 		mapSqlParameterSource.addValue("idUser", user.getIdUser());
 		namedParameterJdbcTemplate.update(UPDATE_CREDIT, mapSqlParameterSource);
-
 	}
 
 	@Override
 	public void deleteAccountByEmail(String email) {
 		MapSqlParameterSource nameParameters = new MapSqlParameterSource();
 		nameParameters.addValue("email",email);
-		System.out.println("suppr email" + email);
-
 
 		namedParameterJdbcTemplate.update(DELETE_USERS, nameParameters);
-
-
 	}
 
 

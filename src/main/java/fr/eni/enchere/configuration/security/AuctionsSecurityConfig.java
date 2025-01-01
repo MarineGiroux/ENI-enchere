@@ -21,42 +21,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity
 public class AuctionsSecurityConfig {
-	
-//	@Bean
-	InMemoryUserDetailsManager userDetailManager() {
-		PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-		
-		String pwd = passwordEncoder.encode("toto");
-		System.out.println("pwd = " + pwd);
-		
-		UserDetails annelise = User.builder().username("abaille@campus-eni.fr")
-											.password(pwd)
-											.roles("FORMATEUR", "EMPLOYE")
-											.build();
-		
-		UserDetails stephane = User.builder().username("sgobin@campus-eni.fr")
-				.password(pwd)
-				.roles("ADMIN", "FORMATEUR", "EMPLOYE")
-				.build();
-		
-		UserDetails julien = User.builder().username("jtrillard@campus-eni.fr")
-				.password(pwd)
-				.roles("FORMATEUR", "EMPLOYE")
-				.build();
-		
-		UserDetails servane = User.builder().username("sdautais@campus-eni.fr")
-				.password(pwd)
-				.roles("EMPLOYE")
-				.build();
-		
-		UserDetails marius = User.builder().username("marius@campus-eni.fr")
-				.password(pwd)
-				.roles("ADMIN")
-				.build();
-		
-		return new InMemoryUserDetailsManager(annelise, stephane, julien, servane, marius);
-
-	}
 
 	@Bean
 	UserDetailsManager userDetailsManager(DataSource dataSource) {
