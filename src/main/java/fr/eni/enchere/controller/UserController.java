@@ -61,7 +61,6 @@ public class UserController {
 	
 	@GetMapping("/delete")
 	public String deleteUser(Principal principal, Model model) {
-		System.out.println("supprimer user : " + principal.getName());
 		userService.deleteAccountByEmail(principal.getName());
 		return "redirect:/logout";
 
@@ -79,11 +78,8 @@ public class UserController {
 	public String editUserSave(
 			@Valid @ModelAttribute(name = "user") User user, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
-			System.out.println("erreur de validation modif");
-			System.out.println(bindingResult.getAllErrors());
 			return "update";
 		} else {
-			System.out.println("user : " + user);
 			try {
 				this.userService.update(user);
 				return "profile";

@@ -115,7 +115,6 @@ public class SalesController {
 			model.addAttribute("user", user);
 		} else {
 			// TODO créer une erreur avec BindingResult
-			System.out.println("je sais pas");
 		}
 	}
 	
