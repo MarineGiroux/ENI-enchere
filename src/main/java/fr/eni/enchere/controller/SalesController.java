@@ -127,17 +127,31 @@ public class SalesController {
 
 	@PostMapping("/auctions")
 	public String registerAuction(@RequestParam("soldArticles.idArticle") int idArticle,
-								  @RequestParam("amountAuction") int amountAuction,
+								  @RequestParam("amountAuctions") int amountAuction,
 								  Principal principal,
-								  Model model) throws BusinessException {
-		Auctions auctions = new Auctions();
-		auctions.setUser(userService.findByEmail(principal.getName()));
-		auctions.setSoldArticles(soldArticlesService.findById(idArticle).getSoldArticles());
-		auctions.setDateAuctions(java.time.LocalDate.now());
-		auctions.setAmountAuctions(amountAuction);
-		this.auctionsService.bid(auctions);
+								  Model model,
+								  RedirectAttributes redirectAttributes) {
+		try {
+			Auctions auctions = new Auctions();
+			auctions.setUser(userService.findByEmail(principal.getName()));
+			auctions.setSoldArticles(soldArticlesService.findById(idArticle).getSoldArticles());
+			auctions.setDateAuctions(java.time.LocalDate.now());
+			auctions.setAmountAuctions(amountAuction);
+
+			this.auctionsService.bid(auctions);
+			redirectAttributes.addFlashAttribute("success", "Enchère placée avec succès");
+
+		} catch (BusinessException be) {
+			redirectAttributes.addFlashAttribute("error", be.getMessage());
+			LOGGER.error("Erreur lors de l'enchère: {}", be.getMessage());
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute("error", "Une erreur inattendue s'est produite");
+			LOGGER.error("Erreur inattendue: {}", e.getMessage());
+		}
+
 		return "redirect:/sales/detail?id=" + idArticle;
 	}
+
 
 	@GetMapping("/edit/{id}")
 	public String showEditForm(@PathVariable("id") int id, Model model, Principal principal) {

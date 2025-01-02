@@ -33,14 +33,6 @@
 			</nav>
 		</header>
 		<main class="center-main">
-
-			<div th:if="${error}" class="alert alert-danger">
-				<p th:text="${error}"></p>
-			</div>
-			<div th:if="${success}" class="alert alert-success">
-				<p th:text="${success}"></p>
-			</div>
-
 			<form th:action="@{/sales/detail}" th:object="${soldArticleViewModel}" method="post">
 				<h3><span data-th-text="*{soldArticles.nameArticle}"></span> vendu par <span data-th-text="*{seller.pseudo}"></span></h3>
 				<a class="details-btn"
@@ -91,7 +83,14 @@
 			</form>
 
 			<form th:action="@{/sales/auctions}" method="post" th:object="${soldArticleViewModel}">
+				<div data-th-replace="~{fragments/fragment-error :: frag-error('soldArticles.priceSale')}"></div>
 				<h3>Veux-tu enchérir ?</h3>
+				<div th:if="${error}">
+					<h5 class="error-text" th:text="${error}"></h5>
+				</div>
+				<div th:if="${success}">
+					<h5 class="success-text" th:text="${success}"></h5>
+				</div>
 				<input type="hidden" th:field="*{soldArticles.idArticle}" />
 				<div class="form-container">
 					<div class="form-group">
@@ -100,16 +99,16 @@
 					<div class="form-group"  th:if="${soldArticleViewModel.soldArticles.startDateAuctions.isBefore(T(java.time.LocalDate).now())
 					   ||
 					   soldArticleViewModel.soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now())}">
-						<h5>Plus haute enchère : <span data-th-text="*{soldArticles.priceSale}"></span>  crédits </h5>
+						<h5>Plus haute enchère : <span data-th-text="*{soldArticles.priceSale}"></span>  crédits <br></h5>
 					</div>
 
 					<div class="form-group" th:if="${soldArticleViewModel.soldArticles.startDateAuctions != null
 						&& (soldArticleViewModel.soldArticles.startDateAuctions.isBefore(T(java.time.LocalDate).now())
 						|| soldArticleViewModel.soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now()))}">
-						<label for="amountAuction">Montant de l'enchère</label>
-						<input id="amountAuction"
+						<label for="amountAuctions">Montant de l'enchère</label>
+						<input id="amountAuctions"
 							   type="number"
-							   name="amountAuction"
+							   name="amountAuctions"
 							   th:value="*{soldArticles.priceSale > 0} ? *{soldArticles.priceSale} : *{soldArticles.initialPrice}"
 							   class="form-control" />
 					</div>

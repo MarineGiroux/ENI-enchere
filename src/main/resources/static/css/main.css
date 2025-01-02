@@ -510,3 +510,14 @@ textarea {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     text-align: center;
 }
+.error-text {
+    color: red;
+    font-size: 1em;
+    margin-top: -15px;
+}
+
+.success-text {
+    color: green;
+    font-size: 1em;
+    margin-top: -15px;
+}
