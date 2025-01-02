@@ -15,8 +15,6 @@ public interface AuctionsDAO {
 
 	int countAuctionsUser(int idArticle, int idUser);
 
-	int countAuction(int idArticle);
-
 	void outbid(Auctions auctions);
 
 	List<Auctions> findByArticle(int idArticle);

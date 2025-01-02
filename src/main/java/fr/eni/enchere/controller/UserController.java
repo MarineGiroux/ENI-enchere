@@ -46,7 +46,7 @@ public class UserController {
 			userService.add(user, confirmPassword);
 			return "redirect:/login";
 		} catch (BusinessException e) {
-			e.getlistErrors().forEach(error -> bindingResult.addError(new ObjectError("globalError", error)));
+			e.getListErrors().forEach(error -> bindingResult.addError(new ObjectError("globalError", error)));
 			return "registration";
 		}
 	}
@@ -85,7 +85,7 @@ public class UserController {
 				return "profile";
 			} catch (BusinessException e) {
 				LOGGER.error("Error while updating user {}", user, e);
-				e.getlistErrors().forEach(
+				e.getListErrors().forEach(
 						erreur -> {
 							ObjectError error = new ObjectError("globalError", erreur);
 							bindingResult.addError(error);

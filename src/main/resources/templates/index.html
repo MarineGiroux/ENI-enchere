@@ -1,82 +1,80 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	  th:replace="~{fragments/layout :: layout-auctions(titrePage=~{:: title},
-                                                       contenuPage=~{:: .center-main},
-                                                       ressourcesSupp=~{})}">
+	<html xmlns:th="http://www.thymeleaf.org"
+		  th:replace="~{fragments/layout :: layout-auctions(titrePage=~{:: title},
+														   contenuPage=~{:: .center-main},
+														   ressourcesSupp=~{})}">
+		<head>
+			<title>ENI Enchères</title>
+			<link rel="stylesheet" href="style.css">
+		</head>
+		<body>
+		<main class="center-main">
+			<h3>Liste des Enchères</h3>
 
-<head>
-	<title>ENI Enchères</title>
-	<link rel="stylesheet" href="style.css">
-</head>
-<body>
-<main class="center-main">
-	<h3>Liste des Enchères</h3>
-
-	<div class="search-container">
-		<form action="/search" method="get" class="search-form">
-			<div class="search-wrapper">
-				<input type="text" name="searchArticleName" class="form-control search-input" placeholder="Saisir votre recherche...">
-				<button class="btn btn-primary search-button">Recherche</button>
+			<div class="search-container">
+				<form action="/search" method="get" class="search-form">
+					<div class="search-wrapper">
+						<input type="text" name="searchArticleName" class="form-control search-input" placeholder="Saisir votre recherche...">
+						<button class="btn btn-primary search-button">Recherche</button>
+					</div>
+				</form>
 			</div>
-		</form>
-	</div>
+			<select id="listeCat">
+				<option value="0">Catégorie : </option>
+				<option data-th-each="category : ${listCategory}" th:value="${category.idCategory}" th:text="${category.categoryName}"></option>
+			</select>
 
-	<select id="listeCat">
-		<option value="0">Catégorie : </option>
-		<option data-th-each="category : ${listCategory}" th:value="${category.idCategory}" th:text="${category.categoryName}"></option>
-	</select>
+			<div class="article-list">
 
-	<div class="article-list">
+				<div class="article-card" data-th-each="item : ${soldArticlesViewModel}">
+					<div class="rounded-likes">
+						<span data-th-text="*{item.soldArticles.priceSale > 0} ? *{item.soldArticles.priceSale} : *{item.soldArticles.initialPrice}">0</span>
+						<p th:if="${item.soldArticles.startDateAuctions.isBefore(T(java.time.LocalDate).now()) ||
+						 item.soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now())}">👍</p>
+					</div>
 
-		<div class="article-card" data-th-each="item : ${soldArticlesViewModel}">
-			<div class="rounded-likes">
-				<span data-th-text="*{item.soldArticles.priceSale > 0} ? *{item.soldArticles.priceSale} : *{item.soldArticles.initialPrice}">0</span>
-				<p>👍</p>
-			</div>
+					<h4 data-th-text="*{item.soldArticles.nameArticle}">Nom de l'article</h4>
 
-			<h4 data-th-text="*{item.soldArticles.nameArticle}">Nom de l'article</h4>
+					<div class="article-image">
+						<img th:src="@{${item.soldArticles.picture != null ? '/images/uploads/' + item.soldArticles.picture : '/images/carton.jpg'}}"
+							 th:alt="${item.soldArticles.nameArticle}">
+					</div>
 
-			<div class="article-image">
-				<img th:src="@{${item.soldArticles.picture != null ? '/images/uploads/' + item.soldArticles.picture : '/images/carton.jpg'}}"
-					 th:alt="${item.soldArticles.nameArticle}">
-			</div>
+					<div class="status-banner"
+						 th:if="${item.soldArticles.startDateAuctions.isBefore(T(java.time.LocalDate).now()) ||
+						 item.soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now())}">
+						En cours
+					</div>
 
-			<div class="status-banner"
-				 th:if="${item.soldArticles.startDateAuctions.isBefore(T(java.time.LocalDate).now()) ||
-                 item.soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now())}">
-				En cours
-			</div>
+					<div class="article-details">
+						<p class="article-details-h4" data-th-text="*{item.soldArticles.description}">Description</p>
+						<div class="article-card-detail">
+							<p><strong>Catégorie :</strong> <span data-th-text="*{item.category.categoryName}">Catégorie</span></p>
+							<p><strong>Date de fin :</strong>
+								<span data-th-text="${#temporals.format(item.soldArticles.endDateAuctions, 'dd-MM-yyyy')}">2024-01-01</span>
+							</p>
+							<p><strong>Vendeur :</strong> <span data-th-text="*{item.seller.pseudo}">Pseudo</span></p>
+							<p th:if="${item.soldArticles.priceSale == 0 && (item.soldArticles.startDateAuctions.isBefore(T(java.time.LocalDate).now()) ||
+						 item.soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now()))}">Personne n'a enchéri </p>
+						</div>
+					</div>
 
-			<div class="article-details">
-				<p class="article-details-h4" data-th-text="*{item.soldArticles.description}">Description</p>
-				<div class="article-card-detail">
-					<p><strong>Catégorie :</strong> <span data-th-text="*{item.category.categoryName}">Catégorie</span></p>
-					<p><strong>Date de fin :</strong>
-						<span data-th-text="${#temporals.format(item.soldArticles.endDateAuctions, 'dd-MM-yyyy')}">2024-01-01</span>
-					</p>
-					<p><strong>Vendeur :</strong> <span data-th-text="*{item.seller.pseudo}">Pseudo</span></p>
+					<div class="article-actions">
+						<a class="details-btn" th:if="${#authorization.expression('isAuthenticated()')}"
+						   data-th-href="@{/sales/detail(id=${item.soldArticles.idArticle})}">
+							Détail de la vente
+						</a>
+						<a class="details-btn-modify"
+						   th:if="${#authorization.expression('isAuthenticated()') &&
+						   item.seller.email == #authentication.name &&
+						   (item.soldArticles.startDateAuctions.isAfter(T(java.time.LocalDate).now()))}"
+						   th:href="@{/sales/edit/{id}(id=${item.soldArticles.idArticle})}">
+							Modifier
+						</a>
+					</div>
 				</div>
 			</div>
-
-			<div class="article-actions">
-				<a class="details-btn" th:if="${#authorization.expression('isAuthenticated()')}"
-				   data-th-href="@{/sales/detail(id=${item.soldArticles.idArticle})}">
-					Détail de la vente
-				</a>
-				<a class="details-btn-modify"
-				   th:if="${#authorization.expression('isAuthenticated()') &&
-				   item.seller.email == #authentication.name &&
-				   (item.soldArticles.startDateAuctions.isAfter(T(java.time.LocalDate).now()))}"
-				   th:href="@{/sales/edit/{id}(id=${item.soldArticles.idArticle})}">
-					Modifier
-				</a>
-			</div>
-		</div>
-		</div>
-		</div>
-	</div>
-
-</main>
-</body>
+		</main>
+	</body>
 </html>
 

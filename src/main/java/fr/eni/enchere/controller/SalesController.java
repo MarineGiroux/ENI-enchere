@@ -19,16 +19,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.security.Principal;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.UUID;
 
 @Controller
 @RequestMapping("/sales")
@@ -117,14 +111,14 @@ public class SalesController {
 			// TODO créer une erreur avec BindingResult
 		}
 	}
-	
+
 	@GetMapping("/detail")
 	public String showArticle(@RequestParam(name = "id", required = true) int id, Model model) {
 		model.addAttribute("soldArticleViewModel", soldArticlesService.findById(id));
-		
+
 		return "detail-sale";
 	}
-	
+
 	@GetMapping("/auctions")
 	public String bid(Model model) {
 		model.addAttribute("auctions", auctionsService.recoverAuctions());
@@ -132,10 +126,10 @@ public class SalesController {
 	}
 
 	@PostMapping("/auctions")
-	public String enregistrerEnchere(@RequestParam("soldArticles.idArticle") int idArticle,
-									 @RequestParam("amountAuction") int amountAuction,
-									 Principal principal,
-									 Model model) {
+	public String registerAuction(@RequestParam("soldArticles.idArticle") int idArticle,
+								  @RequestParam("amountAuction") int amountAuction,
+								  Principal principal,
+								  Model model) throws BusinessException {
 		Auctions auctions = new Auctions();
 		auctions.setUser(userService.findByEmail(principal.getName()));
 		auctions.setSoldArticles(soldArticlesService.findById(idArticle).getSoldArticles());
@@ -202,7 +196,7 @@ public class SalesController {
 			soldArticlesService.update(soldArticleViewModel);
 			return "redirect:/sales/detail?id=" + soldArticleViewModel.getSoldArticles().getIdArticle();
 		} catch (BusinessException e) {
-			e.getlistErrors().forEach(error ->
+			e.getListErrors().forEach(error ->
 					bindingResult.addError(new ObjectError("globalError", error)));
 			model.addAttribute("categories", categoryService.findAll());
 			return "updateArticle";

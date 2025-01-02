@@ -1,73 +1,73 @@
-<!DOCTYPE html >
-<html xmlns="http://www.thymeleaf.org" >
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
-    <title>ENI Enchères - Connexion</title>
-    <link rel="icon" data-th-href="@{/images/logoEnchere-1.png}" />
-    <link rel="stylesheet" th:href="@{/css/main.css}">
-    <link rel="stylesheet" th:href="@{/css/error.css}">
-</head>
-<body>
-<header xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-entete">
-    <nav>
-            <span>
-                <a href="/">
-                    <img src="/images/LogoEnchere.png" alt="Logo">
-                </a>
-            </span>
-        <div>
-            <a href="/">ENI Enchères</a>
-        </div>
-        <div id="navbarTogglerDemo02">
-            <ul>
-                <li><a aria-current="page" data-th-href="@{/}">Accueil</a></li>
-                <li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/sales}">Ventes</a></li>
-                <li th:if="${!#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/user/inscription}">Inscription</a></li>
-                <li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/user/profile}">Profil</a></li>
-                <li th:if="${!#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/login}">Connexion</a></li>
-                <li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/logout}">Déconnexion</a></li>
-            </ul>
-        </div>
-    </nav>
-</header>
+<!DOCTYPE html>
+    <html lang="en" xmlns:th="http://www.thymeleaf.org">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <link rel="stylesheet" data-th-href="@{/css/main.css}">
+            <title>ENI Enchères - Connexion</title>
+            <link rel="icon" data-th-href="@{/images/logoEnchere-1.png}" />
+            <link rel="stylesheet" th:href="@{/css/main.css}">
+            <link rel="stylesheet" th:href="@{/css/error.css}">
+        </head>
+        <body>
+        <header xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-entete">
+            <nav>
+                    <span>
+                        <a href="/">
+                            <img src="/images/LogoEnchere.png" alt="Logo">
+                        </a>
+                    </span>
+                <div>
+                    <a href="/">ENI Enchères</a>
+                </div>
+                <div id="navbarTogglerDemo02">
+                    <ul>
+                        <li><a aria-current="page" data-th-href="@{/}">Accueil</a></li>
+                        <li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/sales}">Ventes</a></li>
+                        <li th:if="${!#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/user/inscription}">Inscription</a></li>
+                        <li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/user/profile}">Profil</a></li>
+                        <li th:if="${!#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/login}">Connexion</a></li>
+                        <li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/logout}">Déconnexion</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
 
-<main class="center-main">
-    <h3>Connexion</h3>
-    <p>Veuillez entrer vos identifiants</p>
+        <main class="center-main">
+            <h3>Connexion</h3>
+            <p>Veuillez entrer vos identifiants</p>
 
-    <form th:action="@{/login}" method="post" class="login-form">
-        <div th:if="${param.error}" class="error-message">Mauvais email ou mot de passe</div>
-        <div th:if="${param.logout}" class="logout-message">Vous êtes déconnecté</div>
+            <form th:action="@{/login}" method="post" class="login-form">
+                <div th:if="${param.error}" class="error-message">Mauvais email ou mot de passe</div>
+                <div th:if="${param.logout}" class="logout-message">Tu es déconnecté</div>
 
-        <div class="form-group">
-            <label for="idUsername">Email</label>
-            <input type="email" id="idUsername" name="username" class="form-control" placeholder="Votre email" />
-        </div>
+                <div class="form-group">
+                    <label for="idUsername">Email</label>
+                    <input type="email" id="idUsername" name="username" class="form-control" placeholder="Votre email" />
+                </div>
 
-        <div class="form-group">
-            <label for="idPassword">Mot de passe</label>
-            <input type="password" id="idPassword" name="password" class="form-control" placeholder="Votre Mot de passe"/>
-        </div>
+                <div class="form-group">
+                    <label for="idPassword">Mot de passe</label>
+                    <input type="password" id="idPassword" name="password" class="form-control" placeholder="Votre Mot de passe"/>
+                </div>
 
-<!--        <div class="form-group remember-me">-->
-<!--            <label>-->
-<!--                <input type="checkbox" name="rememberMe" /> Se souvenir de moi-->
-<!--            </label>-->
-<!--        </div>-->
+        <!--        <div class="form-group remember-me">-->
+        <!--            <label>-->
+        <!--                <input type="checkbox" name="rememberMe" /> Se souvenir de moi-->
+        <!--            </label>-->
+        <!--        </div>-->
 
-        <button type="submit" class="btn btn-primary">Connexion</button>
-        <a href="#" class="btn btn-secondary">Mot de passe oublié ?</a>
-    </form>
+                <button type="submit" class="btn btn-primary">Connexion</button>
+                <a href="#" class="btn btn-secondary">Mot de passe oublié ?</a>
+            </form>
 
-    <div class="form-actions">
-        <p>Vous n'avez pas de compte ? <a data-th-href="@{/user/inscription}">S'inscrire</a></p>
-    </div>
-</main>
+            <div class="form-actions">
+                <p>Tu n'as pas encore de compte ? <a data-th-href="@{/user/inscription}">S'inscrire</a></p>
+            </div>
+        </main>
 
-<footer class="footer">
-    <p>© 2024 ENI Enchères. Tous droits réservés.</p>
-</footer>
-</body>
+        <footer class="footer">
+            <p>© 2024 ENI Enchères. Tous droits réservés.</p>
+        </footer>
+    </body>
 </html>

@@ -1,104 +1,104 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" data-th-href="@{/css/main.css}">
-	<link rel="stylesheet" data-th-href="@{/css/error.css}">
-	<title>ENI Enchères - Profil</title>
-	<link rel="icon" data-th-href="@{/images/logoEnchere-1.png}" />
-</head>
-<body>
-<header xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-entete">
-	<nav>
-        <span>
-            <a href="/">
-                <img src="/images/LogoEnchere.png" alt="Logo">
-            </a>
-        </span>
-		<div>
-			<a href="/">ENI Enchères</a>
-		</div>
-		<div id="navbarTogglerDemo02">
-			<ul>
-				<li><a aria-current="page" data-th-href="@{/}">Accueil</a></li>
-				<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/sales}">Ventes</a></li>
-				<li th:if="${!#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/user/inscription}">Inscription</a></li>
-				<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/user/profile}">Profil</a></li>
-				<li th:if="${!#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/login}">Connexion</a></li>
-				<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/logout}">Déconnexion</a></li>
-			</ul>
-		</div>
-	</nav>
-</header>
-
-<main class="center-main">
-	<section>
-		<div th:object="${user}">
-
-			<h3>Profil de <span data-th-text="*{pseudo}"></span></h3>
-
-			<div class="form-container-profil">
-
-				<div class="form-group">
-					<h5>Pseudo : <span data-th-text="*{pseudo}"></span></h5>
+	<html lang="en" xmlns:th="http://www.thymeleaf.org">
+		<head>
+			<meta charset="UTF-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+			<link rel="stylesheet" data-th-href="@{/css/main.css}">
+			<link rel="stylesheet" data-th-href="@{/css/error.css}">
+			<title>ENI Enchères - Profil</title>
+			<link rel="icon" data-th-href="@{/images/logoEnchere-1.png}" />
+		</head>
+		<body>
+		<header xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-entete">
+			<nav>
+				<span>
+					<a href="/">
+						<img src="/images/LogoEnchere.png" alt="Logo">
+					</a>
+				</span>
+				<div>
+					<a href="/">ENI Enchères</a>
 				</div>
-
-				<div class="form-group">
-					<h5>Nom : <span data-th-text="*{lastName}"></span></h5>
+				<div id="navbarTogglerDemo02">
+					<ul>
+						<li><a aria-current="page" data-th-href="@{/}">Accueil</a></li>
+						<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/sales}">Ventes</a></li>
+						<li th:if="${!#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/user/inscription}">Inscription</a></li>
+						<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/user/profile}">Profil</a></li>
+						<li th:if="${!#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/login}">Connexion</a></li>
+						<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/logout}">Déconnexion</a></li>
+					</ul>
 				</div>
+			</nav>
+		</header>
 
-				<div class="form-group">
-					<h5>Prénom : <span data-th-text="*{firstName}"></span></h5>
+		<main class="center-main">
+			<section>
+				<div th:object="${user}">
+
+					<h3>Profil de <span data-th-text="*{pseudo}"></span></h3>
+
+					<div class="form-container-profil">
+
+						<div class="form-group">
+							<h5>Pseudo : <span data-th-text="*{pseudo}"></span></h5>
+						</div>
+
+						<div class="form-group">
+							<h5>Nom : <span data-th-text="*{lastName}"></span></h5>
+						</div>
+
+						<div class="form-group">
+							<h5>Prénom : <span data-th-text="*{firstName}"></span></h5>
+						</div>
+
+						<div class="form-group">
+							<h5>Email : <span data-th-text="*{email}"></span></h5>
+						</div>
+
+						<div class="form-group">
+							<h5>Telephone : <span data-th-text="*{phone}"></span></h5>
+						</div>
+
+						<div class="form-group">
+							<h5>Crédits disponibles : <span data-th-text="*{credit}"></span></h5>
+						</div>
+
+						<div class="form-group">
+							<h5>
+								<span data-th-text="*{road}"></span><br><br>
+								<span data-th-text="*{zipPass}"></span><br><br>
+								<span data-th-text="*{city}"></span>
+							</h5>
+						</div>
+
+
+
+						<div class="form-group">
+							<label for="pictureProfil">Photo de profil</label>
+							<img src="/images/avatar.png" id="pictureProfil" class="img-detail">
+						</div>
+
+					</div>
+					<div class="form-actions" th:unless="${isSeller}">
+						<a data-th-href="@{/user/update}" class="btn btn-primary">Mise à jour du profil</a>
+						<a data-th-href="@{/user/delete}" class="btn btn-alert"
+						   onclick="return confirm('Est tu sûr de vouloir supprimer ton profil ?')">
+							Supprimer le profil
+						</a>
+					</div>
+
+					<div class="form-actions" th:if="${isSeller}">
+						<a data-th-href="@{/}" class="btn btn-secondary">Retour</a>
+					</div>
+
+
+
 				</div>
-
-				<div class="form-group">
-					<h5>Email : <span data-th-text="*{email}"></span></h5>
-				</div>
-
-				<div class="form-group">
-					<h5>Telephone : <span data-th-text="*{phone}"></span></h5>
-				</div>
-
-				<div class="form-group">
-					<h5>Crédits disponibles : <span data-th-text="*{credit}"></span></h5>
-				</div>
-
-				<div class="form-group">
-					<h5>
-						<span data-th-text="*{road}"></span><br><br>
-						<span data-th-text="*{zipPass}"></span><br><br>
-						<span data-th-text="*{city}"></span>
-					</h5>
-				</div>
-
-
-
-				<div class="form-group">
-					<label for="pictureProfil">Photo de profil</label>
-					<img src="/images/avatar.png" id="pictureProfil" class="img-detail">
-				</div>
-
-			</div>
-			<div class="form-actions" th:unless="${isSeller}">
-				<a data-th-href="@{/user/update}" class="btn btn-primary">Mise à jour du profil</a>
-				<a data-th-href="@{/user/delete}" class="btn btn-alert"
-				   onclick="return confirm('Êtes-vous sûr de vouloir supprimer votre profil ?')">
-					Supprimer le profil
-				</a>
-			</div>
-
-			<div class="form-actions" th:if="${isSeller}">
-				<a data-th-href="@{/}" class="btn btn-secondary">Retour</a>
-			</div>
-
-
-
-		</div>
-	</section>
-</main>
-	<footer class="footer">
-		<p>© 2024 ENI Enchères. Tous droits réservés.</p>
-	</footer>
-</body>
+			</section>
+		</main>
+		<footer class="footer">
+			<p>© 2024 ENI Enchères. Tous droits réservés.</p>
+		</footer>
+	</body>
 </html>
