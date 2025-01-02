@@ -4,10 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BusinessException extends Exception {
-	
 	private List<String> listErrors;
-	
-	
 	public BusinessException() {
 		super();
 		this.listErrors = new ArrayList<String>();
