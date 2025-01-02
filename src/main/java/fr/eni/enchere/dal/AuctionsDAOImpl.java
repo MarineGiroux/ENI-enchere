@@ -20,17 +20,17 @@ public class AuctionsDAOImpl implements AuctionsDAO {
 	private final String FIND_ALL = "Select * FROM AUCTIONS";
 	private final String FIND_BY_idArticle_idUser = "Select * FROM AUCTIONS WHERE idArticle = :idArticle AND idUser = :idUser";
 	private final String COUNT_idArticle_idUser = "SELECT COUNT(idArticle) FROM AUCTIONS WHERE idArticle = :idArticle AND idUser = :idUser";
-	private final String COUNT_idArticle = "SELECT COUNT(idArticle) FROM AUCTIONS WHERE idArticle = :idArticle";
-	private final String UPDATE = "update AUCTIONS SET idUser = :idUser, amountAuctions = :amountAuctions, dateAuctions = :dateAuctions WHERE idArticle = :idArticle";
+	private final String UPDATE_AMOUNT_AUCTION = """
+			update AUCTIONS SET amountAuctions = :amountAuctions, dateAuctions = :dateAuctions
+			             WHERE idArticle = :idArticle and idUser = :idUser
+			""";
 	private final String FIND_BY_idArticle = "Select * FROM AUCTIONS WHERE idArticle = :idArticle";
 
 	private final String FIND_BIGGER_AUCTION_OF_ARTICLE = """
-		WITH max_amount AS (
-		SELECT MAX(amountAuctions) as max, idUser, idArticle, amountAuctions, dateAuctions
-		FROM AUCTIONS WHERE idArticle = :idArticle
-		GROUP BY idUser, idArticle, amountAuctions, dateAuctions)
-		SELECT idUser, idArticle, amountAuctions, dateAuctions from max_amount;
-	""";
+				SELECT top 1 *
+				FROM AUCTIONS WHERE idArticle = :idArticle
+				ORDER BY amountAuctions desc;
+			""";
 
 	@Autowired
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -72,12 +72,12 @@ public class AuctionsDAOImpl implements AuctionsDAO {
 	@Override
 	public void outbid(Auctions auctions) {
 		MapSqlParameterSource nameParameters = new MapSqlParameterSource();
-		nameParameters.addValue("idUser", auctions.getUser().getIdUser());
 		nameParameters.addValue("amountAuctions", auctions.getAmountAuctions());
 		nameParameters.addValue("dateAuctions", auctions.getDateAuctions());
+		nameParameters.addValue("idUser", auctions.getUser().getIdUser());
 		nameParameters.addValue("idArticle", auctions.getSoldArticles().getIdArticle());
 		
-		namedParameterJdbcTemplate.update(UPDATE, nameParameters);
+		namedParameterJdbcTemplate.update(UPDATE_AMOUNT_AUCTION, nameParameters);
 		
 	}
 
@@ -94,19 +94,15 @@ public class AuctionsDAOImpl implements AuctionsDAO {
 		MapSqlParameterSource nameParameters = new MapSqlParameterSource();
 		nameParameters.addValue("idArticle", idArticle);
 
-		return namedParameterJdbcTemplate.queryForObject(FIND_BIGGER_AUCTION_OF_ARTICLE, nameParameters, new BeanPropertyRowMapper<>(Auctions.class));
+		List<Auctions> results = namedParameterJdbcTemplate.query(FIND_BIGGER_AUCTION_OF_ARTICLE, nameParameters, new EnchereRowMapper());
+		if (results.isEmpty()) {
+			return null;
+		}
+		return results.get(0);
 	}
-
-	@Override
-	public int countAuction(int idArticle) {
-		MapSqlParameterSource nameParameters = new MapSqlParameterSource();
-		nameParameters.addValue("noArticle" , idArticle);
-		return namedParameterJdbcTemplate.queryForObject(COUNT_idArticle, nameParameters, Integer.class);
-	}
-
-
 
 }
+
 class EnchereRowMapper implements org.springframework.jdbc.core.RowMapper<Auctions>{
 
 	@Override
@@ -114,15 +110,10 @@ class EnchereRowMapper implements org.springframework.jdbc.core.RowMapper<Auctio
 		Auctions auctions = new Auctions();
 		auctions.setAmountAuctions(rs.getInt("amountAuctions"));
 		auctions.setDateAuctions(rs.getDate("dateAuctions").toLocalDate());
-		
-		User user = new User();
-		user.setIdUser(rs.getInt("idUser"));
-		auctions.setUser(user);
-		
-		SoldArticles soldArticles = new SoldArticles();
-		soldArticles.setIdArticle(rs.getInt("idArticle"));
-		auctions.setSoldArticles(soldArticles);
-		
+		int idUser = rs.getInt("idUser");
+		auctions.setIdUser(idUser);
+		int idArticle = rs.getInt("idArticle");
+		auctions.setIdArticle(idArticle);
 		return auctions;
 	}
 	

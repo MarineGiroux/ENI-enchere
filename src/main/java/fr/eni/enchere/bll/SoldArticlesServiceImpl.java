@@ -80,7 +80,7 @@ public class SoldArticlesServiceImpl implements SoldArticlesService {
             be.add("Le prix initial doit être supérieur à 0");
         }
 
-        if (be.getlistErrors().isEmpty()) {
+        if (be.getListErrors().isEmpty()) {
             soldArticlesDAO.update(soldArticleViewModel.getSoldArticles());
             pickUpDAO.update(soldArticleViewModel.getPickUpLocation());
         } else {

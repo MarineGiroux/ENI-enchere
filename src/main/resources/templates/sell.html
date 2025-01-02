@@ -1,120 +1,120 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" data-th-href="@{/css/main.css}">
-	<link rel="stylesheet" data-th-href="@{/css/error.css}">
-	<title>ENI Enchères - Mise en Vente</title>
-	<link rel="icon" data-th-href="@{/images/logoEnchere-1.png}" />
-</head>
-<body>
-<header xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-entete">
-	<nav>
-        <span>
-            <a href="/">
-                <img src="/images/LogoEnchere.png" alt="Logo">
-            </a>
-        </span>
-		<div>
-			<a href="/">ENI Enchères</a>
-		</div>
-		<div id="navbarTogglerDemo02">
-			<ul>
-				<li><a aria-current="page" data-th-href="@{/}">Accueil</a></li>
-				<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/sales}">Ventes</a></li>
-				<li th:if="${!#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/user/inscription}">Inscription</a></li>
-				<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/user/profile}">Profil</a></li>
-				<li th:if="${!#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/login}">Connexion</a></li>
-				<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/logout}">Déconnexion</a></li>
-			</ul>
-		</div>
-	</nav>
-</header>
-
-<main class="center-main">
-	<h3>Nouvelle Vente</h3>
-	<p>Veuillez remplir les informations nécessaires pour proposer un nouvel article en vente.</p>
-	<form th:action="@{/sales}" method="post" enctype="multipart/form-data" th:object="${soldArticleViewModel}">
-		<div class="form-container">
-			<div class="form-group">
-				<div th:replace="~{fragments/fragment-error :: frag-error('soldArticles.nameArticle')}"></div>
-				<label for="nameArticle">Nom de l'article</label>
-				<input type="text" id="nameArticle" class="form-control" data-th-field="*{soldArticles.nameArticle}" placeholder="Entrez le nom de l'article" />
-			</div>
-
-			<div class="form-group">
-				<label for="picture">Image</label>
-				<input type="file" id="picture" name="picture" class="photoInput form-control" accept=".png,.jpg,.jpeg" />
-			</div>
-
-			<div class="form-group">
-				<label for="category">Catégorie</label>
-				<select id="category" class="form-control" data-th-field="*{soldArticles.idCategory}">
-					<option value="-1">Sélectionnez une catégorie</option>
-					<option data-th-each="category : ${listCategory}" th:value="${category.idCategory}" th:text="${category.categoryName}"></option>
-				</select>
-			</div>
-
-			<div class="form-group">
-				<div th:replace="~{fragments/fragment-error :: frag-error('soldArticles.initialPrice')}"></div>
-				<label for="initialPrice">Prix de départ</label>
-				<input type="number" id="initialPrice" class="form-control" data-th-field="*{soldArticles.initialPrice}" placeholder="Entrez le prix de départ" />
-			</div>
-
-			<div class="form-group">
-				<div th:replace="~{fragments/fragment-error :: frag-error('soldArticles.startDateAuctions')}"></div>
-				<label for="startDateAuctions">Date de début</label>
-				<input type="date" id="startDateAuctions"
-					   class="form-control"
-					   th:field="*{soldArticles.startDateAuctions}"/>
-			</div>
-
-			<div class="form-group">
-				<div class="invalid-feedback"
-					 th:if="${#fields.hasErrors('soldArticles.endDateAuctions')}"
-					 th:errors="*{soldArticles.endDateAuctions}">
+	<html lang="en" xmlns:th="http://www.thymeleaf.org">
+		<head>
+			<meta charset="UTF-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+			<link rel="stylesheet" data-th-href="@{/css/main.css}">
+			<link rel="stylesheet" data-th-href="@{/css/error.css}">
+			<title>ENI Enchères - Mise en Vente</title>
+			<link rel="icon" data-th-href="@{/images/logoEnchere-1.png}" />
+		</head>
+		<body>
+		<header xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-entete">
+			<nav>
+				<span>
+					<a href="/">
+						<img src="/images/LogoEnchere.png" alt="Logo">
+					</a>
+				</span>
+				<div>
+					<a href="/">ENI Enchères</a>
 				</div>
-				<label for="endDateAuctions">Date de fin</label>
-				<input type="date" id="endDateAuctions"
-					   class="form-control"
-					   th:field="*{soldArticles.endDateAuctions}"
-					   th:errorclass="is-invalid" />
-			</div>
-		</div>
+				<div id="navbarTogglerDemo02">
+					<ul>
+						<li><a aria-current="page" data-th-href="@{/}">Accueil</a></li>
+						<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/sales}">Ventes</a></li>
+						<li th:if="${!#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/user/inscription}">Inscription</a></li>
+						<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/user/profile}">Profil</a></li>
+						<li th:if="${!#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/login}">Connexion</a></li>
+						<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/logout}">Déconnexion</a></li>
+					</ul>
+				</div>
+			</nav>
+		</header>
 
-		<div class="form-group">
-			<div th:replace="~{fragments/fragment-error :: frag-error('soldArticles.description')}"></div>
-			<label for="description">Description</label>
-			<textarea id="description" class="form-control" data-th-field="*{soldArticles.description}" placeholder="Entrez une description"></textarea>
-		</div>
+		<main class="center-main">
+			<h3>Nouvelle Vente</h3>
+			<p>Veuillez remplir les informations nécessaires pour proposer un nouvel article en vente.</p>
+			<form th:action="@{/sales}" method="post" enctype="multipart/form-data" th:object="${soldArticleViewModel}">
+				<div class="form-container">
+					<div class="form-group">
+						<div th:replace="~{fragments/fragment-error :: frag-error('soldArticles.nameArticle')}"></div>
+						<label for="nameArticle">Nom de l'article</label>
+						<input type="text" id="nameArticle" class="form-control" data-th-field="*{soldArticles.nameArticle}" placeholder="Entrez le nom de l'article" />
+					</div>
 
-			<h4>Lieu de retrait</h4>
+					<div class="form-group">
+						<label for="picture">Image</label>
+						<input type="file" id="picture" name="picture" class="photoInput form-control" accept=".png,.jpg,.jpeg" />
+					</div>
 
-			<div class="form-group">
-				<label for="pickUpLocationRoad">Rue</label>
-				<input type="text" id="pickUpLocationRoad" class="form-control" data-th-field="*{pickUpLocation.road}" placeholder="Entrez la rue" />
-			</div>
+					<div class="form-group">
+						<label for="category">Catégorie</label>
+						<select id="category" class="form-control" data-th-field="*{soldArticles.idCategory}">
+							<option value="-1">Sélectionnez une catégorie</option>
+							<option data-th-each="category : ${listCategory}" th:value="${category.idCategory}" th:text="${category.categoryName}"></option>
+						</select>
+					</div>
 
-			<div class="form-group">
-				<label for="pickUpLocationZipPass">Code Postal</label>
-				<input type="text" id="pickUpLocationZipPass" class="form-control" data-th-field="*{pickUpLocation.zipPass}" placeholder="Entrez le code postal" />
-			</div>
+					<div class="form-group">
+						<div th:replace="~{fragments/fragment-error :: frag-error('soldArticles.initialPrice')}"></div>
+						<label for="initialPrice">Prix de départ</label>
+						<input type="number" id="initialPrice" class="form-control" data-th-field="*{soldArticles.initialPrice}" placeholder="Entrez le prix de départ" />
+					</div>
 
-			<div class="form-group">
-				<label for="pickUpLocationCity">Ville</label>
-				<input type="text" id="pickUpLocationCity" class="form-control" data-th-field="*{pickUpLocation.city}" placeholder="Entrez la ville" />
-			</div>
+					<div class="form-group">
+						<div th:replace="~{fragments/fragment-error :: frag-error('soldArticles.startDateAuctions')}"></div>
+						<label for="startDateAuctions">Date de début</label>
+						<input type="date" id="startDateAuctions"
+							   class="form-control"
+							   th:field="*{soldArticles.startDateAuctions}"/>
+					</div>
 
-		<div class="form-actions">
-			<button type="submit" class="btn btn-primary">Valider</button>
-			<a data-th-href="@{/}" class="btn btn-secondary">Annuler</a>
-		</div>
-	</form>
-</main>
+					<div class="form-group">
+						<div class="invalid-feedback"
+							 th:if="${#fields.hasErrors('soldArticles.endDateAuctions')}"
+							 th:errors="*{soldArticles.endDateAuctions}">
+						</div>
+						<label for="endDateAuctions">Date de fin</label>
+						<input type="date" id="endDateAuctions"
+							   class="form-control"
+							   th:field="*{soldArticles.endDateAuctions}"
+							   th:errorclass="is-invalid" />
+					</div>
+				</div>
 
-<footer class="footer">
-	<p>© 2024 ENI Enchères. Tous droits réservés.</p>
-</footer>
-</body>
+				<div class="form-group">
+					<div th:replace="~{fragments/fragment-error :: frag-error('soldArticles.description')}"></div>
+					<label for="description">Description</label>
+					<textarea id="description" class="form-control" data-th-field="*{soldArticles.description}" placeholder="Entrez une description"></textarea>
+				</div>
+
+					<h4>Lieu de retrait</h4>
+
+					<div class="form-group">
+						<label for="pickUpLocationRoad">Rue</label>
+						<input type="text" id="pickUpLocationRoad" class="form-control" data-th-field="*{pickUpLocation.road}" placeholder="Entrez la rue" />
+					</div>
+
+					<div class="form-group">
+						<label for="pickUpLocationZipPass">Code Postal</label>
+						<input type="text" id="pickUpLocationZipPass" class="form-control" data-th-field="*{pickUpLocation.zipPass}" placeholder="Entrez le code postal" />
+					</div>
+
+					<div class="form-group">
+						<label for="pickUpLocationCity">Ville</label>
+						<input type="text" id="pickUpLocationCity" class="form-control" data-th-field="*{pickUpLocation.city}" placeholder="Entrez la ville" />
+					</div>
+
+				<div class="form-actions">
+					<button type="submit" class="btn btn-primary">Valider</button>
+					<a data-th-href="@{/}" class="btn btn-secondary">Annuler</a>
+				</div>
+			</form>
+		</main>
+
+		<footer class="footer">
+			<p>© 2024 ENI Enchères. Tous droits réservés.</p>
+		</footer>
+	</body>
 </html>
