@@ -41,10 +41,17 @@
 					</div>
 
 					<div class="status-banner"
-						 th:if="${item.soldArticles.startDateAuctions.isBefore(T(java.time.LocalDate).now()) ||
-						 item.soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now())}">
+						 th:if="${(item.soldArticles.startDateAuctions.isBefore(T(java.time.LocalDate).now()) || item.soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now()))
+						 && (item.soldArticles.endDateAuctions.isAfter(T(java.time.LocalDate).now()) ||
+						 item.soldArticles.endDateAuctions.isEqual(T(java.time.LocalDate).now()))}">
 						En cours
 					</div>
+
+					<div class="status-banner-end"
+						 th:if="${item.soldArticles.endDateAuctions.isBefore(T(java.time.LocalDate).now())}">
+						Cloturée
+					</div>
+
 
 					<div class="article-details">
 						<p class="article-details-h4" data-th-text="*{item.soldArticles.description}">Description</p>
@@ -54,8 +61,9 @@
 								<span data-th-text="${#temporals.format(item.soldArticles.endDateAuctions, 'dd-MM-yyyy')}">2024-01-01</span>
 							</p>
 							<p><strong>Vendeur :</strong> <span data-th-text="*{item.seller.pseudo}">Pseudo</span></p>
-							<p th:if="${item.soldArticles.priceSale == 0 && (item.soldArticles.startDateAuctions.isBefore(T(java.time.LocalDate).now()) ||
-								 item.soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now()))}">Aucune enchère actuellement </p>
+							<p th:if="${item.soldArticles.priceSale == 0 && (item.soldArticles.startDateAuctions.isBefore(T(java.time.LocalDate).now()) || item.soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now()))
+						 && (item.soldArticles.endDateAuctions.isAfter(T(java.time.LocalDate).now()) ||
+						 item.soldArticles.endDateAuctions.isEqual(T(java.time.LocalDate).now()))}">Aucune enchère actuellement </p>
 							<p th:if="${item.soldArticles.priceSale != 0 && item.buyer != null && (item.soldArticles.startDateAuctions.isBefore(T(java.time.LocalDate).now()) ||
  								item.soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now()))}">
 								Meilleure enchère faite par <strong><span data-th-text="${item.buyer.pseudo}">Pseudo</span></strong>
@@ -64,8 +72,9 @@
 					</div>
 
 					<div class="article-actions">
-						<a class="details-btn" th:if="${#authorization.expression('isAuthenticated()') && (item.soldArticles.startDateAuctions.isBefore(T(java.time.LocalDate).now()) ||
-						 item.soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now()))}"
+						<a class="details-btn" th:if="${#authorization.expression('isAuthenticated()') && (item.soldArticles.startDateAuctions.isBefore(T(java.time.LocalDate).now()) || item.soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now()))
+						 && (item.soldArticles.endDateAuctions.isAfter(T(java.time.LocalDate).now()) ||
+						 item.soldArticles.endDateAuctions.isEqual(T(java.time.LocalDate).now()))}"
 						   data-th-href="@{/sales/detail(id=${item.soldArticles.idArticle})}">
 							Détail / Enchérir
 						</a>

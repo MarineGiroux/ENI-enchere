@@ -533,6 +533,21 @@ textarea {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     text-align: center;
 }
+
+.status-banner-end {
+    position: absolute;
+    top: 10px;
+    left: -10px;
+    background-color: #a50000;
+    color: white;
+    padding: 5px 15px;
+    font-size: 1.1em;
+    font-weight: bold;
+    rotate: -30deg;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
 .error-text {
     color: red;
     font-size: 1em;
