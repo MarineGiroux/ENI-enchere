@@ -69,7 +69,8 @@
 						   data-th-href="@{/sales/detail(id=${item.soldArticles.idArticle})}">
 							Détail / Enchérir
 						</a>
-						<a class="details-btn" th:if="${#authorization.expression('isAuthenticated()') && (item.soldArticles.startDateAuctions.isAfter(T(java.time.LocalDate).now()))}">
+						<a class="details-btn" th:if="${#authorization.expression('isAuthenticated()') && (item.soldArticles.startDateAuctions.isAfter(T(java.time.LocalDate).now()))}"
+						   data-th-href="@{/sales/detail(id=${item.soldArticles.idArticle})}">
 							Détail
 						</a>
 						<a class="details-btn-modify"

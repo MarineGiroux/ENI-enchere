@@ -7,7 +7,7 @@
 			<link rel="stylesheet" data-th-href="@{/css/main.css}">
 			<link rel="stylesheet" data-th-href="@{/css/error.css}">
 			<title>ENI Enchères - Détail</title>
-			<link rel="icon" data-th-href="@{/images/logoEnchere-1.png}" />
+			<link rel="icon" data-th-href="@{/images/LogoEnchere-1.png}" />
 		</head>
 		<body>
 		<header xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-entete">
@@ -34,52 +34,38 @@
 		</header>
 		<main class="center-main">
 			<form th:action="@{/sales/detail}" th:object="${soldArticleViewModel}" method="post">
-				<h3><span data-th-text="*{soldArticles.nameArticle}"></span> vendu par <span data-th-text="*{seller.pseudo}"></span></h3>
-				<a class="details-btn"
+				<h3>Vendu par <span data-th-text="*{seller.pseudo}"></span></h3>
+				<a class="details-btn-modify"
 				   th:if="${soldArticleViewModel.seller.email != #authentication.name}"
 				   th:href="@{/user/seller/{id}(id=*{seller.idUser})}">
 					Profil de <span data-th-text="*{seller.pseudo}"></span>
 				</a>
-				<div class="form-container">
-					<div class="form-group">
-						<h5>Article : <span data-th-text="*{soldArticles.nameArticle}"></span></h5>
+				<div class="form-container-detail-article">
+					<div class="article-info">
+						<h3><span data-th-text="*{soldArticles.nameArticle}"></span></h3>
+						<p><strong>Description :</strong> <span data-th-text="*{soldArticles.description}"></span></p>
+						<p><strong>Catégorie :</strong> <span data-th-text="*{category.categoryName}"></span></p>
+						<p><strong>Prix de départ :</strong> <span data-th-text="*{soldArticles.initialPrice}"></span> crédits</p>
+						<p><strong>Date de début :</strong>
+							<span data-th-text="${#temporals.format(soldArticleViewModel.soldArticles.startDateAuctions, 'dd-MM-yyyy')}"></span>
+						</p>
+						<p><strong>Date de fin :</strong>
+							<span data-th-text="${#temporals.format(soldArticleViewModel.soldArticles.endDateAuctions, 'dd-MM-yyyy')}"></span>
+						</p>
+						<p><strong>Lieu de retrait :</strong></p>
+						<p>
+							<span data-th-text="*{pickUpLocation.road}"></span>,
+							<span data-th-text="*{pickUpLocation.zipPass}"></span>,
+							<span data-th-text="*{pickUpLocation.city}"></span>
+						</p>
 					</div>
 
-					<div class="form-group">
-						<h5>Description : <span data-th-text="*{soldArticles.description}"></span></h5>
-					</div>
-
-					<div class="form-group">
-						<h5>Catégorie : <span data-th-text="*{category.categoryName}"></span></h5>
-					</div>
-
-					<div class="form-group">
-						<h5>Prix de départ : <span data-th-text="*{soldArticles.initialPrice}"></span></h5>
-					</div>
-
-					<div class="form-group">
-						<h5>Date de début : <span data-th-text="${#temporals.format(soldArticleViewModel.soldArticles.startDateAuctions, 'dd-MM-yyyy')}">2024-01-01</span></h5>
-					</div>
-
-					<div class="form-group">
-						<h5>Date de fin : <span data-th-text="${#temporals.format(soldArticleViewModel.soldArticles.endDateAuctions, 'dd-MM-yyyy')}">2024-01-01</span></h5>
-					</div>
-
-					<div class="form-group">
-						<h5>Lieu de retrait : <br><br>
-							<span data-th-text="*{pickUpLocation.road}"></span> <br><br>
-							<span data-th-text="*{pickUpLocation.zipPass}"></span> <br><br>
-							<span data-th-text="*{pickUpLocation.city}"></span><br><br>
-						</h5>
-					</div>
-
-					<div class="form-group">
-						<img id="imageArticle" th:src="@{${soldArticleViewModel.soldArticles.picture != null ? '/images/uploads/' + soldArticleViewModel.soldArticles.picture : '/images/carton.jpg'}}"
-							 th:alt="${soldArticleViewModel.soldArticles.picture}" class="img-detail">
+					<div class="article-image">
+						<img id="imageArticle"
+							 th:src="@{${soldArticleViewModel.soldArticles.picture != null ? '/images/uploads/' + soldArticleViewModel.soldArticles.picture : '/images/carton.jpg'}}"
+							 th:alt="${soldArticleViewModel.soldArticles.picture}" />
 					</div>
 				</div>
-
-
 			</form>
 
 			<form th:action="@{/sales/auctions}" method="post" th:object="${soldArticleViewModel}">
@@ -92,41 +78,35 @@
 					<h5 class="success-text" th:text="${success}"></h5>
 				</div>
 				<input type="hidden" th:field="*{soldArticles.idArticle}" />
-				<div class="form-container">
-					<div class="form-group">
-						<h5>Crédits de départ : <span data-th-text="*{soldArticles.initialPrice}"></span></h5>
-					</div>
-					<div class="form-group"  th:if="${soldArticleViewModel.soldArticles.startDateAuctions.isBefore(T(java.time.LocalDate).now())
-					   ||
-					   soldArticleViewModel.soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now())}">
-						<h5>Plus haute enchère : <span data-th-text="*{soldArticles.priceSale}"></span>  crédits <br>
-							faite par <span data-th-text="${soldArticleViewModel.buyer.pseudo}">Pseudo</span></h5>
-					</div>
 
-					<div class="form-group" th:if="${soldArticleViewModel.soldArticles.startDateAuctions != null
-						&& (soldArticleViewModel.soldArticles.startDateAuctions.isBefore(T(java.time.LocalDate).now())
-						|| soldArticleViewModel.soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now()))}">
-						<label for="amountAuctions">Montant de l'enchère</label>
-						<input id="amountAuctions"
-							   type="number"
-							   name="amountAuctions"
-							   th:value="*{soldArticles.priceSale > 0} ? *{soldArticles.priceSale} : *{soldArticles.initialPrice}"
-							   class="form-control" />
-					</div>
-
-
-					<div class="form-actions" th:if="${soldArticleViewModel.soldArticles.startDateAuctions.isBefore(T(java.time.LocalDate).now())
-					   ||
-					   soldArticleViewModel.soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now())}">
-						<button type="submit" class="btn btn-primary">Nouvelle Offre</button>
-					</div>
+				<div  th:if="${soldArticleViewModel.buyer != null && (soldArticleViewModel.soldArticles.startDateAuctions.isBefore(T(java.time.LocalDate).now())					   ||					   soldArticleViewModel.soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now()))}">
+					<h5>Dernière enchère : <span data-th-text="*{soldArticles.priceSale}"></span>  crédits par <span data-th-text="${soldArticleViewModel.buyer.pseudo}"></span></h5><br>
 				</div>
-				<div class="form-actions">
+
+
+
+				<div class="form-group" th:if="${soldArticleViewModel.soldArticles.startDateAuctions != null
+					&& (soldArticleViewModel.soldArticles.startDateAuctions.isBefore(T(java.time.LocalDate).now())
+					|| soldArticleViewModel.soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now()))}">
+					<label for="amountAuctions">Montant de l'enchère</label>
+					<input id="amountAuctions"
+						   type="number"
+						   name="amountAuctions"
+						   th:value="*{soldArticles.priceSale > 0} ? *{soldArticles.priceSale} : *{soldArticles.initialPrice}"
+						   class="form-control-auctions" />
+				</div>
+
+				<div class="form-actions" >
+					<button th:if="${soldArticleViewModel.soldArticles.startDateAuctions.isBefore(T(java.time.LocalDate).now())
+				   ||
+				   soldArticleViewModel.soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now())}" type="submit" class="btn btn-primary">Placer une enchère</button>
+
+
 					<a data-th-href="@{/}" class="btn btn-secondary">Retour</a>
 				</div>
-				</form>
-		</main>
 
+			</form>
+		</main>
 		<footer class="footer">
 			<p>© 2024 ENI Enchères. Tous droits réservés.</p>
 		</footer>
