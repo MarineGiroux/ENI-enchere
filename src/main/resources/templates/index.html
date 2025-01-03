@@ -55,7 +55,11 @@
 							</p>
 							<p><strong>Vendeur :</strong> <span data-th-text="*{item.seller.pseudo}">Pseudo</span></p>
 							<p th:if="${item.soldArticles.priceSale == 0 && (item.soldArticles.startDateAuctions.isBefore(T(java.time.LocalDate).now()) ||
-						 item.soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now()))}">Personne n'a enchéri </p>
+								 item.soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now()))}">Aucune enchère actuellement </p>
+							<p th:if="${item.soldArticles.priceSale != 0 && item.buyer != null && (item.soldArticles.startDateAuctions.isBefore(T(java.time.LocalDate).now()) ||
+ 								item.soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now()))}">
+								Meilleure enchère faite par <strong><span data-th-text="${item.buyer.pseudo}">Pseudo</span></strong>
+							</p>
 						</div>
 					</div>
 

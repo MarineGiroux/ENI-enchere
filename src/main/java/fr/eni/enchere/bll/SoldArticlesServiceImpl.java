@@ -1,11 +1,9 @@
 package fr.eni.enchere.bll;
 
+import fr.eni.enchere.bo.Auctions;
 import fr.eni.enchere.bo.SoldArticles;
 import fr.eni.enchere.controller.viewmodel.SoldArticleViewModel;
-import fr.eni.enchere.dal.CategoryDAO;
-import fr.eni.enchere.dal.PickUpDAO;
-import fr.eni.enchere.dal.SoldArticlesDAO;
-import fr.eni.enchere.dal.UserDAO;
+import fr.eni.enchere.dal.*;
 import fr.eni.enchere.exception.BusinessException;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
@@ -21,12 +19,18 @@ public class SoldArticlesServiceImpl implements SoldArticlesService {
     private final PickUpDAO pickUpDAO;
     private final CategoryDAO categoryDAO;
     private final UserDAO userDAO;
+    private final AuctionsDAO auctionsDAO;
 
-    public SoldArticlesServiceImpl(SoldArticlesDAO soldArticlesDAO, PickUpDAO pickUpDAO, CategoryDAO categoryDAO, UserDAO userDAO) {
+    public SoldArticlesServiceImpl(SoldArticlesDAO soldArticlesDAO,
+                                   PickUpDAO pickUpDAO,
+                                   CategoryDAO categoryDAO,
+                                   UserDAO userDAO,
+                                   AuctionsDAO auctionsDAO) {
         this.soldArticlesDAO = soldArticlesDAO;
         this.pickUpDAO = pickUpDAO;
         this.categoryDAO = categoryDAO;
         this.userDAO = userDAO;
+        this.auctionsDAO = auctionsDAO;
     }
 
     @Override
@@ -96,6 +100,12 @@ public class SoldArticlesServiceImpl implements SoldArticlesService {
         SoldArticleViewModel soldArticleViewModel = new SoldArticleViewModel();
         soldArticleViewModel.setSoldArticles(soldArticles);
         soldArticleViewModel.setSeller(userDAO.findByNum(soldArticles.getIdUser()));
+        Auctions biggerAuction = auctionsDAO.findBiggerAuction(soldArticles.getIdArticle());
+        if (biggerAuction != null) {
+            soldArticleViewModel.setBuyer(userDAO.findByNum(biggerAuction.getIdUser()));
+        } else {
+            soldArticleViewModel.setBuyer(null);
+        }
         soldArticleViewModel.setCategory(categoryDAO.findByNum(soldArticles.getIdCategory()));
         soldArticleViewModel.setPickUpLocation(pickUpDAO.findByIdArticle(soldArticles.getIdArticle()));
         return soldArticleViewModel;

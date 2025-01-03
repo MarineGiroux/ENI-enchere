@@ -99,7 +99,8 @@
 					<div class="form-group"  th:if="${soldArticleViewModel.soldArticles.startDateAuctions.isBefore(T(java.time.LocalDate).now())
 					   ||
 					   soldArticleViewModel.soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now())}">
-						<h5>Plus haute enchère : <span data-th-text="*{soldArticles.priceSale}"></span>  crédits <br></h5>
+						<h5>Plus haute enchère : <span data-th-text="*{soldArticles.priceSale}"></span>  crédits <br>
+							faite par <span data-th-text="${soldArticleViewModel.buyer.pseudo}">Pseudo</span></h5>
 					</div>
 
 					<div class="form-group" th:if="${soldArticleViewModel.soldArticles.startDateAuctions != null

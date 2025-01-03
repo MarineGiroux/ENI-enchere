@@ -117,4 +117,15 @@ public class UserController {
 		return "redirect:/error";
 	}
 
+	@GetMapping("/Buyer/{id}")
+	public String showBuyerProfile(@PathVariable("id") int BuyerId, Model model) {
+		User buyer = userDAOImpl.findByNum(BuyerId);
+		if (buyer != null) {
+			model.addAttribute("user", buyer);
+			model.addAttribute("isBuyer", true);
+			return "profile";
+		}
+		return "redirect:/error";
+	}
+
 }
