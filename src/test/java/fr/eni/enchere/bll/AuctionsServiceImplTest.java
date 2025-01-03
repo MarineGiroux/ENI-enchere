@@ -11,6 +11,7 @@ import java.time.LocalDate;
 
 class AuctionsServiceImplTest {
 
+    // TEST pas assez d'argent
     @Test
     void test_checkAuction_not_enough_credit() {
         // Given
@@ -35,6 +36,7 @@ class AuctionsServiceImplTest {
 //        Assertions.fail("Une BusinessException aurait du être levée");
     }
 
+    // TEST enchère fermée
     @Test
     void test_checkAuction_auction_closed() {
         // Given
@@ -63,6 +65,7 @@ class AuctionsServiceImplTest {
 //        Assertions.fail("Une BusinessException aurait du être levée");
     }
 
+    // TEST checkAuction valide (assez d'argent et ouverte)
     @Test
     void test_checkAuction_ok() {
         // Given

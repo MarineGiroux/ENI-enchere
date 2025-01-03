@@ -6,7 +6,7 @@
 			<link rel="stylesheet" data-th-href="@{/css/main.css}">
 			<link rel="stylesheet" data-th-href="@{/css/error.css}">
 			<title>ENI Enchères - Profil</title>
-			<link rel="icon" data-th-href="@{/images/logoEnchere-1.png}" />
+			<link rel="icon" data-th-href="@{/images/LogoEnchere-1.png}" />
 		</head>
 		<body>
 		<header xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-entete">
@@ -33,70 +33,28 @@
 		</header>
 
 		<main class="center-main">
-			<section>
-				<div th:object="${user}">
-
-					<h3>Profil de <span data-th-text="*{pseudo}"></span></h3>
-
-					<div class="form-container-profil">
-
-						<div class="form-group">
-							<h5>Pseudo : <span data-th-text="*{pseudo}"></span></h5>
-						</div>
-
-						<div class="form-group">
-							<h5>Nom : <span data-th-text="*{lastName}"></span></h5>
-						</div>
-
-						<div class="form-group">
-							<h5>Prénom : <span data-th-text="*{firstName}"></span></h5>
-						</div>
-
-						<div class="form-group">
-							<h5>Email : <span data-th-text="*{email}"></span></h5>
-						</div>
-
-						<div class="form-group">
-							<h5>Telephone : <span data-th-text="*{phone}"></span></h5>
-						</div>
-
-						<div class="form-group">
-							<h5 th:unless="${isSeller}">Crédits disponibles : <span data-th-text="*{credit}"></span></h5>
-						</div>
-
-						<div class="form-group">
-							<h5>
-								Adresse : <br><br>
-								<span data-th-text="*{road}"></span><br>
-								<span data-th-text="*{zipPass}"></span><br>
-								<span data-th-text="*{city}"></span>
-							</h5>
-						</div>
-
-
-
-						<div class="form-group">
-							<label for="pictureProfil">Photo de profil</label>
-							<img src="/images/avatar.png" id="pictureProfil" class="img-detail">
-						</div>
-
-					</div>
-					<div class="form-actions" th:unless="${isSeller}">
-						<a data-th-href="@{/user/update}" class="btn btn-primary">Mise à jour du profil</a>
-						<a data-th-href="@{/user/delete}" class="btn btn-alert"
-						   onclick="return confirm('Est tu sûr de vouloir supprimer ton profil ?')">
-							Supprimer le profil
-						</a>
-					</div>
-
-					<div class="form-actions" th:if="${isSeller}">
-						<a data-th-href="@{/}" class="btn btn-secondary">Retour</a>
-					</div>
-
-
-
+			<div th:object="${user}">
+				<h3>Profil de <span data-th-text="*{pseudo}"></span></h3>
+				<div class="article-info-profil">
+					<p><strong>Nom :</strong> <span data-th-text="*{lastName}"></span></p>
+					<p><strong>Prénom :</strong> <span data-th-text="*{firstName}"></span></p>
+					<p><strong>Email :</strong> <span data-th-text="*{email}"></span></p>
+					<p><strong>Téléphone :</strong> <span data-th-text="*{phone}"></span></p>
+					<p th:unless="${isSeller}"><strong>Crédits disponibles : </strong><span data-th-text="*{credit}"></span></p>
+					<p><strong>Adresse :</strong></p>
+					<p>
+						<span data-th-text="*{road}"></span>,
+						<span data-th-text="*{zipPass}"></span>,
+						<span data-th-text="*{city}"></span>
+					</p>
+					<img src="/images/avatar.png" id="pictureProfil" class="img-detail">
 				</div>
-			</section>
+				<div class="form-actions" >
+					<a class="btn btn-primary"  th:unless="${isSeller}" data-th-href="@{/user/update}">Modifier mon profil</a>
+					<a class="btn btn-alert" th:unless="${isSeller}"  data-th-href="@{/user/delete}">Supprimer mon compte</a>
+					<a data-th-href="@{/}" class="btn btn-secondary">Retour</a>
+				</div>
+			</div>
 		</main>
 		<footer class="footer">
 			<p>© 2024 ENI Enchères. Tous droits réservés.</p>
