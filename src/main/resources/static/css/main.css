@@ -19,7 +19,7 @@ body {
 }
 
 .center-main h3, .center-main p {
-    color: #008D8C;
+    color: #007878;
     margin-bottom: 20px;
 }
 
@@ -28,7 +28,7 @@ body {
 }
 
 .center-main h4 {
-    color: #008D8C;
+    color: #007878;
     font-size: 1.3em;
 }
 
@@ -49,7 +49,7 @@ body {
 }
 
 .center-main-index h3, .center-main-index p {
-    color: #008D8C;
+    color: #007878;
     margin-bottom: 20px;
 }
 
@@ -58,7 +58,7 @@ body {
 }
 
 .center-main-index h4 {
-    color: #008D8C;
+    color: #007878;
     font-size: 1.3em;
 }
 
@@ -110,12 +110,12 @@ form {
 label {
     font-weight: bold;
     margin-bottom: 8px;
-    color: #008D8C;
+    color: #007878;
 }
 h5 {
     font-weight: bold;
     margin: 5px;
-    color: #008D8C;
+    color: #007878;
     font-size: 1.2em;
 }
 
@@ -129,7 +129,7 @@ input.form-control, select {
  }
 
 input.form-control:focus, select:focus {
-    box-shadow: 0 0 5px #008D8C;
+    box-shadow: 0 0 5px #007878;
     outline: none;
 }
 
@@ -144,7 +144,7 @@ input.form-control-auctions {
 }
 
 input.form-control-auctions:focus {
-    box-shadow: 0 0 5px #008D8C;
+    box-shadow: 0 0 5px #007878;
     outline: none;
 }
 
@@ -167,7 +167,7 @@ input.form-control-auctions:focus {
 }
 
 .btn-primary {
-    background-color: #008D8C;
+    background-color: #007878;
     color: white;
     border: none;
 }
@@ -237,7 +237,7 @@ input.form-control-auctions:focus {
 }
 
 header {
-    background-image: url(/images/3.jpg);
+    background-image: url(/images/1.jpg);
     background-size: cover;
     background-position: center;
     padding: 10px 0;
@@ -306,7 +306,7 @@ nav ul li a {
 }
 
 nav ul li a:hover {
-    color: #F1B4B3;
+    color: rgba(224, 74, 56, 0.75);
 }
 
 @media (max-width: 768px) {
@@ -339,7 +339,7 @@ nav ul li a:hover {
     background-color: white;
     width: 400px;
     margin: 20px;
-    border: 2px solid #F1B4B3;
+    border: 2px solid #E04A38;
     box-shadow: lightgray 4px 4px 20px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -360,12 +360,12 @@ nav ul li a:hover {
 .article-details {
     padding: 15px;
     font-size: 0.9em;
-    color: #008D8C;
+    color: #007878;
 }
 
 .article-card h4 {
     font-size: 1.2em;
-    color: #008D8C;
+    color: #007878;
     margin-bottom: 10px;
     text-align: center;
 }
@@ -382,7 +382,7 @@ nav ul li a:hover {
 
 .details-btn {
     display: inline-block;
-    background-color: #008D8C;
+    background-color: #007878;
     color: white;
     padding: 10px 15px;
     font-size: 0.9em;
@@ -398,7 +398,7 @@ nav ul li a:hover {
 
 .details-btn-modify {
     display: inline-block;
-    background-color: #F05E3C;
+    background-color: #E04A38;
     color: white;
     padding: 10px 15px;
     font-size: 0.9em;
@@ -409,7 +409,7 @@ nav ul li a:hover {
 }
 
 .details-btn-modify:hover {
-    background-color: rgba(240, 94, 60, 0.79);
+    background-color: rgba(224, 74, 56, 0.75);
 }
 
 .footer {
@@ -440,10 +440,10 @@ div.rounded-likes {
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid #008D8C;
+    border: 2px solid #007878;
     background-color: white;
     font-size: 14px;
-    color: #008D8C;
+    color: #007878;
     font-weight: bold;
 }
 
@@ -527,7 +527,7 @@ textarea {
 }
 
 .logout-message {
-    color: #008D8C;
+    color: #007878;
 }
 
 .resized-image {
@@ -550,7 +550,7 @@ textarea {
     position: absolute;
     top: 10px;
     left: -10px;
-    background-color: #f1b4b3;
+    background-color: #00B778;
     color: white;
     padding: 5px 15px;
     font-size: 1.1em;
@@ -656,7 +656,7 @@ textarea {
 }
 
 .search-input:focus{
-    box-shadow: 0 0 5px #008D8C;
+    box-shadow: 0 0 5px #007878;
     outline: none;
     color: white;
 }
