@@ -1,29 +1,14 @@
 <!DOCTYPE html>
 	<html xmlns:th="http://www.thymeleaf.org"
 		  th:replace="~{fragments/layout :: layout-auctions(titrePage=~{:: title},
-														   contenuPage=~{:: .center-main},
+														   contenuPage=~{:: .center-main-index},
 														   ressourcesSupp=~{})}">
 		<head>
 			<title>ENI Enchères</title>
 			<link rel="stylesheet" href="style.css">
 		</head>
 		<body>
-		<main class="center-main">
-			<h3>Liste des Enchères</h3>
-
-			<div class="search-container">
-				<form action="/search" method="get" class="search-form">
-					<div class="search-wrapper">
-						<input type="text" name="searchArticleName" class="form-control search-input" placeholder="Saisir votre recherche...">
-						<button class="btn btn-primary search-button">Recherche</button>
-					</div>
-				</form>
-			</div>
-			<select id="listeCat">
-				<option value="0">Catégorie : </option>
-				<option data-th-each="category : ${listCategory}" th:value="${category.idCategory}" th:text="${category.categoryName}"></option>
-			</select>
-
+		<main class="center-main-index">
 			<div class="article-list">
 
 				<div class="article-card" data-th-each="item : ${soldArticlesViewModel}">
