@@ -38,6 +38,35 @@ class AuctionsServiceImplTest {
 
     // TEST enchère fermée
     @Test
+    void test_checkAuction_auction_not_yed_opened() {
+        // Given
+        final Auctions auctions = new Auctions();
+        auctions.setAmountAuctions(10);
+        auctions.setDateAuctions(LocalDate.of(2024, 12, 31));
+        final User user = new User();
+        user.setCredit(15);
+        auctions.setUser(user);
+        final SoldArticles soldArticles = new SoldArticles();
+        soldArticles.setStartDateAuctions(LocalDate.of(2025, 1, 1));
+        soldArticles.setEndDateAuctions(LocalDate.of(2025, 1, 1));
+
+        // When / Then
+        Assertions.assertThrows(BusinessException.class,
+                () -> AuctionsServiceImpl.checkAuction(auctions, soldArticles));
+//
+//        try {
+//            // When
+//            AuctionsServiceImpl.checkAuction(auctions, null);
+//        } catch (BusinessException e) {
+//            // Then
+//            Assertions.assertEquals("Tu n'as pas assez de crédit", e.getMessage());
+//        }
+//        // Then
+//        Assertions.fail("Une BusinessException aurait du être levée");
+    }
+
+    // TEST enchère fermée
+    @Test
     void test_checkAuction_auction_closed() {
         // Given
         final Auctions auctions = new Auctions();
