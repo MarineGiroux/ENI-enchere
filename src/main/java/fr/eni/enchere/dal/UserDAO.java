@@ -6,7 +6,7 @@ public interface UserDAO {
 	
 	void create (User user);
 	
-	User findByEmail (String idUser);
+	User findByEmail (String email);
 
 	int countEmail(String email);
 	

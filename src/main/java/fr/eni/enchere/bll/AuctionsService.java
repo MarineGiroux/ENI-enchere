@@ -15,4 +15,6 @@ public interface AuctionsService {
 	List<Auctions> findByID(int idAuctions);
 	
 	int amountAuction(int idArticle);
+
+    void closeOutdatedAuctions(String userEmail);
 }

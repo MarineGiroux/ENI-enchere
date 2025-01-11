@@ -23,6 +23,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.time.Clock;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Controller
 @RequestMapping("/sales")
@@ -44,16 +47,20 @@ public class SalesController {
 	private AuctionsService auctionsService;
     @Autowired
     private FileService fileService;
+	@Autowired
+	private Clock clock;
+
 
 
 	public SalesController(SoldArticlesService soldArticlesService, UserService userService,
-						   CategoryService categoryService, PickUpService pickUpService, AuctionsService auctionsService) {
+                           CategoryService categoryService, PickUpService pickUpService, AuctionsService auctionsService, Clock clock) {
 		this.soldArticlesService = soldArticlesService;
 		this.userService = userService;
 		this.categoryService = categoryService;
 		this.pickUpService = pickUpService;
 		this.auctionsService = auctionsService;
-	}
+        this.clock = clock;
+    }
 
 	@GetMapping
 	public String createSoldArticle(Model model) {
@@ -135,7 +142,7 @@ public class SalesController {
 			Auctions auctions = new Auctions();
 			auctions.setUser(userService.findByEmail(principal.getName()));
 			auctions.setSoldArticles(soldArticlesService.findById(idArticle).getSoldArticles());
-			auctions.setDateAuctions(java.time.LocalDate.now());
+			auctions.setDateAuctions(LocalDate.now(clock));
 			auctions.setAmountAuctions(amountAuction);
 
 			this.auctionsService.bid(auctions);

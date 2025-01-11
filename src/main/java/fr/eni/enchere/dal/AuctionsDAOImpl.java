@@ -84,7 +84,7 @@ public class AuctionsDAOImpl implements AuctionsDAO {
 	@Override
 	public List<Auctions> findByArticle(int idArticle) {
 		MapSqlParameterSource nameParameters = new MapSqlParameterSource();
-		nameParameters.addValue("noArticle", idArticle);
+		nameParameters.addValue("idArticle", idArticle);
 		
 		return namedParameterJdbcTemplate.query(FIND_BY_idArticle, nameParameters,new EnchereRowMapper());
 	}

@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Clock;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -20,17 +21,19 @@ public class SoldArticlesServiceImpl implements SoldArticlesService {
     private final CategoryDAO categoryDAO;
     private final UserDAO userDAO;
     private final AuctionsDAO auctionsDAO;
+    private final Clock clock;
 
     public SoldArticlesServiceImpl(SoldArticlesDAO soldArticlesDAO,
                                    PickUpDAO pickUpDAO,
                                    CategoryDAO categoryDAO,
                                    UserDAO userDAO,
-                                   AuctionsDAO auctionsDAO) {
+                                   AuctionsDAO auctionsDAO, Clock clock) {
         this.soldArticlesDAO = soldArticlesDAO;
         this.pickUpDAO = pickUpDAO;
         this.categoryDAO = categoryDAO;
         this.userDAO = userDAO;
         this.auctionsDAO = auctionsDAO;
+        this.clock = clock;
     }
 
     @Override
@@ -41,7 +44,7 @@ public class SoldArticlesServiceImpl implements SoldArticlesService {
     @Override
     public List<SoldArticleViewModel> findAll() {
         List<SoldArticles> all = soldArticlesDAO.findAll();
-        LocalDate today = LocalDate.now();
+        LocalDate today = LocalDate.now(clock);
         List<SoldArticles> activeArticles = all.stream()
                 .filter(article -> !article.getEndDateAuctions().isBefore(today))
                 .toList();

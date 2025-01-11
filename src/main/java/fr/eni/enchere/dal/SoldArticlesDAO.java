@@ -4,7 +4,6 @@ import java.util.List;
 
 import fr.eni.enchere.bo.SoldArticles;
 import fr.eni.enchere.bo.Auctions;
-import fr.eni.enchere.bo.User;
 
 public interface SoldArticlesDAO {
 	
@@ -24,4 +23,5 @@ public interface SoldArticlesDAO {
 
 	void deleteArticleById(String idArticle);
 
+	int closeOutdatedAuctionsAndGetCreditAmount(int idUser);
 }
