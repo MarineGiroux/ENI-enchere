@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.Clock;
 import java.time.LocalDate;
 
 
@@ -21,11 +22,13 @@ public class AuctionsController {
 
     private final AuctionsService auctionsService;
     private final UserService userService;
+    private final Clock clock;
 
     @Autowired
-    public AuctionsController(AuctionsService auctionsService, UserService userService) {
+    public AuctionsController(AuctionsService auctionsService, UserService userService, Clock clock) {
         this.auctionsService = auctionsService;
         this.userService = userService;
+        this.clock = clock;
     }
 
     @PostMapping("/detail?id=")
@@ -35,7 +38,7 @@ public class AuctionsController {
                            RedirectAttributes redirectAttributes) {
         try {
             Auctions auction = new Auctions();
-            auction.setDateAuctions(LocalDate.now());
+            auction.setDateAuctions(LocalDate.now(clock));
             auction.setAmountAuctions(amount);
 
             User currentUser = userService.findByEmail(authentication.getName());

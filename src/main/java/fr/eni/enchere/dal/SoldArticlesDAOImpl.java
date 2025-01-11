@@ -2,11 +2,15 @@ package fr.eni.enchere.dal;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Clock;
+import java.time.LocalDate;
 import java.util.List;
 
+import fr.eni.enchere.bll.AuctionsServiceImpl;
 import fr.eni.enchere.bo.Auctions;
 import fr.eni.enchere.bo.SoldArticles;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -16,11 +20,20 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class SoldArticlesDAOImpl implements SoldArticlesDAO {
+	private final static Logger LOGGER = LoggerFactory.getLogger(SoldArticlesDAOImpl.class);
+
+	private final Clock clock;
+	private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+	public SoldArticlesDAOImpl(Clock clock, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+		this.clock = clock;
+		this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+	}
 
 	private final String INSERT =
 					"""
-					INSERT INTO SOLD_ARTICLES (nameArticle, description, startDateAuctions, endDateAuctions, initialPrice, picture, idUser, idCategory)
-					VALUES (:nameArticle, :description, :startDateAuctions, :endDateAuctions, :initialPrice, :picture, :idUser, :idCategory)
+					INSERT INTO SOLD_ARTICLES (nameArticle, description, startDateAuctions, endDateAuctions, initialPrice, saleStatus, picture, idUser, idCategory)
+					VALUES (:nameArticle, :description, :startDateAuctions, :endDateAuctions, :initialPrice, 0, :picture, :idUser, :idCategory)
 					""";
 	private final String FIND_All = "select * from SOLD_ARTICLES";
 	private final String FIND_BY_CATEGORIE = """
@@ -43,12 +56,20 @@ public class SoldArticlesDAOImpl implements SoldArticlesDAO {
 					""";
 	private static final String DELETE_ARTICLES = "  DELETE from SOLD_ARTICLES where idArticle = :idArticle";
 
-	@Autowired
-	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+	private static final String FIND_OUTDATED_SOLD_ARTICLES_FOR_USER = """
+				SELECT * FROM SOLD_ARTICLES
+				WHERE saleStatus = 0
+				AND idUser = :idUser
+				AND endDateAuctions < :outdated
+			""";
 
+	private static final String UPDATE_CLOSE_SALE_STATUS = """
+				UPDATE SOLD_ARTICLES
+				SET saleStatus = 1
+				WHERE idArticle = :idArticle
+			""";
 
-
-	@Override
+    @Override
 	public SoldArticles create(SoldArticles soldArticles) {
 		MapSqlParameterSource nameParameters = new MapSqlParameterSource();
 
@@ -125,6 +146,27 @@ public class SoldArticlesDAOImpl implements SoldArticlesDAO {
 		MapSqlParameterSource nameParameters = new MapSqlParameterSource();
 		nameParameters.addValue("idArticle", idArticle);
 		namedParameterJdbcTemplate.update(DELETE_ARTICLES, nameParameters);
+	}
+
+	@Override
+	public int closeOutdatedAuctionsAndGetCreditAmount(int idUser) {
+		final MapSqlParameterSource nameParametersFind = new MapSqlParameterSource();
+		nameParametersFind.addValue("idUser", idUser);
+		nameParametersFind.addValue("outdated", LocalDate.now(clock));
+		final List<SoldArticles> query = namedParameterJdbcTemplate.query(FIND_OUTDATED_SOLD_ARTICLES_FOR_USER, nameParametersFind, new SoldArticlesRowMapper());
+
+		int creditAmount = 0;
+
+		if (!query.isEmpty()) {
+			for (SoldArticles soldArticles : query) {
+				creditAmount += soldArticles.getPriceSale();
+				MapSqlParameterSource nameParametersUpdate = new MapSqlParameterSource();
+				nameParametersFind.addValue("idArticle", soldArticles.getIdArticle());
+				namedParameterJdbcTemplate.update(UPDATE_CLOSE_SALE_STATUS, nameParametersUpdate);
+			}
+		}
+
+		return creditAmount;
 	}
 
 	static class SoldArticlesRowMapper implements RowMapper<SoldArticles> {

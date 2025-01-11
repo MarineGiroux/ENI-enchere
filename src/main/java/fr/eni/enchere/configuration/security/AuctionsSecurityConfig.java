@@ -1,26 +1,30 @@
 package fr.eni.enchere.configuration.security;
 
-import javax.sql.DataSource;
-
-//import org.apache.coyote.http11.Http11InputBuffer;
+import fr.eni.enchere.bll.AuctionsService;
+import fr.eni.enchere.bll.UserService;
+import fr.eni.enchere.bo.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import javax.sql.DataSource;
+
 @Configuration
 @EnableWebSecurity
 public class AuctionsSecurityConfig {
+	private final static Logger LOGGER = LoggerFactory.getLogger(AuctionsSecurityConfig.class);
+
+	@Autowired
+	AuctionsService auctionsService;
 
 	@Bean
 	UserDetailsManager userDetailsManager(DataSource dataSource) {
@@ -42,8 +46,6 @@ public class AuctionsSecurityConfig {
 		http.authorizeHttpRequests(auth -> auth
 				.requestMatchers(HttpMethod.GET, "/").permitAll()
 				.requestMatchers(HttpMethod.POST, "/").permitAll()
-				//.requestMatchers(HttpMethod.GET, "/sales").hasAnyRole("ADMIN", "MEMBRE")
-				//.requestMatchers(HttpMethod.POST, "/sales").hasAnyRole("ADMIN", "MEMBRE")
 				.requestMatchers(HttpMethod.GET, "/user/inscription").permitAll()
 				.requestMatchers(HttpMethod.POST, "/user/inscription").permitAll()
 				.requestMatchers(HttpMethod.GET, "/login").permitAll()
@@ -63,9 +65,14 @@ public class AuctionsSecurityConfig {
 		
 		//utilisation du formulaire de connexion personnalisé
 		http.formLogin(form ->
-						form.loginPage("/login").permitAll()
+				form.loginPage("/login")
+						.permitAll()
 						.defaultSuccessUrl("/")
-					);
+						.successHandler((request, response, authentication) -> {
+							auctionsService.closeOutdatedAuctions(authentication.getName());
+							response.sendRedirect(request.getContextPath());
+						})
+		);
 		
 		http.logout(logout->
 				logout.invalidateHttpSession(true)

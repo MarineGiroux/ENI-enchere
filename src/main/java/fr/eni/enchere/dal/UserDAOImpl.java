@@ -56,9 +56,9 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public User findByEmail(String idUser) {
+	public User findByEmail(String email) {
 		MapSqlParameterSource nameParameters = new MapSqlParameterSource();
-		nameParameters.addValue("email", idUser);
+		nameParameters.addValue("email", email);
 		try {
 			return namedParameterJdbcTemplate.queryForObject(FIND_BY_EMAIL, nameParameters,
 					new BeanPropertyRowMapper<User>(User.class));

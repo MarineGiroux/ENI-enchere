@@ -1,20 +1,18 @@
 package fr.eni.enchere.bll;
 
-import java.util.List;
-
 import fr.eni.enchere.bo.Auctions;
 import fr.eni.enchere.bo.SoldArticles;
-import fr.eni.enchere.controller.UserController;
+import fr.eni.enchere.bo.User;
+import fr.eni.enchere.dal.AuctionsDAO;
+import fr.eni.enchere.dal.SoldArticlesDAO;
+import fr.eni.enchere.dal.UserDAO;
 import fr.eni.enchere.exception.BusinessException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
-import fr.eni.enchere.dal.SoldArticlesDAO;
-import fr.eni.enchere.dal.CategoryDAO;
-import fr.eni.enchere.dal.AuctionsDAO;
-import fr.eni.enchere.dal.UserDAO;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class AuctionsServiceImpl implements AuctionsService {
@@ -25,8 +23,7 @@ public class AuctionsServiceImpl implements AuctionsService {
     private SoldArticlesDAO soldArticlesDAO;
     private UserDAO userDAO;
 
-    public AuctionsServiceImpl(AuctionsDAO auctionsDAO, SoldArticlesDAO soldArticlesDAO, UserDAO userDAO,
-                               CategoryDAO categoryDAO) {
+    public AuctionsServiceImpl(AuctionsDAO auctionsDAO, SoldArticlesDAO soldArticlesDAO, UserDAO userDAO) {
         super();
         this.auctionsDAO = auctionsDAO;
         this.soldArticlesDAO = soldArticlesDAO;
@@ -119,6 +116,17 @@ public class AuctionsServiceImpl implements AuctionsService {
     public int amountAuction(int idArticle) {
         // TODO Auto-generated method stub
         return 0;
+    }
+
+    @Transactional
+    @Override
+    public void closeOutdatedAuctions(String userEmail) {
+        User user = userDAO.findByEmail(userEmail);
+        int creditToAdd = soldArticlesDAO.closeOutdatedAuctionsAndGetCreditAmount(user.getIdUser());
+        if (creditToAdd > 0) {
+            LOGGER.info("Augmentation de {} crédits pour le user {}", creditToAdd, userEmail);
+            userDAO.updateCredit(creditToAdd, user);
+        }
     }
 
 }
