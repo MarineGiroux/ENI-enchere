@@ -30,6 +30,11 @@ public class AuctionsServiceImpl implements AuctionsService {
         this.userDAO = userDAO;
     }
 
+    // @Scheduled(cron = "0 0 1 * * *")
+    public void autoCloseOutdatedAuctionsJob() {
+        // TODO implements for all users or all outdated auctions with status false
+    }
+
     @Override
     @Transactional
     public void bid(Auctions auctions) throws BusinessException {
