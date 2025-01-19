@@ -23,6 +23,10 @@ public class UserDAOImpl implements UserDAO {
 	private static final String UPDATE_USERS = "  UPDATE USERS SET pseudo = :pseudo, lastName= :lastName, firstName = :firstName, phone = :phone, road = :road, zipPass = :zipPass, city = :city, password = :password WHERE idUser = :idUser";
 	private static final String UPDATE_CREDIT = "UPDATE USERS SET credit = :credit WHERE idUser = :idUser";
 	private static final String DELETE_USERS = "  DELETE from USERS where email = :email";
+	private static final String RISE_CREDITS = """
+			UPDATE USERS SET credit = credit + :creditToAdd
+			WHERE idUser = :idUser
+			""";
 
 	@Autowired
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -106,6 +110,14 @@ public class UserDAOImpl implements UserDAO {
 		mapSqlParameterSource.addValue("credit", rising);
 		mapSqlParameterSource.addValue("idUser", user.getIdUser());
 		namedParameterJdbcTemplate.update(UPDATE_CREDIT, mapSqlParameterSource);
+	}
+
+	@Override
+	public void riseCredits(int creditToAdd, User user) {
+		MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+		mapSqlParameterSource.addValue("creditToAdd", creditToAdd);
+		mapSqlParameterSource.addValue("idUser", user.getIdUser());
+		namedParameterJdbcTemplate.update(RISE_CREDITS, mapSqlParameterSource);
 	}
 
 	@Override

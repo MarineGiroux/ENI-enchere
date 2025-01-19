@@ -130,7 +130,7 @@ public class AuctionsServiceImpl implements AuctionsService {
         int creditToAdd = soldArticlesDAO.closeOutdatedAuctionsAndGetCreditAmount(user.getIdUser());
         if (creditToAdd > 0) {
             LOGGER.info("Augmentation de {} crédits pour le user {}", creditToAdd, userEmail);
-            userDAO.updateCredit(creditToAdd, user);
+            userDAO.riseCredits(creditToAdd, user);
         }
     }
 

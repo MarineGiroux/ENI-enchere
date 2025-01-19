@@ -18,6 +18,8 @@ public interface UserDAO {
 	
 	void updateCredit(int rising, User user);
 
+	void riseCredits(int rising, User user);
+
 	void deleteAccountByEmail(String email);
 	
 }

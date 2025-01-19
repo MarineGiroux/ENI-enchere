@@ -161,7 +161,7 @@ public class SoldArticlesDAOImpl implements SoldArticlesDAO {
 			for (SoldArticles soldArticles : query) {
 				creditAmount += soldArticles.getPriceSale();
 				MapSqlParameterSource nameParametersUpdate = new MapSqlParameterSource();
-				nameParametersFind.addValue("idArticle", soldArticles.getIdArticle());
+				nameParametersUpdate.addValue("idArticle", soldArticles.getIdArticle());
 				namedParameterJdbcTemplate.update(UPDATE_CLOSE_SALE_STATUS, nameParametersUpdate);
 			}
 		}
