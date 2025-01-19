@@ -340,7 +340,7 @@ nav ul li a:hover {
     width: 400px;
     margin: 20px;
     border: 2px solid #E04A38;
-    box-shadow: lightgray 4px 4px 20px;
+    box-shadow: #838383 4px 4px 20px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 

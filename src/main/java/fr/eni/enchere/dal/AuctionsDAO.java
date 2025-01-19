@@ -17,8 +17,6 @@ public interface AuctionsDAO {
 
 	void outbid(Auctions auctions);
 
-	List<Auctions> findByArticle(int idArticle);
-
 	Auctions findBiggerAuction(int idArticle);
 
 }

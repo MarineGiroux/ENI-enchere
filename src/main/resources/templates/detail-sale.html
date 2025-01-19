@@ -78,8 +78,6 @@
 					<h5>Dernière enchère : <span data-th-text="*{soldArticles.priceSale}"></span>  crédits par <span data-th-text="${soldArticleViewModel.buyer.pseudo}"></span></h5><br>
 				</div>
 
-
-
 				<div class="form-group" th:if="${soldArticleViewModel.soldArticles.startDateAuctions != null
 					&& (soldArticleViewModel.soldArticles.startDateAuctions.isBefore(T(java.time.LocalDate).now())
 					|| soldArticleViewModel.soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now()))}">
@@ -95,11 +93,8 @@
 					<button th:if="${soldArticleViewModel.soldArticles.startDateAuctions.isBefore(T(java.time.LocalDate).now())
 				   ||
 				   soldArticleViewModel.soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now())}" type="submit" class="btn btn-primary">Placer une enchère</button>
-
-
 					<a data-th-href="@{/}" class="btn btn-secondary">Retour</a>
 				</div>
-
 			</form>
 		</main>
 		<footer class="footer">

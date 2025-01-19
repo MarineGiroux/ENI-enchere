@@ -36,52 +36,79 @@ public class AuctionsServiceImpl implements AuctionsService {
         final SoldArticles soldArticles = auctions.getSoldArticles();
         checkAuction(auctions, soldArticles);
 
-        // Vérifier que l'enchérisseur n'est pas le vendeur
-        if (auctions.getUser().getIdUser() != soldArticles.getIdUser()) {
-            // trouver la plus grosse enchère
-            final Auctions biggerAuction = auctionsDAO.findBiggerAuction(auctions.getSoldArticles().getIdArticle());
-            // aucune enchère trouvée
-            if (biggerAuction == null) {
-                // verif que montant >= miseAPrix
-                if (auctions.getAmountAuctions() >= soldArticles.getInitialPrice()) {
-                    // debit de credit
-                    userDAO.updateCredit(userDAO.findByNum(auctions.getUser().getIdUser()).getCredit() - auctions.getAmountAuctions(), userDAO.findByNum(auctions.getUser().getIdUser()));
-                    // creation de l'enchère
-                    auctionsDAO.create(auctions);
-                    soldArticlesDAO.updatePriceSale(auctions);
-                } else {
-                    LOGGER.info("Montant inferieur a la mise a prix");
-                    throw new BusinessException("Le montant doit être supérieur à la mise à prix");
-                }
-            } else if (auctions.getUser().getIdUser() != biggerAuction.getIdUser()) {
-                // autre enchérisseur que celui de la plus grosse enchère
-                if (auctions.getAmountAuctions() > biggerAuction.getAmountAuctions()) {
-                    // debiter credit
-                    userDAO.updateCredit(userDAO.findByNum(auctions.getUser().getIdUser()).getCredit() - auctions.getAmountAuctions(), userDAO.findByNum(auctions.getUser().getIdUser()));
-                    // rembourser dernier enchérisseur
-                    userDAO.updateCredit(userDAO.findByNum(biggerAuction.getIdUser()).getCredit() + biggerAuction.getAmountAuctions(), userDAO.findByNum(biggerAuction.getIdUser()));
-                    // verif si l'user a deja une auctions pour cet article
-                    if (auctionsDAO.countAuctionsUser(auctions.getSoldArticles().getIdArticle(), auctions.getUser().getIdUser()) > 0) {
-                        // modifier l'enchère
-                        auctionsDAO.outbid(auctions);
-                    } else {
-                        // creer l'auctions
-                        auctionsDAO.create(auctions);
-                    }
-                    soldArticlesDAO.updatePriceSale(auctions);
-                } else {
-                    LOGGER.info("Montant de l'enchère inferieure ou égale aux autres auctions");
-                    throw new BusinessException("Le montant doit être supérieur à la dernière enchère");
-                }
-            } else {
-                LOGGER.error("L'utilisateur ne peut pas surenchérir sur sa propre enchère");
-                throw new BusinessException("Tu ne peux pas surenchérir sur ta propre enchère");
-            }
-        } else {
-            LOGGER.error("L'utilisateur ne peut pas enchérir sur son propre article");
+        if (isSeller(auctions, soldArticles)) {
             throw new BusinessException("Tu ne peux pas enchérir sur ton propre article");
         }
 
+        final Auctions biggerAuction = auctionsDAO.findBiggerAuction(soldArticles.getIdArticle());
+
+        if (biggerAuction == null) {
+            handleNoPreviousAuction(auctions, soldArticles);
+        } else {
+            handleExistingAuction(auctions, biggerAuction);
+        }
+    }
+
+    private static boolean isSeller(Auctions auctions, SoldArticles soldArticles) {
+        return auctions.getUser().getIdUser() == soldArticles.getIdUser();
+    }
+
+    private void handleNoPreviousAuction(Auctions auctions, SoldArticles soldArticles) throws BusinessException {
+        if (auctions.getAmountAuctions() >= soldArticles.getInitialPrice()) {
+            debitUserCredit(auctions);
+            auctionsDAO.create(auctions);
+            soldArticlesDAO.updatePriceSale(auctions);
+        } else {
+            throw new BusinessException("Le montant doit être supérieur à la mise à prix");
+        }
+    }
+
+    private void handleExistingAuction(Auctions auctions, Auctions biggerAuction) throws BusinessException {
+        if (auctions.getUser().getIdUser() == biggerAuction.getIdUser()) {
+            throw new BusinessException("Tu ne peux pas surenchérir sur ta propre enchère");
+        }
+
+        if (auctions.getAmountAuctions() > biggerAuction.getAmountAuctions()) {
+            processHigherBid(auctions, biggerAuction);
+        } else {
+            throw new BusinessException("Le montant doit être supérieur à la dernière enchère");
+        }
+    }
+
+    private void processHigherBid(Auctions auctions, Auctions biggerAuction) {
+        debitUserCredit(auctions);
+        refundPreviousBidder(biggerAuction);
+
+        if (auctionsDAO.countAuctionsUser(auctions.getSoldArticles().getIdArticle(), auctions.getUser().getIdUser()) > 0) {
+            auctionsDAO.outbid(auctions);
+        } else {
+            auctionsDAO.create(auctions);
+        }
+
+        soldArticlesDAO.updatePriceSale(auctions);
+    }
+
+    private void debitUserCredit(Auctions auctions) {
+        int userId = auctions.getUser().getIdUser();
+        int newCredit = userDAO.findByNum(userId).getCredit() - auctions.getAmountAuctions();
+        userDAO.updateCredit(newCredit, userDAO.findByNum(userId));
+    }
+
+    private void refundPreviousBidder(Auctions biggerAuction) {
+        int previousUserId = biggerAuction.getIdUser();
+        int newCredit = userDAO.findByNum(previousUserId).getCredit() + biggerAuction.getAmountAuctions();
+        userDAO.updateCredit(newCredit, userDAO.findByNum(previousUserId));
+    }
+
+    protected static void checkAuction(Auctions auctions, SoldArticles soldArticles) throws BusinessException {
+        if (auctions.getAmountAuctions() > auctions.getUser().getCredit()) {
+            throw new BusinessException("Tu n'as pas assez de crédit");
+        }
+
+        if (auctions.getDateAuctions().isBefore(soldArticles.getStartDateAuctions()) ||
+                auctions.getDateAuctions().isAfter(soldArticles.getEndDateAuctions())) {
+            throw new BusinessException("L'enchère est déjà terminée");
+        }
     }
 
     @Override
@@ -94,28 +121,6 @@ public class AuctionsServiceImpl implements AuctionsService {
             auctions.setUser(userDAO.findByNum(auctions.getUser().getIdUser()));
         }
         return auctionList;
-    }
-
-    protected static void checkAuction(Auctions auctions, SoldArticles soldArticles) throws BusinessException {
-        if (auctions.getAmountAuctions() > auctions.getUser().getCredit()) {
-            // pas assez d'argent
-            throw new BusinessException("Tu n'as pas assez de crédit");
-        } else if (auctions.getDateAuctions().isBefore(soldArticles.getStartDateAuctions())
-                || auctions.getDateAuctions().isAfter(soldArticles.getEndDateAuctions())) {
-            // enchère fermée
-            throw new BusinessException("L'enchère est déjà terminée");
-        }
-    }
-
-    @Override
-    public List<Auctions> findByID(int idAuctions) {
-        return auctionsDAO.findByArticle(idAuctions);
-    }
-
-    @Override
-    public int amountAuction(int idArticle) {
-        // TODO Auto-generated method stub
-        return 0;
     }
 
     @Transactional

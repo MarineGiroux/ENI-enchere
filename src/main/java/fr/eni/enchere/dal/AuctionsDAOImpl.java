@@ -24,7 +24,6 @@ public class AuctionsDAOImpl implements AuctionsDAO {
 			update AUCTIONS SET amountAuctions = :amountAuctions, dateAuctions = :dateAuctions
 			             WHERE idArticle = :idArticle and idUser = :idUser
 			""";
-	private final String FIND_BY_idArticle = "Select * FROM AUCTIONS WHERE idArticle = :idArticle";
 
 	private final String FIND_BIGGER_AUCTION_OF_ARTICLE = """
 				SELECT top 1 *
@@ -79,14 +78,6 @@ public class AuctionsDAOImpl implements AuctionsDAO {
 		
 		namedParameterJdbcTemplate.update(UPDATE_AMOUNT_AUCTION, nameParameters);
 		
-	}
-
-	@Override
-	public List<Auctions> findByArticle(int idArticle) {
-		MapSqlParameterSource nameParameters = new MapSqlParameterSource();
-		nameParameters.addValue("idArticle", idArticle);
-		
-		return namedParameterJdbcTemplate.query(FIND_BY_idArticle, nameParameters,new EnchereRowMapper());
 	}
 
 	@Override

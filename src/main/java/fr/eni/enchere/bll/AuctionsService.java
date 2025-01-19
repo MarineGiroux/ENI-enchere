@@ -11,10 +11,6 @@ public interface AuctionsService {
 	void bid(Auctions auctions) throws BusinessException;
 	
 	List<Auctions> recoverAuctions();
-	
-	List<Auctions> findByID(int idAuctions);
-	
-	int amountAuction(int idArticle);
 
     void closeOutdatedAuctions(String userEmail);
 }
