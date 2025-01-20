@@ -1,6 +1,5 @@
 package fr.eni.enchere.bo;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import fr.eni.enchere.configuration.security.DateRange;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.Min;

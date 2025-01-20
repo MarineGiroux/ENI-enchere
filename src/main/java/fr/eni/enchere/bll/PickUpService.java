@@ -4,8 +4,6 @@ import fr.eni.enchere.bo.PickUp;
 
 public interface PickUpService {
 	
-	void createAdress(PickUp pickUp);
-
 	PickUp findByNum(int noArticle);
 	
 }

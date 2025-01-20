@@ -20,9 +20,4 @@ public class PickUpServiceImpl implements PickUpService {
 		return p;
 	}
 
-	@Override
-	public void createAdress(PickUp pickUp) {
-		pickUpDAO.create(pickUp);
-	}
-
 }

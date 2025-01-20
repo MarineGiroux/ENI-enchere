@@ -19,13 +19,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.security.Principal;
 import java.time.Clock;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Controller
 @RequestMapping("/sales")
@@ -132,32 +129,32 @@ public class SalesController {
 		return"redirect:/detail";
 	}
 
-	@PostMapping("/auctions")
-	public String registerAuction(@RequestParam("soldArticles.idArticle") int idArticle,
-								  @RequestParam("amountAuctions") int amountAuction,
-								  Principal principal,
-								  Model model,
-								  RedirectAttributes redirectAttributes) {
-		try {
-			Auctions auctions = new Auctions();
-			auctions.setUser(userService.findByEmail(principal.getName()));
-			auctions.setSoldArticles(soldArticlesService.findById(idArticle).getSoldArticles());
-			auctions.setDateAuctions(LocalDate.now(clock));
-			auctions.setAmountAuctions(amountAuction);
-
-			this.auctionsService.bid(auctions);
-			redirectAttributes.addFlashAttribute("success", "Enchère placée avec succès");
-
-		} catch (BusinessException be) {
-			redirectAttributes.addFlashAttribute("error", be.getMessage());
-			LOGGER.error("Erreur lors de l'enchère: {}", be.getMessage());
-		} catch (Exception e) {
-			redirectAttributes.addFlashAttribute("error", "Une erreur inattendue s'est produite");
-			LOGGER.error("Erreur inattendue: {}", e.getMessage());
-		}
-
-		return "redirect:/sales/detail?id=" + idArticle;
-	}
+//	@PostMapping("/auctions")
+//	public String registerAuction(@RequestParam("soldArticles.idArticle") int idArticle,
+//								  @RequestParam("amountAuctions") int amountAuction,
+//								  Principal principal,
+//								  Model model,
+//								  RedirectAttributes redirectAttributes) {
+//		try {
+//			Auctions auctions = new Auctions();
+//			auctions.setUser(userService.findByEmail(principal.getName()));
+//			auctions.setSoldArticles(soldArticlesService.findById(idArticle).getSoldArticles());
+//			auctions.setDateAuctions(LocalDate.now(clock));
+//			auctions.setAmountAuctions(amountAuction);
+//
+//			this.auctionsService.bid(auctions);
+//			redirectAttributes.addFlashAttribute("success", "Enchère placée avec succès");
+//
+//		} catch (BusinessException be) {
+//			redirectAttributes.addFlashAttribute("error", be.getMessage());
+//			LOGGER.error("Erreur lors de l'enchère: {}", be.getMessage());
+//		} catch (Exception e) {
+//			redirectAttributes.addFlashAttribute("error", "Une erreur inattendue s'est produite");
+//			LOGGER.error("Erreur inattendue: {}", e.getMessage());
+//		}
+//
+//		return "redirect:/sales/detail?id=" + idArticle;
+//	}
 
 
 	@GetMapping("/edit/{id}")

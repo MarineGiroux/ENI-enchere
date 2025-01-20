@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import fr.eni.enchere.bll.SoldArticlesService;
 import fr.eni.enchere.bll.CategoryService;
-import fr.eni.enchere.bll.AuctionsService;
-import fr.eni.enchere.bll.UserService;
 import fr.eni.enchere.bo.Category;
 
 

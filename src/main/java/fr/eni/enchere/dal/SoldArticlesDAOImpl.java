@@ -6,7 +6,6 @@ import java.time.Clock;
 import java.time.LocalDate;
 import java.util.List;
 
-import fr.eni.enchere.bll.AuctionsServiceImpl;
 import fr.eni.enchere.bo.Auctions;
 import fr.eni.enchere.bo.SoldArticles;
 import org.slf4j.Logger;

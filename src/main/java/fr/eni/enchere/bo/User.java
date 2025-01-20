@@ -157,9 +157,8 @@ public class User {
 	@Override
 	public String toString() {
 		return String.format(
-				"User [idUser=%s, pseudo=%s, lastName=%s, firstName=%s, email=%s, phone=%s, road=%s, zipPass=%s, city=%s, password=%s, picture=%s, credit=%s, idRole=%s]",
-				idUser, pseudo, lastName, firstName, email, phone, road, zipPass, city, password, picture, credit,
-				idRole);
+				"User [idUser=%s, credit=%s, idRole=%s]",
+				idUser, credit,	idRole);
 	}
 	
 	

@@ -5,10 +5,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import fr.eni.enchere.bo.Auctions;
-import fr.eni.enchere.bo.SoldArticles;
-import fr.eni.enchere.bo.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -18,7 +15,6 @@ public class AuctionsDAOImpl implements AuctionsDAO {
 	
 	private final String INSERT = "INSERT INTO AUCTIONS (idUser,idArticle,dateAuctions,amountAuctions)VALUES (:idUser,:idArticle,:dateAuctions,:amountAuctions)";
 	private final String FIND_ALL = "Select * FROM AUCTIONS";
-	private final String FIND_BY_idArticle_idUser = "Select * FROM AUCTIONS WHERE idArticle = :idArticle AND idUser = :idUser";
 	private final String COUNT_idArticle_idUser = "SELECT COUNT(idArticle) FROM AUCTIONS WHERE idArticle = :idArticle AND idUser = :idUser";
 	private final String UPDATE_AMOUNT_AUCTION = """
 			update AUCTIONS SET amountAuctions = :amountAuctions, dateAuctions = :dateAuctions
@@ -33,14 +29,6 @@ public class AuctionsDAOImpl implements AuctionsDAO {
 
 	@Autowired
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-
-	@Override
-	public Auctions findByidUser(int idArticle, int idUser) {
-		MapSqlParameterSource nameParameters = new MapSqlParameterSource();	
-		nameParameters.addValue("idUser", idUser);
-		nameParameters.addValue("noArticle", idArticle);
-		return namedParameterJdbcTemplate.queryForObject(FIND_BY_idArticle_idUser, nameParameters, new BeanPropertyRowMapper<Auctions>(Auctions.class));
-	}
 
 	@Override
 	public void create(Auctions auctions) {

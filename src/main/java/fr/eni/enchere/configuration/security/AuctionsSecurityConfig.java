@@ -1,8 +1,6 @@
 package fr.eni.enchere.configuration.security;
 
 import fr.eni.enchere.bll.AuctionsService;
-import fr.eni.enchere.bll.UserService;
-import fr.eni.enchere.bo.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

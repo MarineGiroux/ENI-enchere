@@ -9,8 +9,6 @@ public interface AuctionsDAO {
 
 	void create (Auctions auctions);
 
-	Auctions findByidUser(int idArticle, int idUser);
-
 	List<Auctions> findAll();
 
 	int countAuctionsUser(int idArticle, int idUser);
