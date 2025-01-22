@@ -673,3 +673,16 @@ textarea {
 .btn-nav:hover{
     background-color: rgba(255, 255, 255, 0.5); ;
 }
+
+#map {
+    border: none;
+    border-radius: 4px;
+}
+
+#map-error {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #ffebee;
+    border: 1px solid #ffcdd2;
+    border-radius: 4px;
+}

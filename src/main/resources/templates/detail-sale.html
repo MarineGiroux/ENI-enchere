@@ -1,104 +1,180 @@
 
 <!DOCTYPE html>
-	<html lang="en" xmlns:th="http://www.thymeleaf.org">
-		<head>
-			<meta charset="UTF-8">
-			<meta name="viewport" content="width=device-width, initial-scale=1.0">
-			<link rel="stylesheet" data-th-href="@{/css/main.css}">
-			<link rel="stylesheet" data-th-href="@{/css/error.css}">
-			<title>ENI Enchères - Détail</title>
-			<link rel="icon" data-th-href="@{/images/LogoEnchere-1.png}" />
-		</head>
-		<body>
-		<header xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-entete">
-			<nav>
-				<div>
-					<a href="/">ENI Enchères</a>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" data-th-href="@{/css/main.css}">
+	<link rel="stylesheet" data-th-href="@{/css/error.css}">
+	<title>ENI Enchères - Détail</title>
+	<link rel="icon" data-th-href="@{/images/LogoEnchere-1.png}" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+		  integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+		  crossorigin=""/>
+	<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+			integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+			crossorigin=""></script>
+</head>
+<body>
+<header xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-entete">
+	<nav>
+		<div>
+			<a href="/">ENI Enchères</a>
+		</div>
+		<div id="navbarTogglerDemo02">
+			<ul>
+				<li><a aria-current="page" data-th-href="@{/}">Accueil</a></li>
+				<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/sales}">Ventes</a></li>
+				<li th:if="${!#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/user/inscription}">Inscription</a></li>
+				<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/user/profile}">Profil</a></li>
+				<li th:if="${!#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/login}">Connexion</a></li>
+				<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/logout}">Déconnexion</a></li>
+			</ul>
+		</div>
+	</nav>
+</header>
+<main class="center-main">
+	<form th:action="@{/sales/detail}" th:object="${soldArticleViewModel}" method="post">
+		<h3>Vendu par <span data-th-text="*{seller.pseudo}"></span></h3>
+		<a class="details-btn-modify"
+		   th:if="${soldArticleViewModel.seller.email != #authentication.name}"
+		   th:href="@{/user/seller/{id}(id=*{seller.idUser})}">
+			Profil de <span data-th-text="*{seller.pseudo}"></span>
+		</a>
+		<div class="form-container-detail-article">
+			<div class="article-info">
+				<h3><span data-th-text="*{soldArticles.nameArticle}"></span></h3>
+				<p><strong>Description :</strong> <span data-th-text="*{soldArticles.description}"></span></p>
+				<p><strong>Catégorie :</strong> <span data-th-text="*{category.categoryName}"></span></p>
+				<p><strong>Prix de départ :</strong> <span data-th-text="*{soldArticles.initialPrice}"></span> crédits</p>
+				<p><strong>Date de début :</strong>
+					<span data-th-text="${#temporals.format(soldArticleViewModel.soldArticles.startDateAuctions, 'dd-MM-yyyy')}"></span>
+				</p>
+				<p><strong>Date de fin :</strong>
+					<span data-th-text="${#temporals.format(soldArticleViewModel.soldArticles.endDateAuctions, 'dd-MM-yyyy')}"></span>
+				</p>
+				<div class="article-image">
+					<img id="imageArticle"
+						 th:src="@{${soldArticleViewModel.soldArticles.picture != null ? '/images/uploads/' + soldArticleViewModel.soldArticles.picture : '/images/carton.jpg'}}"
+						 th:alt="${soldArticleViewModel.soldArticles.picture}" />
 				</div>
-				<div id="navbarTogglerDemo02">
-					<ul>
-						<li><a aria-current="page" data-th-href="@{/}">Accueil</a></li>
-						<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/sales}">Ventes</a></li>
-						<li th:if="${!#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/user/inscription}">Inscription</a></li>
-						<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/user/profile}">Profil</a></li>
-						<li th:if="${!#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/login}">Connexion</a></li>
-						<li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/logout}">Déconnexion</a></li>
-					</ul>
-				</div>
-			</nav>
-		</header>
-		<main class="center-main">
-			<form th:action="@{/sales/detail}" th:object="${soldArticleViewModel}" method="post">
-				<h3>Vendu par <span data-th-text="*{seller.pseudo}"></span></h3>
-				<a class="details-btn-modify"
-				   th:if="${soldArticleViewModel.seller.email != #authentication.name}"
-				   th:href="@{/user/seller/{id}(id=*{seller.idUser})}">
-					Profil de <span data-th-text="*{seller.pseudo}"></span>
-				</a>
-				<div class="form-container-detail-article">
-					<div class="article-info">
-						<h3><span data-th-text="*{soldArticles.nameArticle}"></span></h3>
-						<p><strong>Description :</strong> <span data-th-text="*{soldArticles.description}"></span></p>
-						<p><strong>Catégorie :</strong> <span data-th-text="*{category.categoryName}"></span></p>
-						<p><strong>Prix de départ :</strong> <span data-th-text="*{soldArticles.initialPrice}"></span> crédits</p>
-						<p><strong>Date de début :</strong>
-							<span data-th-text="${#temporals.format(soldArticleViewModel.soldArticles.startDateAuctions, 'dd-MM-yyyy')}"></span>
-						</p>
-						<p><strong>Date de fin :</strong>
-							<span data-th-text="${#temporals.format(soldArticleViewModel.soldArticles.endDateAuctions, 'dd-MM-yyyy')}"></span>
-						</p>
-						<p><strong>Lieu de retrait :</strong></p>
-						<p>
-							<span data-th-text="*{pickUpLocation.road}"></span>,
-							<span data-th-text="*{pickUpLocation.zipPass}"></span>,
-							<span data-th-text="*{pickUpLocation.city}"></span>
-						</p>
-					</div>
+			</div>
 
-					<div class="article-image">
-						<img id="imageArticle"
-							 th:src="@{${soldArticleViewModel.soldArticles.picture != null ? '/images/uploads/' + soldArticleViewModel.soldArticles.picture : '/images/carton.jpg'}}"
-							 th:alt="${soldArticleViewModel.soldArticles.picture}" />
-					</div>
-				</div>
-			</form>
+			<div class="article-image">
+				<h3><strong>Lieu de retrait :</strong></h3>
+				<p>
+					<span data-th-text="*{pickUpLocation.road}"></span>,
+					<span data-th-text="*{pickUpLocation.zipPass}"></span>,
+					<span data-th-text="*{pickUpLocation.city}"></span>
+				</p>
+				<div id="map" style="width: 400px; height: 400px;"></div>
+				<div id="map-error" style="color: red; display: none;"></div>
+			</div>
+		</div>
+	</form>
 
-			<form th:action="@{/sales/auctions}" method="post" th:object="${soldArticleViewModel}">
-				<div data-th-replace="~{fragments/fragment-error :: frag-error('soldArticles.priceSale')}"></div>
-				<h3>Veux-tu enchérir ?</h3>
-				<div th:if="${error}">
-					<h5 class="error-text" th:text="${error}"></h5>
-				</div>
-				<div th:if="${success}">
-					<h5 class="success-text" th:text="${success}"></h5>
-				</div>
-				<input type="hidden" th:field="*{soldArticles.idArticle}" />
+	<form th:action="@{/sales/auctions}" method="post" th:object="${soldArticleViewModel}">
+		<div data-th-replace="~{fragments/fragment-error :: frag-error('soldArticles.priceSale')}"></div>
+		<h3>Veux-tu enchérir ?</h3>
+		<div th:if="${error}">
+			<h5 class="error-text" th:text="${error}"></h5>
+		</div>
+		<div th:if="${success}">
+			<h5 class="success-text" th:text="${success}"></h5>
+		</div>
+		<input type="hidden" th:field="*{soldArticles.idArticle}" />
 
-				<div  th:if="${soldArticleViewModel.buyer != null && (soldArticleViewModel.soldArticles.startDateAuctions.isBefore(T(java.time.LocalDate).now())					   ||					   soldArticleViewModel.soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now()))}">
-					<h5>Dernière enchère : <span data-th-text="*{soldArticles.priceSale}"></span>  crédits par <span data-th-text="${soldArticleViewModel.buyer.pseudo}"></span></h5><br>
-				</div>
+		<div  th:if="${soldArticleViewModel.buyer != null && (soldArticleViewModel.soldArticles.startDateAuctions.isBefore(T(java.time.LocalDate).now())					   ||					   soldArticleViewModel.soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now()))}">
+			<h5>Dernière enchère : <span data-th-text="*{soldArticles.priceSale}"></span>  crédits par <span data-th-text="${soldArticleViewModel.buyer.pseudo}"></span></h5><br>
+		</div>
 
-				<div class="form-group" th:if="${soldArticleViewModel.soldArticles.startDateAuctions != null
+		<div class="form-group" th:if="${soldArticleViewModel.soldArticles.startDateAuctions != null
 					&& (soldArticleViewModel.soldArticles.startDateAuctions.isBefore(T(java.time.LocalDate).now())
 					|| soldArticleViewModel.soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now()))}">
-					<label for="amountAuctions">Montant de l'enchère</label>
-					<input id="amountAuctions"
-						   type="number"
-						   name="amountAuctions"
-						   th:value="*{soldArticles.priceSale > 0} ? *{soldArticles.priceSale} : *{soldArticles.initialPrice}"
-						   class="form-control-auctions" />
-				</div>
+			<label for="amountAuctions">Montant de l'enchère</label>
+			<input id="amountAuctions"
+				   type="number"
+				   name="amountAuctions"
+				   th:value="*{soldArticles.priceSale > 0} ? *{soldArticles.priceSale} : *{soldArticles.initialPrice}"
+				   class="form-control-auctions" />
+		</div>
 
-				<div class="form-actions" >
-					<button th:if="${soldArticleViewModel.soldArticles.startDateAuctions.isBefore(T(java.time.LocalDate).now())
+		<div class="form-actions" >
+			<button th:if="${soldArticleViewModel.soldArticles.startDateAuctions.isBefore(T(java.time.LocalDate).now())
 				   ||
 				   soldArticleViewModel.soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now())}" type="submit" class="btn btn-primary">Placer une enchère</button>
-					<a data-th-href="@{/}" class="btn btn-secondary">Retour</a>
-				</div>
-			</form>
-		</main>
-		<footer class="footer">
-			<p>© 2024 ENI Enchères. Tous droits réservés.</p>
-		</footer>
-	</body>
+			<a data-th-href="@{/}" class="btn btn-secondary">Retour</a>
+		</div>
+	</form>
+</main>
+<footer class="footer">
+	<p>© 2024 ENI Enchères. Tous droits réservés.</p>
+</footer>
+<script th:inline="javascript">
+	const road = /*[[${soldArticleViewModel.pickUpLocation.road}]]*/ '';
+	const zipPass = /*[[${soldArticleViewModel.pickUpLocation.zipPass}]]*/ '';
+	const city = /*[[${soldArticleViewModel.pickUpLocation.city}]]*/ '';
+
+	async function getCoordinates(road, zipPass, city) {
+		try {
+			const address = `${road}, ${zipPass} ${city}, France`;
+			const encodedAddress = encodeURIComponent(address);
+			const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodedAddress}&limit=1`);
+
+			if (!response.ok) {
+				throw new Error('Erreur lors de la recherche de l\'adresse');
+			}
+
+			const data = await response.json();
+
+			if (data.length > 0) {
+				return {
+					lat: parseFloat(data[0].lat),
+					lon: parseFloat(data[0].lon)
+				};
+			}
+			throw new Error('Adresse non trouvée');
+		} catch (error) {
+			console.error('Erreur de géocodage:', error);
+			document.getElementById('map-error').textContent = 'Erreur: Impossible de localiser l\'adresse';
+			document.getElementById('map-error').style.display = 'block';
+			return null;
+		}
+	}
+
+	let map = L.map('map');
+
+	L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		maxZoom: 19,
+		attribution: '© OpenStreetMap contributors'
+	}).addTo(map);
+
+	async function initMap() {
+		try {
+			map.setView([46.603354, 1.888334], 6);
+
+			if (!road || !zipPass || !city) {
+				throw new Error('Adresse incomplète');
+			}
+
+			const coordinates = await getCoordinates(road, zipPass, city);
+
+			if (coordinates) {
+				map.setView([coordinates.lat, coordinates.lon], 15);
+
+				const marker = L.marker([coordinates.lat, coordinates.lon])
+						.addTo(map)
+						.bindPopup(`${road}, ${zipPass} ${city}`)
+						.openPopup();
+			}
+		} catch (error) {
+			console.error('Erreur d\'initialisation de la carte:', error);
+			document.getElementById('map-error').textContent = error.message;
+			document.getElementById('map-error').style.display = 'block';
+		}
+	}
+
+	initMap();
+</script>
+</body>
 </html>
