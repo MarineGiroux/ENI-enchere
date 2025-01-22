@@ -26,6 +26,7 @@ public class UserServiceImpl implements UserService {
 		boolean valid = validateUniqueEmail(user.getEmail(), be);
 				valid &= validateUniquePseudo(user.getPseudo(), be);
 				valid &= validateConfirmPassword(user, ConfirmPassword, be);
+				valid &= validatePassword(user.getPassword(), be);
 		
 		if(valid) {
 			PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
@@ -36,8 +37,18 @@ public class UserServiceImpl implements UserService {
 			throw be;
 		}
 	}
-	
-	
+
+	private boolean validatePassword(String password, BusinessException be) {
+		String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{15,}$";
+
+		if (!password.matches(passwordRegex)) {
+			be.add("Le mot de passe doit contenir au moins 15 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial");
+			return false;
+		}
+		return true;
+	}
+
+
 	private boolean validateUniqueEmail(String email, BusinessException be) {
 		int nbEmail = userDAO.countEmail(email);
 		
