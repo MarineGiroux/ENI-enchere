@@ -39,10 +39,10 @@ public class UserServiceImpl implements UserService {
 	}
 
 	private boolean validatePassword(String password, BusinessException be) {
-		String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{15,}$";
+		String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{12,}$";
 
 		if (!password.matches(passwordRegex)) {
-			be.add("Le mot de passe doit contenir au moins 15 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial");
+			be.add("Le mot de passe doit contenir au moins 12 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial");
 			return false;
 		}
 		return true;

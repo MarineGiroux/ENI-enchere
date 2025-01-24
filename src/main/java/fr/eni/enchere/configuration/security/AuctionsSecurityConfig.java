@@ -31,7 +31,7 @@ public class AuctionsSecurityConfig {
 				"SELECT email, password, 1 FROM USERS WHERE email = ?"
 		);
 		jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(
-				"SELECT u.email, r.role FROM USERS u JOIN ROLES r ON u.idRole = r.idRole WHERE u.email = ?"
+				"SELECT u.email, CONCAT('ROLE_', r.role) FROM USERS u JOIN ROLES r ON u.idRole = r.idRole WHERE u.email = ?"
 		);
 		return jdbcUserDetailsManager;
 	}
@@ -39,23 +39,28 @@ public class AuctionsSecurityConfig {
 
 
 	@Bean
-	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+	SecurityFilterChain filterChain(HttpSecurity http, UserDetailsManager userDetailsManager) throws Exception {
+		http.userDetailsService(userDetailsManager);
 		
 		http.authorizeHttpRequests(auth -> auth
 				.requestMatchers(HttpMethod.GET, "/").permitAll()
-				.requestMatchers(HttpMethod.POST, "/").permitAll()
 				.requestMatchers(HttpMethod.GET, "/user/inscription").permitAll()
 				.requestMatchers(HttpMethod.POST, "/user/inscription").permitAll()
 				.requestMatchers(HttpMethod.GET, "/login").permitAll()
 				.requestMatchers(HttpMethod.POST, "/login").permitAll()
-				.requestMatchers(HttpMethod.GET, "/logout").hasAnyRole("ADMIN", "MEMBRE")
 				.requestMatchers(HttpMethod.POST, "/logout").hasAnyRole("ADMIN", "MEMBRE")
-				.requestMatchers(HttpMethod.GET, "/profil").hasAnyRole("ADMIN", "MEMBRE")
-				.requestMatchers(HttpMethod.POST, "/profil").hasAnyRole("ADMIN", "MEMBRE")
+				.requestMatchers(HttpMethod.GET, "/user/profile").hasAnyRole("ADMIN", "MEMBRE")
+				.requestMatchers(HttpMethod.POST, "/user/profile").hasAnyRole("ADMIN", "MEMBRE")
+				.requestMatchers(HttpMethod.POST, "/user/update").hasAnyRole("ADMIN", "MEMBRE")
+				.requestMatchers(HttpMethod.POST, "/user/delete").hasAnyRole("ADMIN", "MEMBRE")
+				.requestMatchers(HttpMethod.GET, "/sales").hasAnyRole("ADMIN", "MEMBRE")
+				.requestMatchers(HttpMethod.POST, "/sales").hasAnyRole("ADMIN", "MEMBRE")
+				.requestMatchers(HttpMethod.GET, "/sales/detail/{id}").hasAnyRole("ADMIN", "MEMBRE")
+				.requestMatchers(HttpMethod.POST, "/sales/edit/{id}").hasAnyRole("ADMIN", "MEMBRE")
+				.requestMatchers(HttpMethod.POST, "/sales/deleteArticle/{id}").hasAnyRole("ADMIN", "MEMBRE")
 				.requestMatchers(HttpMethod.GET, "/css/*").permitAll()
 				.requestMatchers(HttpMethod.GET, "/images/*").permitAll()
 				.anyRequest().permitAll()
-				
 		);
 		
 		// utilisation du formulaire de connexion de Spring security
