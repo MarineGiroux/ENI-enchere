@@ -1,0 +1,11 @@
+runtime: java21
+instance_class: F1
+
+handlers:
+  - url: /.*
+    script: auto
+
+env_variables:
+  SPRING_PROFILES_ACTIVE: production
+  UPLOAD_PATH: /tmp
+  JDBC_DATASOURCE_URL: jdbc:h2:mem:db;MODE=MSSQLServer;DB_CLOSE_DELAY=-1;INIT=RUNSCRIPT FROM 'classpath:init_h2_db/init_db.sql'

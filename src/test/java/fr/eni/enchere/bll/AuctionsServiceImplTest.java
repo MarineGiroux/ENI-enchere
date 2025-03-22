@@ -24,16 +24,6 @@ class AuctionsServiceImplTest {
         // When / Then
         Assertions.assertThrows(BusinessException.class,
                 () -> AuctionsServiceImpl.checkAuction(auctions, null));
-//
-//        try {
-//            // When
-//            AuctionsServiceImpl.checkAuction(auctions, null);
-//        } catch (BusinessException e) {
-//            // Then
-//            Assertions.assertEquals("Tu n'as pas assez de crédit", e.getMessage());
-//        }
-//        // Then
-//        Assertions.fail("Une BusinessException aurait du être levée");
     }
 
     // TEST enchère fermée
@@ -53,16 +43,6 @@ class AuctionsServiceImplTest {
         // When / Then
         Assertions.assertThrows(BusinessException.class,
                 () -> AuctionsServiceImpl.checkAuction(auctions, soldArticles));
-//
-//        try {
-//            // When
-//            AuctionsServiceImpl.checkAuction(auctions, null);
-//        } catch (BusinessException e) {
-//            // Then
-//            Assertions.assertEquals("Tu n'as pas assez de crédit", e.getMessage());
-//        }
-//        // Then
-//        Assertions.fail("Une BusinessException aurait du être levée");
     }
 
     // TEST enchère fermée
@@ -82,16 +62,6 @@ class AuctionsServiceImplTest {
         // When / Then
         Assertions.assertThrows(BusinessException.class,
                 () -> AuctionsServiceImpl.checkAuction(auctions, soldArticles));
-//
-//        try {
-//            // When
-//            AuctionsServiceImpl.checkAuction(auctions, null);
-//        } catch (BusinessException e) {
-//            // Then
-//            Assertions.assertEquals("Tu n'as pas assez de crédit", e.getMessage());
-//        }
-//        // Then
-//        Assertions.fail("Une BusinessException aurait du être levée");
     }
 
     // TEST checkAuction valide (assez d'argent et ouverte)

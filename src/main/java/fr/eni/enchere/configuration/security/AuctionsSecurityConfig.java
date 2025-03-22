@@ -44,6 +44,8 @@ public class AuctionsSecurityConfig {
 		
 		http.authorizeHttpRequests(auth -> auth
 				.requestMatchers(HttpMethod.GET, "/").permitAll()
+				.requestMatchers(HttpMethod.GET, "/css/*").permitAll()
+				.requestMatchers(HttpMethod.GET, "/images/*").permitAll()
 				.requestMatchers(HttpMethod.GET, "/user/inscription").permitAll()
 				.requestMatchers(HttpMethod.POST, "/user/inscription").permitAll()
 				.requestMatchers(HttpMethod.GET, "/login").permitAll()
@@ -58,15 +60,8 @@ public class AuctionsSecurityConfig {
 				.requestMatchers(HttpMethod.GET, "/sales/detail/{id}").hasAnyRole("ADMIN", "MEMBRE")
 				.requestMatchers(HttpMethod.POST, "/sales/edit/{id}").hasAnyRole("ADMIN", "MEMBRE")
 				.requestMatchers(HttpMethod.POST, "/sales/deleteArticle/{id}").hasAnyRole("ADMIN", "MEMBRE")
-				.requestMatchers(HttpMethod.GET, "/css/*").permitAll()
-				.requestMatchers(HttpMethod.GET, "/images/*").permitAll()
 				.anyRequest().permitAll()
 		);
-		
-		// utilisation du formulaire de connexion de Spring security
-		//http.formLogin(Customizer.withDefaults());
-		
-		//utilisation du formulaire de connexion personnalisé
 		http.formLogin(form ->
 				form.loginPage("/login")
 						.permitAll()
@@ -76,13 +71,12 @@ public class AuctionsSecurityConfig {
 							response.sendRedirect(request.getContextPath());
 						})
 		);
-		
 		http.logout(logout->
 				logout.invalidateHttpSession(true)
 				.clearAuthentication(true)
-				.deleteCookies("JSESSIONID") // suppression du cookie de session
-				.logoutRequestMatcher(new AntPathRequestMatcher("/logout")) // definit l'url permettant la deconnection
-				.logoutSuccessUrl("/") // url appelée suite à la déconnexion
+				.deleteCookies("JSESSIONID")
+				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+				.logoutSuccessUrl("/")
 				.permitAll()
 				);
 		

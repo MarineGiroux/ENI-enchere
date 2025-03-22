@@ -10,12 +10,11 @@ body {
 .center-main {
     max-width: 100%;
     margin: 20px auto;
-    padding: 20px;
     background-color: white;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    margin-bottom: 220px;
     text-align: center;
+    height: 1500px;
 }
 
 .center-main h3, .center-main p {
