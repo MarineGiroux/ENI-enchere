@@ -1,12 +1,20 @@
 package fr.eni.enchere.bo;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
 import java.time.LocalDate;
 
 public class Auctions {
 
+	@NotNull
 	private int idUser;
+	@NotNull
 	private int idArticle;
+	@NotNull
 	private LocalDate dateAuctions;
+	@NotNull
+	@Positive
 	private int amountAuctions;
 
 	private User user;

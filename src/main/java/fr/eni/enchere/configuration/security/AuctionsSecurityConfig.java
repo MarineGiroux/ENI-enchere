@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.sql.DataSource;
@@ -41,25 +42,17 @@ public class AuctionsSecurityConfig {
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http, UserDetailsManager userDetailsManager) throws Exception {
 		http.userDetailsService(userDetailsManager);
+
+		http.csrf(csrf -> csrf
+				.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+		);
 		
 		http.authorizeHttpRequests(auth -> auth
-				.requestMatchers(HttpMethod.GET, "/").permitAll()
-				.requestMatchers(HttpMethod.GET, "/css/*").permitAll()
-				.requestMatchers(HttpMethod.GET, "/images/*").permitAll()
-				.requestMatchers(HttpMethod.GET, "/user/inscription").permitAll()
-				.requestMatchers(HttpMethod.POST, "/user/inscription").permitAll()
-				.requestMatchers(HttpMethod.GET, "/login").permitAll()
-				.requestMatchers(HttpMethod.POST, "/login").permitAll()
-				.requestMatchers(HttpMethod.POST, "/logout").hasAnyRole("ADMIN", "MEMBRE")
-				.requestMatchers(HttpMethod.GET, "/user/profile").hasAnyRole("ADMIN", "MEMBRE")
-				.requestMatchers(HttpMethod.POST, "/user/profile").hasAnyRole("ADMIN", "MEMBRE")
-				.requestMatchers(HttpMethod.POST, "/user/update").hasAnyRole("ADMIN", "MEMBRE")
-				.requestMatchers(HttpMethod.POST, "/user/delete").hasAnyRole("ADMIN", "MEMBRE")
-				.requestMatchers(HttpMethod.GET, "/sales").hasAnyRole("ADMIN", "MEMBRE")
-				.requestMatchers(HttpMethod.POST, "/sales").hasAnyRole("ADMIN", "MEMBRE")
-				.requestMatchers(HttpMethod.GET, "/sales/detail/{id}").hasAnyRole("ADMIN", "MEMBRE")
-				.requestMatchers(HttpMethod.POST, "/sales/edit/{id}").hasAnyRole("ADMIN", "MEMBRE")
-				.requestMatchers(HttpMethod.POST, "/sales/deleteArticle/{id}").hasAnyRole("ADMIN", "MEMBRE")
+				.requestMatchers(HttpMethod.GET, "/","/css/*","/images/*","/user/inscription", "/login").permitAll()
+				.requestMatchers(HttpMethod.POST, "/user/inscription", "/login").permitAll()
+				.requestMatchers(HttpMethod.GET, "/user/profile", "/sales", "/sales/detail/{id}").hasAnyRole("ADMIN", "MEMBRE")
+				.requestMatchers(HttpMethod.POST, "/logout", "/user/profile", "/user/update",
+						"/user/delete", "/sales", "/sales/edit/{id}", "/sales/deleteArticle/{id}").hasAnyRole("ADMIN", "MEMBRE")
 				.anyRequest().permitAll()
 		);
 		http.formLogin(form ->

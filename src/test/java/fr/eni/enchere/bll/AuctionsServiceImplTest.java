@@ -20,13 +20,11 @@ class AuctionsServiceImplTest {
         final User user = new User();
         user.setCredit(5);
         auctions.setUser(user);
-
         // When / Then
         Assertions.assertThrows(BusinessException.class,
                 () -> AuctionsServiceImpl.checkAuction(auctions, null));
     }
-
-    // TEST enchère fermée
+    // TEST enchère pas encore ouverte
     @Test
     void test_checkAuction_auction_not_yed_opened() {
         // Given

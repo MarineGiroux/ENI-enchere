@@ -33,6 +33,7 @@ class AuctionsServiceIT extends AuctionsApplicationIT {
 
     private final static String SELLER_EMAIL = "john.doe@email.com";
 
+    //Pas d'enchère à clôturer
     @Test
     @DisplayName("No auctions to close : the credits has not changed")
     @Sql("/sql/auctions/closeOutdatedAuctions_noAuctionsToClose.sql")

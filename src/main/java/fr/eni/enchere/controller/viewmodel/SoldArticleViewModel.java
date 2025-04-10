@@ -10,7 +10,6 @@ public class SoldArticleViewModel {
     @Valid
     SoldArticles soldArticles;
     Category category;
-    @Valid
     PickUp pickUpLocation;
     User seller;
     User buyer;
@@ -18,39 +17,30 @@ public class SoldArticleViewModel {
     public SoldArticles getSoldArticles() {
         return soldArticles;
     }
-
     public void setSoldArticles(SoldArticles soldArticles) {
         this.soldArticles = soldArticles;
     }
-
     public Category getCategory() {
         return category;
     }
-
     public void setCategory(Category category) {
         this.category = category;
     }
-
     public PickUp getPickUpLocation() {
         return pickUpLocation;
     }
-
     public void setPickUpLocation(PickUp pickUpLocation) {
         this.pickUpLocation = pickUpLocation;
     }
-
     public User getSeller() {
         return seller;
     }
-
     public void setSeller(User seller) {
         this.seller = seller;
     }
-
     public User getBuyer() {
         return buyer;
     }
-
     public void setBuyer(User buyer) {
         this.buyer = buyer;
     }

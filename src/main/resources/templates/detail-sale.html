@@ -84,13 +84,14 @@
 		</div>
 		<input type="hidden" th:field="*{soldArticles.idArticle}" />
 
-		<div  th:if="${soldArticleViewModel.buyer != null && (soldArticleViewModel.soldArticles.startDateAuctions.isBefore(T(java.time.LocalDate).now())					   ||					   soldArticleViewModel.soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now()))}">
-			<h5>Dernière enchère : <span data-th-text="*{soldArticles.priceSale}"></span>  crédits par <span data-th-text="${soldArticleViewModel.buyer.pseudo}"></span></h5><br>
+		<div  th:if="*{buyer != null && (soldArticles.startDateAuctions.isBefore(T(java.time.LocalDate).now())
+		|| soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now()))}">
+			<h5>Dernière enchère : <span data-th-text="*{soldArticles.priceSale}"></span> crédits par <span data-th-text="*{buyer.pseudo}"></span></h5><br>
 		</div>
 
-		<div class="form-group" th:if="${soldArticleViewModel.soldArticles.startDateAuctions != null
-					&& (soldArticleViewModel.soldArticles.startDateAuctions.isBefore(T(java.time.LocalDate).now())
-					|| soldArticleViewModel.soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now()))}">
+		<div class="form-group" th:if="*{soldArticles.startDateAuctions != null
+					&& (soldArticles.startDateAuctions.isBefore(T(java.time.LocalDate).now())
+					|| soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now()))}">
 			<label for="amountAuctions">Montant de l'enchère</label>
 			<input id="amountAuctions"
 				   type="number"
@@ -100,9 +101,9 @@
 		</div>
 
 		<div class="form-actions" >
-			<button th:if="${soldArticleViewModel.soldArticles.startDateAuctions.isBefore(T(java.time.LocalDate).now())
+			<button th:if="*{soldArticles.startDateAuctions.isBefore(T(java.time.LocalDate).now())
 				   ||
-				   soldArticleViewModel.soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now())}" type="submit" class="btn btn-primary">Placer une enchère</button>
+				   soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now())}" type="submit" class="btn btn-primary">Placer une enchère</button>
 			<a data-th-href="@{/}" class="btn btn-secondary">Retour</a>
 		</div>
 	</form>

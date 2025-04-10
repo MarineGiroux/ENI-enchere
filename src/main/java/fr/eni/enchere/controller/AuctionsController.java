@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -21,8 +20,8 @@ import java.time.LocalDate;
 @Controller
 @RequestMapping("/sales")
 public class AuctionsController {
-    private final static Logger LOGGER = LoggerFactory.getLogger(SalesController.class);
 
+    private final static Logger LOGGER = LoggerFactory.getLogger(SalesController.class);
     private final AuctionsService auctionsService;
     private final UserService userService;
     private final Clock clock;
@@ -37,11 +36,8 @@ public class AuctionsController {
     }
 
     @PostMapping("/auctions")
-    public String registerAuction(@RequestParam("soldArticles.idArticle") int idArticle,
-                                  @RequestParam("amountAuctions") int amountAuction,
-                                  Principal principal,
-                                  Model model,
-                                  RedirectAttributes redirectAttributes) {
+    public String registerAuction(@RequestParam("soldArticles.idArticle") int idArticle, @RequestParam("amountAuctions") int amountAuction,
+                                  Principal principal, RedirectAttributes redirectAttributes) {
         try {
             Auctions auctions = new Auctions();
             auctions.setUser(userService.findByEmail(principal.getName()));
