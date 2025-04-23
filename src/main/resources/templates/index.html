@@ -21,9 +21,14 @@
 					<h4 data-th-text="*{item.soldArticles.nameArticle}">Nom de l'article</h4>
 
 					<div class="article-image">
+					 	<div class="article-image-placeholder"></div>
 						<img th:src="@{${item.soldArticles.picture != null ? '/images/uploads/' + item.soldArticles.picture : '/images/carton.jpg'}}"
-							 th:alt="${item.soldArticles.nameArticle}">
+							 th:alt="${item.soldArticles.nameArticle}"
+							 loading="lazy"
+							 class="article-card-img"
+							 onload="this.classList.add('loaded')">
 					</div>
+
 
 					<div class="status-banner"
 						 th:if="${(item.soldArticles.startDateAuctions.isBefore(T(java.time.LocalDate).now()) || item.soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now()))
@@ -80,4 +85,3 @@
 		</main>
 	</body>
 </html>
-

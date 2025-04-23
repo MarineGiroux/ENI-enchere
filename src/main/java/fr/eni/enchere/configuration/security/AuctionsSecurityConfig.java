@@ -48,12 +48,12 @@ public class AuctionsSecurityConfig {
 		);
 		
 		http.authorizeHttpRequests(auth -> auth
-				.requestMatchers(HttpMethod.GET, "/","/css/*","/images/*","/user/inscription", "/login").permitAll()
+				.requestMatchers(HttpMethod.GET, "/","/css/**","/images/**","/user/inscription", "/login").permitAll()
 				.requestMatchers(HttpMethod.POST, "/user/inscription", "/login").permitAll()
 				.requestMatchers(HttpMethod.GET, "/user/profile", "/sales", "/sales/detail/{id}").hasAnyRole("ADMIN", "MEMBRE")
 				.requestMatchers(HttpMethod.POST, "/logout", "/user/profile", "/user/update",
 						"/user/delete", "/sales", "/sales/edit/{id}", "/sales/deleteArticle/{id}").hasAnyRole("ADMIN", "MEMBRE")
-				.anyRequest().permitAll()
+				.anyRequest().authenticated()
 		);
 		http.formLogin(form ->
 				form.loginPage("/login")

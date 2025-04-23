@@ -17,7 +17,11 @@
 </head>
 <body>
 <header xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-entete">
-	<nav>
+	<div class="banner-image-container" >
+		<img src="/images/1.jpg" alt="Banner background" class="banner-image">
+		<div class="banner-overlay"></div>
+	</div>
+	<nav style="padding: 15px">
 		<div>
 			<a href="/">ENI Enchères</a>
 		</div>
@@ -33,7 +37,7 @@
 		</div>
 	</nav>
 </header>
-<main class="center-main">
+<main class="center-main" style="padding-top: 15px">
 	<form th:action="@{/sales/detail}" th:object="${soldArticleViewModel}" method="post">
 		<h3>Vendu par <span data-th-text="*{seller.pseudo}"></span></h3>
 		<a class="details-btn-modify"
@@ -60,7 +64,7 @@
 				</div>
 			</div>
 
-			<div class="article-image">
+			<div class="article-map">
 				<h3><strong>Lieu de retrait :</strong></h3>
 				<p>
 					<span data-th-text="*{pickUpLocation.road}"></span>,

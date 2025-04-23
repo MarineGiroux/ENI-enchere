@@ -10,7 +10,11 @@
 		</head>
 		<body>
 		<header xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-entete">
-			<nav>
+			<div class="banner-image-container" >
+				<img src="/images/1.jpg" alt="Banner background" class="banner-image">
+				<div class="banner-overlay"></div>
+			</div>
+			<nav style="padding: 15px">
 				<div>
 					<a href="/">ENI Enchères</a>
 				</div>
@@ -27,7 +31,7 @@
 			</nav>
 		</header>
 
-		<main class="center-main">
+		<main class="center-main" style="padding-top: 15px">
 			<div th:object="${user}">
 				<h3>Profil de <span data-th-text="*{pseudo}"></span></h3>
 				<div class="article-info-profil">
