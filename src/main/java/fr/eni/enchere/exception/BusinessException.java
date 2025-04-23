@@ -4,37 +4,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BusinessException extends Exception {
-	
-	private List<String> listeErreurs;
-	
-	
+	private List<String> listErrors;
 	public BusinessException() {
 		super();
-		this.listeErreurs = new ArrayList<String>();
-	}
-	
-	public void add(String erreur) {
-		listeErreurs.add(erreur);
+		this.listErrors = new ArrayList<String>();
 	}
 
-	public List<String> getListeErreurs() {
-		return listeErreurs;
+	public BusinessException(String message) {
+		super(message);
+		this.listErrors = new ArrayList<>();
+		this.listErrors.add(message);
 	}
-	
+
+	public void add(String error) {
+		listErrors.add(error);
+	}
+
+	public List<String> getListErrors() {
+		return listErrors;
+	}
+
 	public boolean isValid() {
-		return listeErreurs==null || listeErreurs.isEmpty();
+		return listErrors == null || listErrors.isEmpty();
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 }

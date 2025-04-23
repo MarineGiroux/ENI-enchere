@@ -1,0 +1,16 @@
+# Database connection
+spring.datasource.url=jdbc:sqlserver://localhost;databasename=YOUR_DATABASE_NAME;integratedSecurity=false;encrypt=false;trustServerCertificate=false
+spring.datasource.username=YOUR_USERNAME
+spring.datasource.password=YOUR_PASSWORD
+spring.messages.encoding=UTF-8
+#Details of development requests
+logging.level.org.springframework.jdbc.core=TRACE
+logging.level.fr.eni.enchere=DEBUG
+server.port=8080
+
+# Path for uploading files
+upload.path=src/main/resources/static/images/uploads
+spring.servlet.multipart.max-file-size=10MB
+spring.servlet.multipart.max-request-size=10MB
+spring.thymeleaf.cache=false
+

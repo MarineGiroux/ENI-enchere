@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" data-th-href="@{/css/main.css}">
+  <link rel="stylesheet" data-th-href="@{/css/error.css}">
+  <title>ENI Enchères - Mise à jour du profil</title>
+  <link rel="icon" data-th-href="@{/images/LogoEnchere-1.png}" />
+</head>
+<body>
+<header xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-entete">
+  <div class="banner-image-container" >
+    <img src="/images/1.jpg" alt="Banner background" class="banner-image">
+    <div class="banner-overlay"></div>
+  </div>
+  <nav style="padding: 15px">
+    <div>
+      <a href="/">ENI Enchères</a>
+    </div>
+    <div id="navbarTogglerDemo02">
+      <ul>
+        <li><a aria-current="page" data-th-href="@{/}">Accueil</a></li>
+        <li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/sales}">Ventes</a></li>
+        <li th:if="${!#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/user/inscription}">Inscription</a></li>
+        <li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/user/profile}">Profil</a></li>
+        <li th:if="${!#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/login}">Connexion</a></li>
+        <li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/logout}">Déconnexion</a></li>
+      </ul>
+    </div>
+  </nav>
+</header>
+
+<main class="center-main" style="padding-top: 15px">
+  <form th:action="@{/sales/edit/{id}(id=*{soldArticles.idArticle})}" method="post" th:object="${soldArticleViewModel}" enctype="multipart/form-data">
+    <h3>Modifier l'article</h3>
+    <div class="form-container">
+      <div data-th-replace="~{fragments/fragment-error :: frag-error('soldArticles.idArticle')}"></div>
+      <input type="hidden" th:field="*{soldArticles.idArticle}" />
+      <input type="hidden" th:field="*{soldArticles.idUser}" />
+      <input type="hidden" th:field="*{soldArticles.idCategory}" />
+
+      <div class="form-group">
+        <div data-th-replace="~{fragments/fragment-error :: frag-error('soldArticles.nameArticle')}"></div>
+        <label for="nameArticle">Nom de l'article</label>
+        <input type="text" id="nameArticle" class="form-control" th:field="*{soldArticles.nameArticle}" />
+      </div>
+
+      <div class="form-group">
+        <label for="picture">Image</label>
+        <input type="file" id="picture" name="pictureFile" class="form-control" />
+        <input type="hidden" th:field="*{soldArticles.picture}" />
+      </div>
+
+      <div class="form-group">
+        <div data-th-replace="~{fragments/fragment-error :: frag-error('soldArticles.idCategory')}"></div>
+        <label for="category">Catégorie</label>
+        <select id="category" class="form-control" th:field="*{soldArticles.idCategory}">
+          <option th:each="cat : ${categories}"
+                  th:value="${cat.idCategory}"
+                  th:text="${cat.categoryName}">
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <div data-th-replace="~{fragments/fragment-error :: frag-error('soldArticles.initialPrice')}"></div>
+        <label for="initialPrice">Prix de départ</label>
+        <input type="number" id="initialPrice" class="form-control" th:field="*{soldArticles.initialPrice}" />
+        <span class="error" th:if="${#fields.hasErrors('soldArticles.initialPrice')}" th:errors="*{soldArticles.initialPrice}"></span>
+      </div>
+
+      <div class="form-group">
+        <div data-th-replace="~{fragments/fragment-error :: frag-error('soldArticles.startDateAuctions')}"></div>
+        <label for="startDateAuctions">Date de début</label>
+        <input type="date" id="startDateAuctions" class="form-control"
+          th:field="*{soldArticles.startDateAuctions}"/>
+      </div>
+
+      <div class="form-group">
+        <div data-th-replace="~{fragments/fragment-error :: frag-error('soldArticles.endDateAuctions')}"></div>
+        <label for="endDateAuctions">Date de fin</label>
+        <input type="date" id="endDateAuctions" class="form-control"
+          th:field="*{soldArticles.endDateAuctions}"/>
+      </div>
+
+
+    </div>
+    <div class="form-group">
+      <div data-th-replace="~{fragments/fragment-error :: frag-error('soldArticles.description')}"></div>
+      <label for="description">Description</label>
+      <textarea id="description" class="form-control" th:field="*{soldArticles.description}"></textarea>
+    </div>
+
+    <h4>Lieu de retrait</h4>
+
+    <input type="hidden" th:field="*{pickUpLocation.idArticle}" />
+
+    <div class="form-group">
+      <label for="pickUpLocationRoad">Rue</label>
+      <input type="text" id="pickUpLocationRoad" class="form-control" data-th-field="*{pickUpLocation.road}" placeholder="Entrez la rue" />
+    </div>
+
+    <div class="form-group">
+      <label for="pickUpLocationZipPass">Code Postal</label>
+      <input type="text" id="pickUpLocationZipPass" class="form-control" data-th-field="*{pickUpLocation.zipPass}" placeholder="Entrez le code postal" />
+    </div>
+
+    <div class="form-group">
+      <label for="pickUpLocationCity">Ville</label>
+      <input type="text" id="pickUpLocationCity" class="form-control" data-th-field="*{pickUpLocation.city}" placeholder="Entrez la ville" />
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">Enregistrer</button>
+      <a th:href="@{/sales/deleteArticle/{id}(id=*{soldArticles.idArticle})}"
+         class="btn btn-alert"
+         onclick="return confirm('Est tu sûr de vouloir supprimer cet article ?')">
+        Supprimer l'article
+      </a>
+      <a class="btn btn-secondary" data-th-href="@{/}">
+        Annuler
+      </a>
+    </div>
+  </form>
+</main>
+
+
+<footer class="footer">
+  <p>© 2024 ENI Enchères. Tous droits réservés.</p>
+</footer>
+</body>
+</html>

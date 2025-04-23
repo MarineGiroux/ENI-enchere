@@ -1,86 +1,72 @@
-<!DOCTYPE html >
-<html xmlns="http://www.thymeleaf.org" >
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/style.css">
-    <title>ENI Enchères - Connexion</title>
-	<link rel="icon" data-th-href="@{/images/logoEnchere.png}" />
-    <link rel="stylesheet" data-th-href="@{/css/main.css}">
-    <link rel="stylesheet" data-th-href="@{/css/error.css}">
-</head>
-<body>
-    
-    
-
-    <form th:action="@{/login}" method="post">
-    
-    <section class="vh-1000 gradient-custom">
-        <div class="container py-5 h-100">
-          <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-              <div class="card bg-dark text-white" style="border-radius: 1rem;">
-                <div class="card-body p-5 text-center">
-                
-                  <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="window.location.href = '/';"></button>      
-                
-                  <div class="mb-md-5 mt-md-4 pb-5">
-                  
-
-      
-                    <h2 class="fw-bold mb-2 text-uppercase">Connexion</h2>
-                    
-                    <div  th:if="${param.error}">Mauvais email ou mot de passe</div>
-                    <div th:if="${param.logout}">Vous êtes déconnecté</div>
-                    
-                    
-                    <p class="text-white-50 mb-5">Veuillez entrer votre identifiant et votre mot de passe !</p>
-      
-                    <div class="form-outline form-white mb-4">
-                      <input type="email" id="idUsername" class="form-control form-control-lg" name="username"/>
-                      <label class="form-label">Email</label>
-                    </div>
-      
-                    <div class="form-outline form-white mb-4">
-                      <input type="password" id="idPassword" class="form-control form-control-lg" name="password"/>
-                      <label class="form-label" >Mot de passe</label>
-                    </div>
-      
-                    <p class="small mb-5 pb-lg-2"><a class="text-white-50" href="#!">Mot de passe oublié ?</a></p>
-
-                    
-                    <input type="checkbox">
-                    <p class="small mb-5 pb-lg-2"><a class="text-white-50" href="#!">Se souvenir de moi ?</a></p>
-
-      
-                    <button class="btn btn-outline-light btn-lg px-5" type="submit">Connexion</button>
-      
-                    <div class="d-flex justify-content-center text-center mt-4 pt-1">
-                      <a href="#!" class="text-white"><i class="fab fa-facebook-f fa-lg"></i></a>
-                      <a href="#!" class="text-white"><i class="fab fa-twitter fa-lg mx-4 px-2"></i></a>
-                      <a href="#!" class="text-white"><i class="fab fa-google fa-lg"></i></a>
-                    </div>
-      
-                  </div>
-      
-                  <div>
-                    <p class="mb-0">Vous n'avez pas de compte ? <a data-th-href="@{/utilisateur/inscription}" class="text-white-50 fw-bold">S'inscrire</a>
-                    </p>
-                  </div>
-      
-                </div>
-              </div>
+<!DOCTYPE html>
+    <html lang="en" xmlns:th="http://www.thymeleaf.org">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <link rel="stylesheet" data-th-href="@{/css/main.css}">
+            <title>ENI Enchères - Connexion</title>
+            <link rel="icon" data-th-href="@{/images/LogoEnchere-1.png}" />
+            <link rel="stylesheet" th:href="@{/css/main.css}">
+            <link rel="stylesheet" th:href="@{/css/error.css}">
+        </head>
+        <body>
+        <header xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-entete">
+            <div class="banner-image-container" >
+                <img src="/images/1.jpg" alt="Banner background" class="banner-image">
+                <div class="banner-overlay"></div>
             </div>
-          </div>
-        </div>
-      </section>
-    </form>
-    
-      
-      
-      
+            <nav style="padding: 15px">
+                <div>
+                    <a href="/">ENI Enchères</a>
+                </div>
+                <div id="navbarTogglerDemo02">
+                    <ul>
+                        <li><a aria-current="page" data-th-href="@{/}">Accueil</a></li>
+                        <li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/sales}">Ventes</a></li>
+                        <li th:if="${!#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/user/inscription}">Inscription</a></li>
+                        <li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/user/profile}">Profil</a></li>
+                        <li th:if="${!#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/login}">Connexion</a></li>
+                        <li th:if="${#authorization.expression('isAuthenticated()')}"><a data-th-href="@{/logout}">Déconnexion</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
 
-</body>
+        <main class="center-main" style="padding-top: 15px">
+            <h3>Connexion</h3>
+            <p>Veuillez entrer vos identifiants</p>
+
+            <form th:action="@{/login}" method="post" class="login-form">
+                <div th:if="${param.error}" class="error-message">Mauvais email ou mot de passe</div>
+                <div th:if="${param.logout}" class="logout-message">Tu es déconnecté</div>
+
+                <div class="form-group">
+                    <label for="idUsername">Email</label>
+                    <input type="email" id="idUsername" name="username" class="form-control" placeholder="Votre email" />
+                </div>
+
+                <div class="form-group">
+                    <label for="idPassword">Mot de passe</label>
+                    <input type="password" id="idPassword" name="password" class="form-control" placeholder="Votre Mot de passe"/>
+                </div>
+
+        <!--        <div class="form-group remember-me">-->
+        <!--            <label>-->
+        <!--                <input type="checkbox" name="rememberMe" /> Se souvenir de moi-->
+        <!--            </label>-->
+        <!--        </div>-->
+
+                <button type="submit" class="btn btn-primary">Connexion</button>
+                <a href="#" class="btn btn-secondary">Mot de passe oublié ?</a>
+            </form>
+
+            <div class="form-actions">
+                <p>Tu n'as pas encore de compte ? <a data-th-href="@{/user/inscription}">S'inscrire</a></p>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>© 2024 ENI Enchères. Tous droits réservés.</p>
+        </footer>
+    </body>
 </html>

@@ -1,55 +1,87 @@
 <!DOCTYPE html>
-<html html xmlns="http://www.thymeleaf.org" data-th-replace="~{fragments/layout :: layout-enchere(titrePage= ~{:: title},
-																							contenuPage= ~{:: .center-main},
-																							ressourcesSupp= ~{})}">
+	<html xmlns:th="http://www.thymeleaf.org"
+		  th:replace="~{fragments/layout :: layout-auctions(titrePage=~{:: title},
+														   contenuPage=~{:: .center-main-index},
+														   ressourcesSupp=~{})}">
+		<head>
+			<title>ENI Enchères</title>
+			<link rel="stylesheet" href="style.css">
+		</head>
+		<body>
+		<main class="center-main-index">
+			<div class="article-list">
 
-<title>ENI Enchères</title>
+				<div class="article-card" data-th-each="item : ${soldArticlesViewModel}">
+					<div class="rounded-likes">
+						<span data-th-text="*{item.soldArticles.priceSale > 0} ? *{item.soldArticles.priceSale} : *{item.soldArticles.initialPrice}">0</span>
+						<p th:if="${item.soldArticles.startDateAuctions.isBefore(T(java.time.LocalDate).now()) ||
+						 item.soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now())}">👍</p>
+					</div>
 
-<body>
+					<h4 data-th-text="*{item.soldArticles.nameArticle}">Nom de l'article</h4>
 
-	<main class="center-main">
-
-		<h3 class="title_list">Liste des Enchères</h3>
-
-		<br>
-
-		<h5>Filtre</h5>
-
-<div class="search-box">
-    <form action = "rechercher" >
-        <button class="btn-search"><i class="fas fa-search"></i>Recherche</button>
-        <input type="text" name = "nom" class="input-search" placeholder="Saisir votre recherche...">
-    </form>
-</div>
-
-		<br>
-
-		 <select id = "listeCat">
-			<option value = "0">Catégorie : </option>
-			<option data-th-each="categorie : ${listeCategorie}" th:value="${categorie.noCategorie}" th:text="${categorie.libelle}" ></option>
-		</select>
-
-
-
-		<div class = "info-article">
-			<tr class = "description-article" data-th-each="item : ${articleVendu}">
-				<img class = "image-article" data-th-src="@{/images/carton.jpg}">
-				<td class = "information" data-th-text="*{item.nomArticle}"></td>
-				<td class = "information">Prix :</td>
-				<td class = "information" data-th-text="*{item.miseAPrix}"></td>
-				<td class = "information">Date de fin :</td>
-				<td class = "information" data-th-text="*{item.dateFinEnchere}"></td>
-				<td class = "information">Vendeur :</td>
-				<td class = "information" data-th-text="*{item.vend.pseudo}"></td>
-				<td class="information"  th:if="${#authorization.expression('isAuthenticated()')}"><a class="nav-link" data-th-href="@{/vente/detail(id=${item.noArticle})}">Détail de la vente</a></td>
-		</div>
-
-	</main>
+					<div class="article-image">
+					 	<div class="article-image-placeholder"></div>
+						<img th:src="@{${item.soldArticles.picture != null ? '/images/uploads/' + item.soldArticles.picture : '/images/carton.jpg'}}"
+							 th:alt="${item.soldArticles.nameArticle}"
+							 loading="lazy"
+							 class="article-card-img"
+							 onload="this.classList.add('loaded')">
+					</div>
 
 
+					<div class="status-banner"
+						 th:if="${(item.soldArticles.startDateAuctions.isBefore(T(java.time.LocalDate).now()) || item.soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now()))
+						 && (item.soldArticles.endDateAuctions.isAfter(T(java.time.LocalDate).now()) ||
+						 item.soldArticles.endDateAuctions.isEqual(T(java.time.LocalDate).now()))}">
+						En cours
+					</div>
 
-</body>
+					<div class="status-banner-end"
+						 th:if="${item.soldArticles.endDateAuctions.isBefore(T(java.time.LocalDate).now())}">
+						Cloturée
+					</div>
 
 
+					<div class="article-details">
+						<p class="article-details-h4" data-th-text="*{item.soldArticles.description}">Description</p>
+						<div class="article-card-detail">
+							<p><strong>Catégorie :</strong> <span data-th-text="*{item.category.categoryName}">Catégorie</span></p>
+							<p><strong>Date de fin :</strong>
+								<span data-th-text="${#temporals.format(item.soldArticles.endDateAuctions, 'dd-MM-yyyy')}">2024-01-01</span>
+							</p>
+							<p><strong>Vendeur :</strong> <span data-th-text="*{item.seller.pseudo}">Pseudo</span></p>
+							<p th:if="${item.soldArticles.priceSale == 0 && (item.soldArticles.startDateAuctions.isBefore(T(java.time.LocalDate).now()) || item.soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now()))
+						 && (item.soldArticles.endDateAuctions.isAfter(T(java.time.LocalDate).now()) ||
+						 item.soldArticles.endDateAuctions.isEqual(T(java.time.LocalDate).now()))}">Aucune enchère actuellement </p>
+							<p th:if="${item.soldArticles.priceSale != 0 && item.buyer != null && (item.soldArticles.startDateAuctions.isBefore(T(java.time.LocalDate).now()) ||
+ 								item.soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now()))}">
+								Meilleure enchère faite par <strong><span data-th-text="${item.buyer.pseudo}">Pseudo</span></strong>
+							</p>
+						</div>
+					</div>
+
+					<div class="article-actions">
+						<a class="details-btn" th:if="${#authorization.expression('isAuthenticated()') && (item.soldArticles.startDateAuctions.isBefore(T(java.time.LocalDate).now()) || item.soldArticles.startDateAuctions.isEqual(T(java.time.LocalDate).now()))
+						 && (item.soldArticles.endDateAuctions.isAfter(T(java.time.LocalDate).now()) ||
+						 item.soldArticles.endDateAuctions.isEqual(T(java.time.LocalDate).now()))}"
+						   data-th-href="@{/sales/detail(id=${item.soldArticles.idArticle})}">
+							Détail / Enchérir
+						</a>
+						<a class="details-btn" th:if="${#authorization.expression('isAuthenticated()') && (item.soldArticles.startDateAuctions.isAfter(T(java.time.LocalDate).now()))}"
+						   data-th-href="@{/sales/detail(id=${item.soldArticles.idArticle})}">
+							Détail
+						</a>
+						<a class="details-btn-modify"
+						   th:if="${#authorization.expression('isAuthenticated()') &&
+						   item.seller.email == #authentication.name &&
+						   (item.soldArticles.startDateAuctions.isAfter(T(java.time.LocalDate).now()))}"
+						   th:href="@{/sales/edit/{id}(id=${item.soldArticles.idArticle})}">
+							Modifier
+						</a>
+					</div>
+				</div>
+			</div>
+		</main>
+	</body>
 </html>
-

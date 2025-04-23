@@ -1,18 +1,52 @@
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath 'com.google.cloud.tools:appengine-gradle-plugin:2.8.1'
+	}
+}
+
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.2.0'
 	id 'io.spring.dependency-management' version '1.1.4'
 }
 
+apply plugin: 'com.google.cloud.tools.appengine'
+
 group = 'fr.eni.enchere'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	sourceCompatibility = '17'
+	sourceCompatibility = '21'
 }
 
 repositories {
 	mavenCentral()
+}
+
+bootJar {
+	archiveFileName = 'ROOT.jar'
+}
+
+appengine {
+	stage {
+		artifact = "${buildDir}/libs/ROOT.jar"
+	}
+
+	deploy {
+		stopPreviousVersion = true
+		promote = true
+		projectId = 'auction-project-id'
+		version = 'v1'
+	}
+}
+
+sourceSets {
+	main.java.srcDirs = ['src/main/java']
+	main.resources.srcDirs = ['src/main/resources', 'src/main/webapp']
+	test.java.srcDirs = ['src/test/java']
 }
 
 dependencies {
@@ -22,10 +56,17 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	implementation 'com.google.appengine:appengine-api-1.0-sdk:2.0.30'
+
+	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'com.microsoft.sqlserver:mssql-jdbc'
+
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+	testImplementation 'com.h2database:h2'
+
 }
 
 tasks.named('test') {

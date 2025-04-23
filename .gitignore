@@ -35,3 +35,9 @@ out/
 
 ### VS Code ###
 .vscode/
+
+# Ignorer les fichiers de configuration sensibles
+/src/main/resources/application.properties
+
+# identifiant gradle
+/src/gradle.properties
