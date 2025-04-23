@@ -9,7 +9,12 @@
 		</head>
 		<body>
 		<main class="center-main-index">
-			<div class="article-list">
+			<div class="no-auctions-message" th:if="${#lists.isEmpty(soldArticlesViewModel)}">
+				<h3>Pas d'enchère en cours</h3>
+				<p>Aucune enchère n'est disponible pour le moment.</p>
+			</div>
+
+			<div class="article-list" th:if="${not #lists.isEmpty(soldArticlesViewModel)}">
 
 				<div class="article-card" data-th-each="item : ${soldArticlesViewModel}">
 					<div class="rounded-likes">
